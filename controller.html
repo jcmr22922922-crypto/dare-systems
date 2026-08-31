@@ -429,162 +429,322 @@
 
 <script>
 
-  /*
-  ==================================================
-  DARE CONTROLLER
-  ==================================================
+const BACKEND_URL = "https://dare-backend-vx8w.onrender.com";
 
-  This is currently DEMO MODE.
+const WS_URL =
+  BACKEND_URL.replace("https://", "wss://") + "/ws";
 
-  Later we will connect this to your backend using
-  WebSockets so Twitch dares appear automatically.
-  */
-
-
-  let currentDare = null;
-
-  let timerInterval = null;
-
-  let remainingTime = 30;
+let socket = null;
+let currentDare = null;
+let timerInterval = null;
+let remainingTime = 30;
 
 
-  /*
-  ==================================================
-  CONNECTION STATUS
-  ==================================================
-  */
+/* =========================================
+   CONNECTION STATUS
+========================================= */
 
-  function setConnectionStatus(online) {
+function setConnectionStatus(online) {
 
-    const dot =
-      document.getElementById("connectionDot");
+  const dot =
+    document.getElementById("connectionDot");
 
-    const text =
-      document.getElementById("connectionText");
+  const text =
+    document.getElementById("connectionText");
+
+  if (online) {
+
+    dot.classList.add("online");
+
+    text.textContent =
+      "Connected to Dare Server";
+
+  } else {
+
+    dot.classList.remove("online");
+
+    text.textContent =
+      "Disconnected";
+
+  }
+
+}
 
 
-    if (online) {
+/* =========================================
+   CONNECT TO SERVER
+========================================= */
 
-      dot.classList.add("online");
+function connectToServer() {
 
-      text.textContent =
-        "Connected to Dare Server";
+  console.log("Connecting to:", WS_URL);
 
-    } else {
+  socket = new WebSocket(WS_URL);
 
-      dot.classList.remove("online");
 
-      text.textContent =
-        "Demo Mode — Server not connected";
+  socket.onopen = function() {
+
+    console.log("Connected!");
+
+    setConnectionStatus(true);
+
+  };
+
+
+  socket.onclose = function() {
+
+    console.log("Disconnected");
+
+    setConnectionStatus(false);
+
+    setTimeout(connectToServer, 3000);
+
+  };
+
+
+  socket.onerror = function(error) {
+
+    console.error(
+      "WebSocket error:",
+      error
+    );
+
+    setConnectionStatus(false);
+
+  };
+
+
+  socket.onmessage = function(event) {
+
+    const message =
+      JSON.parse(event.data);
+
+    console.log(
+      "Server:",
+      message
+    );
+
+
+    /* NEW DARE */
+
+    if (
+      message.type === "NEW_DARE"
+    ) {
+
+      showDare(message.dare);
 
     }
 
+
+    /* STATUS UPDATE */
+
+    if (
+      message.type === "DARE_STATUS"
+    ) {
+
+      handleServerStatus(
+        message.dare
+      );
+
+    }
+
+
+    /* CLEARED */
+
+    if (
+      message.type === "DARE_CLEARED"
+    ) {
+
+      resetController();
+
+    }
+
+  };
+
+}
+
+
+/* =========================================
+   SHOW DARE
+========================================= */
+
+function showDare(dare) {
+
+  currentDare = dare;
+
+
+  document
+    .getElementById("waitingScreen")
+    .classList.add("hidden");
+
+
+  document
+    .getElementById("dareScreen")
+    .style.display = "block";
+
+
+  document
+    .getElementById("viewer")
+    .textContent =
+    "@" + dare.viewer;
+
+
+  document
+    .getElementById("dareText")
+    .textContent =
+    dare.text;
+
+
+  document
+    .getElementById("reward")
+    .textContent =
+    "0";
+
+
+  document
+    .getElementById("status")
+    .textContent =
+    "NEW DARE";
+
+
+  document
+    .getElementById("decisionButtons")
+    .classList.remove("hidden");
+
+
+  document
+    .getElementById("timerArea")
+    .classList.add("hidden");
+
+}
+
+
+/* =========================================
+   SEND STATUS
+========================================= */
+
+async function sendStatus(status) {
+
+  if (!currentDare) {
+
+    console.log("No active dare");
+
+    return;
+
   }
 
 
-  /*
-  ==================================================
-  DEMO DARE
-  ==================================================
-  */
+  try {
 
-  function demoDare() {
+    const response = await fetch(
 
-    showDare({
+      BACKEND_URL +
+      "/api/dare/" +
+      currentDare.id +
+      "/status",
 
-      id: "demo-" + Date.now(),
+      {
 
-      viewer: "Viewer123",
+        method: "POST",
 
-      text: "Do 20 push-ups",
+        headers: {
+          "Content-Type":
+            "application/json"
+        },
 
-      reward: 100,
+        body: JSON.stringify({
+          status: status
+        })
 
-      duration: 30
+      }
 
-    });
-
-  }
-
-
-  /*
-  ==================================================
-  SHOW DARE
-  ==================================================
-  */
-
-  function showDare(dare) {
-
-    currentDare = dare;
+    );
 
 
-    document
-      .getElementById("waitingScreen")
-      .classList.add("hidden");
-
-
-    document
-      .getElementById("dareScreen")
-      .style.display = "block";
-
-
-    document
-      .getElementById("viewer")
-      .textContent =
-      "@" + dare.viewer;
-
-
-    document
-      .getElementById("dareText")
-      .textContent =
-      dare.text;
-
-
-    document
-      .getElementById("reward")
-      .textContent =
-      dare.reward;
-
-
-    document
-      .getElementById("status")
-      .textContent =
-      "NEW DARE";
-
-
-    document
-      .getElementById("decisionButtons")
-      .classList.remove("hidden");
-
-
-    document
-      .getElementById("timerArea")
-      .classList.add("hidden");
-
-
-    document
-      .getElementById("newDareButton")
-      .classList.remove("hidden");
-
-  }
-
-
-  /*
-  ==================================================
-  ACCEPT DARE
-  ==================================================
-  */
-
-  function acceptDare() {
-
-    if (!currentDare) return;
+    const result =
+      await response.json();
 
 
     console.log(
-      "DARE ACCEPTED:",
-      currentDare
+      "Status response:",
+      result
     );
 
+
+  } catch (error) {
+
+    console.error(
+      "Failed to send status:",
+      error
+    );
+
+  }
+
+}
+
+
+/* =========================================
+   ACCEPT
+========================================= */
+
+function acceptDare() {
+
+  if (!currentDare) return;
+
+  sendStatus("accepted");
+
+}
+
+
+/* =========================================
+   REJECT
+========================================= */
+
+function rejectDare() {
+
+  if (!currentDare) return;
+
+  sendStatus("rejected");
+
+}
+
+
+/* =========================================
+   COMPLETE
+========================================= */
+
+function completeDare() {
+
+  if (!currentDare) return;
+
+  sendStatus("completed");
+
+}
+
+
+/* =========================================
+   FAIL
+========================================= */
+
+function failDare() {
+
+  if (!currentDare) return;
+
+  sendStatus("failed");
+
+}
+
+
+/* =========================================
+   HANDLE STATUS
+========================================= */
+
+function handleServerStatus(dare) {
+
+  currentDare = dare;
+
+
+  if (dare.status === "accepted") {
 
     document
       .getElementById("status")
@@ -598,236 +758,124 @@
 
 
     document
-      .getElementById("newDareButton")
-      .classList.add("hidden");
-
-
-    document
       .getElementById("timerArea")
       .classList.remove("hidden");
 
 
     startTimer();
 
-
-    /*
-    ==============================================
-    BACKEND CONNECTION WILL GO HERE
-
-    Example:
-
-    fetch("/api/dare/accept", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({
-        dareId: currentDare.id
-      })
-    });
-
-    ==============================================
-    */
-
   }
 
 
-  /*
-  ==================================================
-  REJECT DARE
-  ==================================================
-  */
-
-  function rejectDare() {
-
-    if (!currentDare) return;
-
-
-    console.log(
-      "DARE REJECTED:",
-      currentDare
-    );
-
-
-    /*
-    Backend will eventually receive:
-
-    POST /api/dare/reject
-
-    */
-
+  if (dare.status === "rejected") {
 
     resetController();
 
   }
 
 
-  /*
-  ==================================================
-  TIMER
-  ==================================================
-  */
-
-  function startTimer() {
-
-    clearInterval(timerInterval);
-
-
-    remainingTime =
-      currentDare.duration || 30;
-
-
-    updateTimer();
-
-
-    timerInterval =
-      setInterval(function () {
-
-        remainingTime--;
-
-        updateTimer();
-
-
-        if (remainingTime <= 0) {
-
-          clearInterval(timerInterval);
-
-
-          document
-            .getElementById("status")
-            .textContent =
-            "⏰ TIME'S UP";
-
-        }
-
-      }, 1000);
-
-  }
-
-
-  /*
-  ==================================================
-  UPDATE TIMER
-  ==================================================
-  */
-
-  function updateTimer() {
-
-    document
-      .getElementById("timer")
-      .textContent =
-      remainingTime;
-
-  }
-
-
-  /*
-  ==================================================
-  COMPLETE DARE
-  ==================================================
-  */
-
-  function completeDare() {
-
-    if (!currentDare) return;
-
-
-    clearInterval(timerInterval);
-
-
-    console.log(
-      "DARE COMPLETED:",
-      currentDare
-    );
-
-
-    /*
-    Backend:
-
-    POST /api/dare/complete
-
-    */
-
+  if (dare.status === "completed") {
 
     resetController();
 
   }
 
 
-  /*
-  ==================================================
-  FAIL DARE
-  ==================================================
-  */
-
-  function failDare() {
-
-    if (!currentDare) return;
-
-
-    clearInterval(timerInterval);
-
-
-    console.log(
-      "DARE FAILED:",
-      currentDare
-    );
-
-
-    /*
-    Backend:
-
-    POST /api/dare/fail
-
-    */
-
+  if (dare.status === "failed") {
 
     resetController();
 
   }
 
-
-  /*
-  ==================================================
-  RESET
-  ==================================================
-  */
-
-  function resetController() {
-
-    clearInterval(timerInterval);
+}
 
 
-    currentDare = null;
+/* =========================================
+   TIMER
+========================================= */
+
+function startTimer() {
+
+  clearInterval(timerInterval);
 
 
-    document
-      .getElementById("dareScreen")
-      .style.display = "none";
+  remainingTime =
+    currentDare.duration || 30;
 
 
-    document
-      .getElementById("waitingScreen")
-      .classList.remove("hidden");
+  updateTimer();
 
 
-    document
-      .getElementById("newDareButton")
-      .classList.remove("hidden");
+  timerInterval =
+    setInterval(function() {
 
-  }
+      remainingTime--;
+
+      updateTimer();
 
 
-  /*
-  ==================================================
-  START
-  ==================================================
-  */
+      if (remainingTime <= 0) {
 
-  // We're not connected to the server yet.
-  setConnectionStatus(false);
+        clearInterval(timerInterval);
+
+        document
+          .getElementById("status")
+          .textContent =
+          "⏰ TIME'S UP";
+
+      }
+
+    }, 1000);
+
+}
+
+
+/* =========================================
+   UPDATE TIMER
+========================================= */
+
+function updateTimer() {
+
+  document
+    .getElementById("timer")
+    .textContent =
+    remainingTime;
+
+}
+
+
+/* =========================================
+   RESET
+========================================= */
+
+function resetController() {
+
+  clearInterval(timerInterval);
+
+  currentDare = null;
+
+
+  document
+    .getElementById("dareScreen")
+    .style.display = "none";
+
+
+  document
+    .getElementById("waitingScreen")
+    .classList.remove("hidden");
+
+}
+
+
+/* =========================================
+   START
+========================================= */
+
+connectToServer();
 
 </script>
+
+
 
 </body>
 </html>
