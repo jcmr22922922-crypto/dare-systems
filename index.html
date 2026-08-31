@@ -1,508 +1,506 @@
+```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport"
-        content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
 
-  <title>IRL Dare Controller</title>
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0">
+
+  <title>Dare System</title>
 
   <style>
+
     * {
       box-sizing: border-box;
       margin: 0;
       padding: 0;
-      font-family: Arial, sans-serif;
     }
 
     body {
-      background: #101010;
-      color: white;
       min-height: 100vh;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      padding: 15px;
+
+      font-family:
+        Arial,
+        Helvetica,
+        sans-serif;
+
+      background:
+        radial-gradient(
+          circle at top,
+          #252538 0%,
+          #0b0b12 45%,
+          #050507 100%
+        );
+
+      color: white;
+
+      overflow-x: hidden;
     }
 
-    .app {
+
+    /* =========================
+       NAVBAR
+    ========================= */
+
+    nav {
       width: 100%;
-      max-width: 430px;
-      background: #1b1b1b;
-      border-radius: 20px;
-      padding: 22px;
-      box-shadow: 0 10px 40px rgba(0,0,0,.5);
-    }
 
-    .header {
+      padding: 22px 7%;
+
       display: flex;
+
       justify-content: space-between;
+
       align-items: center;
-      margin-bottom: 20px;
+
+      border-bottom:
+        1px solid
+        rgba(255,255,255,0.08);
     }
 
-    .title {
+    .logo {
       font-size: 22px;
-      font-weight: bold;
+
+      font-weight: 900;
+
+      letter-spacing: -0.5px;
     }
 
-    .live {
-      background: #e53935;
-      padding: 6px 10px;
-      border-radius: 8px;
-      font-size: 12px;
-      font-weight: bold;
+    .logo span {
+      opacity: 0.55;
     }
 
-    .status {
+    .nav-links {
+      display: flex;
+
+      gap: 25px;
+
+      align-items: center;
+    }
+
+    .nav-links a {
+      color: #aaa;
+
+      text-decoration: none;
+
+      font-size: 14px;
+
+      font-weight: 700;
+
+      transition: 0.2s;
+    }
+
+    .nav-links a:hover {
+      color: white;
+    }
+
+
+    /* =========================
+       HERO
+    ========================= */
+
+    .hero {
+      min-height: 75vh;
+
+      display: flex;
+
+      flex-direction: column;
+
+      justify-content: center;
+
+      align-items: center;
+
       text-align: center;
-      margin-bottom: 20px;
-      color: #aaa;
-      font-size: 14px;
+
+      padding:
+        70px 20px;
     }
 
-    .dare-card {
-      background: #252525;
-      border-radius: 16px;
-      padding: 25px 18px;
-      margin-bottom: 20px;
+    .badge {
+      display: inline-block;
+
+      padding: 8px 14px;
+
+      border-radius: 50px;
+
+      background:
+        rgba(255,255,255,0.08);
+
+      border:
+        1px solid
+        rgba(255,255,255,0.12);
+
+      color: #bbb;
+
+      font-size: 12px;
+
+      font-weight: 800;
+
+      margin-bottom: 25px;
     }
 
-    .viewer {
-      color: #aaa;
-      font-size: 14px;
-      margin-bottom: 12px;
+    h1 {
+      max-width: 800px;
+
+      font-size:
+        clamp(45px, 8vw, 90px);
+
+      line-height: 0.95;
+
+      letter-spacing: -4px;
+
+      margin-bottom: 25px;
     }
 
-    .dare-text {
-      font-size: 25px;
-      line-height: 1.3;
-      font-weight: bold;
+    .hero p {
+      max-width: 600px;
+
+      color: #999;
+
+      font-size: 18px;
+
+      line-height: 1.6;
+
+      margin-bottom: 35px;
+    }
+
+
+    /* =========================
+       BUTTONS
+    ========================= */
+
+    .buttons {
+      display: flex;
+
+      gap: 14px;
+
+      flex-wrap: wrap;
+
+      justify-content: center;
+    }
+
+    .button {
+      display: inline-flex;
+
+      align-items: center;
+
+      justify-content: center;
+
+      padding:
+        15px 24px;
+
+      border-radius: 12px;
+
+      text-decoration: none;
+
+      font-size: 15px;
+
+      font-weight: 900;
+
+      transition:
+        transform 0.2s,
+        background 0.2s;
+    }
+
+    .button:hover {
+      transform:
+        translateY(-2px);
+    }
+
+    .primary {
+      background: white;
+
+      color: #08080c;
+    }
+
+    .primary:hover {
+      background: #ddd;
+    }
+
+    .secondary {
+      background:
+        rgba(255,255,255,0.07);
+
+      color: white;
+
+      border:
+        1px solid
+        rgba(255,255,255,0.12);
+    }
+
+    .secondary:hover {
+      background:
+        rgba(255,255,255,0.12);
+    }
+
+
+    /* =========================
+       FEATURES
+    ========================= */
+
+    .features {
+      width: 86%;
+
+      max-width: 1100px;
+
+      margin:
+        0 auto 80px;
+
+      display: grid;
+
+      grid-template-columns:
+        repeat(3, 1fr);
+
+      gap: 18px;
+    }
+
+    .feature {
+      padding: 28px;
+
+      background:
+        rgba(255,255,255,0.045);
+
+      border:
+        1px solid
+        rgba(255,255,255,0.08);
+
+      border-radius: 18px;
+    }
+
+    .feature-icon {
+      font-size: 28px;
+
       margin-bottom: 18px;
     }
 
-    .reward {
+    .feature h2 {
       font-size: 18px;
-      font-weight: bold;
+
+      margin-bottom: 10px;
     }
 
-    .timer {
-      text-align: center;
-      font-size: 42px;
-      font-weight: bold;
-      margin: 20px 0;
-    }
-
-    .buttons {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 12px;
-    }
-
-    button {
-      border: none;
-      border-radius: 14px;
-      padding: 18px 10px;
-      font-size: 17px;
-      font-weight: bold;
-      color: white;
-      cursor: pointer;
-    }
-
-    button:active {
-      transform: scale(.97);
-    }
-
-    .accept {
-      background: #16a34a;
-    }
-
-    .reject {
-      background: #dc2626;
-    }
-
-    .complete {
-      background: #2563eb;
-    }
-
-    .fail {
-      background: #9333ea;
-    }
-
-    .hidden {
-      display: none;
-    }
-
-    .waiting {
-      text-align: center;
-      padding: 60px 20px;
+    .feature p {
       color: #888;
+
+      font-size: 14px;
+
+      line-height: 1.6;
     }
 
-    .waiting-icon {
-      font-size: 50px;
-      margin-bottom: 15px;
+
+    /* =========================
+       FOOTER
+    ========================= */
+
+    footer {
+      text-align: center;
+
+      padding: 30px;
+
+      color: #555;
+
+      font-size: 12px;
+
+      border-top:
+        1px solid
+        rgba(255,255,255,0.06);
     }
 
-    @media (max-width: 350px) {
-      .dare-text {
-        font-size: 21px;
+
+    /* =========================
+       MOBILE
+    ========================= */
+
+    @media (max-width: 700px) {
+
+      nav {
+        padding:
+          18px 5%;
       }
 
-      button {
-        font-size: 15px;
+      .nav-links {
+        gap: 12px;
       }
+
+      .nav-links a {
+        font-size: 12px;
+      }
+
+      h1 {
+        letter-spacing: -2px;
+      }
+
+      .hero p {
+        font-size: 16px;
+      }
+
+      .features {
+        grid-template-columns:
+          1fr;
+
+        width: 90%;
+      }
+
     }
+
   </style>
 </head>
 
+
 <body>
 
-<div class="app">
 
-  <div class="header">
-    <div class="title">🎯 Dare Controller</div>
-    <div class="live">IRL</div>
+<!-- =========================
+     NAVIGATION
+========================= -->
+
+<nav>
+
+  <div class="logo">
+    🎯 DARE<span>SYSTEM</span>
   </div>
 
-  <!-- WAITING -->
-  <div id="waitingScreen" class="waiting">
-    <div class="waiting-icon">📡</div>
-    <h2>Waiting for a dare...</h2>
-    <p>New dares will appear here.</p>
-  </div>
+  <div class="nav-links">
 
-  <!-- DARE -->
-  <div id="dareScreen" class="hidden">
+    <a href="index.html">
+      Home
+    </a>
 
-    <div id="status" class="status">
-      NEW DARE
-    </div>
+    <a href="submit.html">
+      Send a Dare
+    </a>
 
-    <div class="dare-card">
-
-      <div class="viewer">
-        From: <strong id="viewer">@viewer</strong>
-      </div>
-
-      <div id="dareText" class="dare-text">
-        Dare goes here
-      </div>
-
-      <div class="reward">
-        💰 ₱<span id="reward">0</span>
-      </div>
-
-    </div>
-
-    <!-- ACCEPT / REJECT -->
-    <div id="decisionButtons" class="buttons">
-      <button class="accept" onclick="acceptDare()">
-        ✅ ACCEPT
-      </button>
-
-      <button class="reject" onclick="rejectDare()">
-        ❌ REJECT
-      </button>
-    </div>
-
-    <!-- TIMER -->
-    <div id="timerArea" class="hidden">
-
-      <div id="timer" class="timer">
-        30
-      </div>
-
-      <div class="buttons">
-
-        <button class="complete" onclick="completeDare()">
-          ✅ COMPLETE
-        </button>
-
-        <button class="fail" onclick="failDare()">
-          🚫 FAIL
-        </button>
-
-      </div>
-
-    </div>
+    <a href="controller.html">
+      Dashboard
+    </a>
 
   </div>
 
-</div>
+</nav>
 
 
-<script>
+<!-- =========================
+     HERO
+========================= -->
 
-  let currentDare = null;
-  let timerInterval = null;
-  let remainingTime = 30;
+<section class="hero">
 
+  <div class="badge">
+    🎥 BUILT FOR STREAMERS
+  </div>
 
-  /*
-  ==========================================
-  DEMO DARE
-  ==========================================
-  Remove this when connecting your backend.
-  */
 
-  function demoDare() {
+  <h1>
+    Dare the streamer.
+  </h1>
 
-    showDare({
-      id: "123",
-      viewer: "Viewer123",
-      text: "Do 20 push-ups",
-      reward: 100,
-      duration: 30
-    });
 
-  }
+  <p>
+    Send challenges to your favorite streamers
+    and watch them decide whether they're brave
+    enough to accept.
+  </p>
 
 
-  /*
-  ==========================================
-  SHOW DARE
-  ==========================================
-  */
+  <div class="buttons">
 
-  function showDare(dare) {
+    <a
+      class="button primary"
+      href="submit.html"
+    >
+      🎯 SEND A DARE
+    </a>
 
-    currentDare = dare;
 
-    document
-      .getElementById("waitingScreen")
-      .classList.add("hidden");
+    <a
+      class="button secondary"
+      href="controller.html"
+    >
+      📱 STREAMER DASHBOARD
+    </a>
 
-    document
-      .getElementById("dareScreen")
-      .classList.remove("hidden");
+  </div>
 
-    document.getElementById("viewer")
-      .textContent = "@" + dare.viewer;
+</section>
 
-    document.getElementById("dareText")
-      .textContent = dare.text;
 
-    document.getElementById("reward")
-      .textContent = dare.reward;
+<!-- =========================
+     FEATURES
+========================= -->
 
-    document.getElementById("status")
-      .textContent = "NEW DARE";
+<section class="features">
 
-    document
-      .getElementById("decisionButtons")
-      .classList.remove("hidden");
 
-    document
-      .getElementById("timerArea")
-      .classList.add("hidden");
-  }
+  <div class="feature">
 
+    <div class="feature-icon">
+      🎯
+    </div>
 
-  /*
-  ==========================================
-  ACCEPT
-  ==========================================
-  */
+    <h2>
+      Submit Dares
+    </h2>
 
-  function acceptDare() {
+    <p>
+      Send a challenge to a streamer
+      through the Dare System.
+    </p>
 
-    if (!currentDare) return;
+  </div>
 
-    console.log("DARE ACCEPTED:", currentDare);
 
-    document.getElementById("status")
-      .textContent = "🔥 DARE ACCEPTED";
+  <div class="feature">
 
-    document
-      .getElementById("decisionButtons")
-      .classList.add("hidden");
+    <div class="feature-icon">
+      📱
+    </div>
 
-    document
-      .getElementById("timerArea")
-      .classList.remove("hidden");
+    <h2>
+      Streamer Control
+    </h2>
 
-    startTimer();
+    <p>
+      Streamers can review incoming
+      dares and decide whether to
+      accept or reject them.
+    </p>
 
-    /*
-      Later we'll send this to your backend:
+  </div>
 
-      fetch("/api/dare/accept", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-          dareId: currentDare.id
-        })
-      });
-    */
-  }
 
+  <div class="feature">
 
-  /*
-  ==========================================
-  REJECT
-  ==========================================
-  */
+    <div class="feature-icon">
+      📺
+    </div>
 
-  function rejectDare() {
+    <h2>
+      Live Overlay
+    </h2>
 
-    if (!currentDare) return;
+    <p>
+      Accepted dares can automatically
+      appear on the stream overlay.
+    </p>
 
-    console.log("DARE REJECTED:", currentDare);
+  </div>
 
-    /*
-      Later:
 
-      fetch("/api/dare/reject", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-          dareId: currentDare.id
-        })
-      });
-    */
+</section>
 
-    resetController();
-  }
 
+<!-- =========================
+     FOOTER
+========================= -->
 
-  /*
-  ==========================================
-  TIMER
-  ==========================================
-  */
+<footer>
 
-  function startTimer() {
+  Dare System • Built for livestreaming
 
-    remainingTime = currentDare.duration || 30;
+</footer>
 
-    updateTimer();
-
-    clearInterval(timerInterval);
-
-    timerInterval = setInterval(() => {
-
-      remainingTime--;
-
-      updateTimer();
-
-      if (remainingTime <= 0) {
-
-        clearInterval(timerInterval);
-
-        document.getElementById("status")
-          .textContent = "⏰ TIME'S UP";
-
-      }
-
-    }, 1000);
-  }
-
-
-  function updateTimer() {
-
-    document.getElementById("timer")
-      .textContent = remainingTime;
-  }
-
-
-  /*
-  ==========================================
-  COMPLETE
-  ==========================================
-  */
-
-  function completeDare() {
-
-    clearInterval(timerInterval);
-
-    console.log("DARE COMPLETED:", currentDare);
-
-    /*
-      Later:
-
-      fetch("/api/dare/complete", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-          dareId: currentDare.id
-        })
-      });
-    */
-
-    resetController();
-  }
-
-
-  /*
-  ==========================================
-  FAIL
-  ==========================================
-  */
-
-  function failDare() {
-
-    clearInterval(timerInterval);
-
-    console.log("DARE FAILED:", currentDare);
-
-    /*
-      Later:
-
-      fetch("/api/dare/fail", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-          dareId: currentDare.id
-        })
-      });
-    */
-
-    resetController();
-  }
-
-
-  /*
-  ==========================================
-  RESET
-  ==========================================
-  */
-
-  function resetController() {
-
-    clearInterval(timerInterval);
-
-    currentDare = null;
-
-    document
-      .getElementById("dareScreen")
-      .classList.add("hidden");
-
-    document
-      .getElementById("waitingScreen")
-      .classList.remove("hidden");
-  }
-
-
-  /*
-  ==========================================
-  DEMO
-  ==========================================
-  */
-
-  setTimeout(() => {
-    demoDare();
-  }, 1500);
-
-</script>
 
 </body>
 </html>
+```
