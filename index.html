@@ -1,91 +1,120 @@
 <!DOCTYPE html>
+
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <meta name="viewport"
-        content="width=device-width, initial-scale=1.0">
-
-  <title>Dare System</title>
+  <title>Dare System — Make Every Stream Unpredictable</title>
 
   <style>
-
     * {
       box-sizing: border-box;
       margin: 0;
       padding: 0;
     }
 
-    body {
-      min-height: 100vh;
-
-      font-family:
-        Arial,
-        Helvetica,
-        sans-serif;
-
-      background:
-        radial-gradient(
-          circle at top,
-          #252538 0%,
-          #0b0b12 45%,
-          #050507 100%
-        );
-
-      color: white;
-
-      overflow-x: hidden;
+    :root {
+      --bg: #08080c;
+      --surface: #111116;
+      --surface-2: #17171e;
+      --border: rgba(255,255,255,0.09);
+      --text: #ffffff;
+      --muted: #9999a6;
+      --accent: #8b5cf6;
+      --accent-2: #a78bfa;
     }
 
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      min-height: 100vh;
+      background: var(--bg);
+      color: var(--text);
+      font-family: Inter, Arial, Helvetica, sans-serif;
+      line-height: 1.5;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    button {
+      font: inherit;
+    }
 
     /* =========================
-       NAVBAR
+       NAVIGATION
     ========================= */
 
-    nav {
+    .navbar {
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+
       width: 100%;
 
-      padding: 22px 7%;
+      background: rgba(8,8,12,0.88);
+      backdrop-filter: blur(18px);
+
+      border-bottom: 1px solid var(--border);
+    }
+
+    .nav-inner {
+      max-width: 1200px;
+      margin: auto;
+
+      height: 72px;
+
+      padding: 0 24px;
 
       display: flex;
-
-      justify-content: space-between;
-
       align-items: center;
-
-      border-bottom:
-        1px solid
-        rgba(255,255,255,0.08);
+      justify-content: space-between;
     }
 
     .logo {
-      font-size: 22px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
 
+      font-size: 20px;
       font-weight: 900;
-
       letter-spacing: -0.5px;
     }
 
-    .logo span {
-      opacity: 0.55;
+    .logo-icon {
+      width: 38px;
+      height: 38px;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      border-radius: 11px;
+
+      background: linear-gradient(
+        135deg,
+        var(--accent),
+        #6d28d9
+      );
+
+      box-shadow: 0 8px 25px rgba(139,92,246,0.25);
     }
 
     .nav-links {
       display: flex;
-
-      gap: 25px;
-
       align-items: center;
+      gap: 28px;
     }
 
     .nav-links a {
-      color: #aaa;
-
-      text-decoration: none;
-
+      color: var(--muted);
       font-size: 14px;
-
-      font-weight: 700;
+      font-weight: 600;
 
       transition: 0.2s;
     }
@@ -94,330 +123,803 @@
       color: white;
     }
 
+    .nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .login-btn {
+      padding: 10px 16px;
+
+      border: 1px solid var(--border);
+      border-radius: 10px;
+
+      color: white;
+
+      font-size: 14px;
+      font-weight: 700;
+
+      transition: 0.2s;
+    }
+
+    .login-btn:hover {
+      background: var(--surface-2);
+    }
+
+    .menu-btn {
+      display: none;
+
+      width: 42px;
+      height: 42px;
+
+      border: 1px solid var(--border);
+      border-radius: 10px;
+
+      background: var(--surface);
+      color: white;
+
+      cursor: pointer;
+    }
 
     /* =========================
        HERO
     ========================= */
 
     .hero {
-      min-height: 75vh;
+      position: relative;
+
+      max-width: 1200px;
+      min-height: 650px;
+
+      margin: auto;
+      padding: 100px 24px 80px;
 
       display: flex;
-
-      flex-direction: column;
-
-      justify-content: center;
-
       align-items: center;
+      justify-content: center;
 
       text-align: center;
 
-      padding:
-        70px 20px;
+      overflow: hidden;
+    }
+
+    .hero-glow {
+      position: absolute;
+
+      width: 500px;
+      height: 500px;
+
+      background: rgba(139,92,246,0.14);
+
+      filter: blur(100px);
+
+      border-radius: 50%;
+
+      pointer-events: none;
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 2;
+
+      max-width: 800px;
     }
 
     .badge {
-      display: inline-block;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
 
-      padding: 8px 14px;
-
-      border-radius: 50px;
-
-      background:
-        rgba(255,255,255,0.08);
-
-      border:
-        1px solid
-        rgba(255,255,255,0.12);
-
-      color: #bbb;
-
-      font-size: 12px;
-
-      font-weight: 800;
+      padding: 7px 12px;
 
       margin-bottom: 25px;
+
+      border: 1px solid rgba(139,92,246,0.3);
+      border-radius: 999px;
+
+      background: rgba(139,92,246,0.08);
+
+      color: var(--accent-2);
+
+      font-size: 12px;
+      font-weight: 800;
     }
 
-    h1 {
-      max-width: 800px;
+    .badge-dot {
+      width: 7px;
+      height: 7px;
 
-      font-size:
-        clamp(45px, 8vw, 90px);
+      border-radius: 50%;
 
-      line-height: 0.95;
+      background: #22c55e;
+      box-shadow: 0 0 10px rgba(34,197,94,0.8);
+    }
+
+    .hero h1 {
+      font-size: clamp(46px, 7vw, 82px);
+
+      line-height: 0.98;
 
       letter-spacing: -4px;
 
+      font-weight: 950;
+
       margin-bottom: 25px;
     }
 
-    .hero p {
-      max-width: 600px;
+    .hero h1 span {
+      background: linear-gradient(
+        135deg,
+        #ffffff,
+        var(--accent-2)
+      );
 
-      color: #999;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .hero p {
+      max-width: 650px;
+      margin: auto;
+
+      color: var(--muted);
 
       font-size: 18px;
-
-      line-height: 1.6;
-
-      margin-bottom: 35px;
+      line-height: 1.7;
     }
 
+    .hero-buttons {
+      margin-top: 35px;
 
-    /* =========================
-       BUTTONS
-    ========================= */
-
-    .buttons {
       display: flex;
-
-      gap: 14px;
+      justify-content: center;
+      gap: 12px;
 
       flex-wrap: wrap;
-
-      justify-content: center;
     }
 
-    .button {
-      display: inline-flex;
-
-      align-items: center;
-
-      justify-content: center;
-
-      padding:
-        15px 24px;
+    .primary-btn,
+    .secondary-btn {
+      padding: 14px 22px;
 
       border-radius: 12px;
 
-      text-decoration: none;
+      font-size: 14px;
+      font-weight: 800;
 
-      font-size: 15px;
+      cursor: pointer;
 
-      font-weight: 900;
-
-      transition:
-        transform 0.2s,
-        background 0.2s;
+      transition: 0.2s;
     }
 
-    .button:hover {
-      transform:
-        translateY(-2px);
-    }
+    .primary-btn {
+      border: 0;
 
-    .primary {
-      background: white;
-
-      color: #08080c;
-    }
-
-    .primary:hover {
-      background: #ddd;
-    }
-
-    .secondary {
-      background:
-        rgba(255,255,255,0.07);
-
+      background: var(--accent);
       color: white;
 
-      border:
-        1px solid
-        rgba(255,255,255,0.12);
+      box-shadow: 0 10px 30px rgba(139,92,246,0.25);
     }
 
-    .secondary:hover {
-      background:
-        rgba(255,255,255,0.12);
+    .primary-btn:hover {
+      transform: translateY(-2px);
+      background: #7c3aed;
     }
 
+    .secondary-btn {
+      border: 1px solid var(--border);
+
+      background: var(--surface);
+      color: white;
+    }
+
+    .secondary-btn:hover {
+      background: var(--surface-2);
+      transform: translateY(-2px);
+    }
+
+    /* =========================
+       SECTIONS
+    ========================= */
+
+    .section {
+      max-width: 1200px;
+
+      margin: auto;
+
+      padding: 100px 24px;
+    }
+
+    .section-heading {
+      max-width: 650px;
+
+      margin-bottom: 45px;
+    }
+
+    .section-heading .eyebrow {
+      color: var(--accent-2);
+
+      font-size: 12px;
+      font-weight: 900;
+
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+
+      margin-bottom: 10px;
+    }
+
+    .section-heading h2 {
+      font-size: clamp(30px, 5vw, 45px);
+
+      line-height: 1.1;
+
+      letter-spacing: -1.5px;
+
+      margin-bottom: 14px;
+    }
+
+    .section-heading p {
+      color: var(--muted);
+      font-size: 16px;
+    }
+
+    /* =========================
+       HOW IT WORKS
+    ========================= */
+
+    .steps {
+      display: grid;
+
+      grid-template-columns: repeat(4, 1fr);
+
+      gap: 16px;
+    }
+
+    .step {
+      padding: 25px;
+
+      background: var(--surface);
+
+      border: 1px solid var(--border);
+
+      border-radius: 16px;
+
+      transition: 0.2s;
+    }
+
+    .step:hover {
+      transform: translateY(-4px);
+
+      border-color: rgba(139,92,246,0.35);
+    }
+
+    .step-number {
+      color: var(--accent-2);
+
+      font-size: 12px;
+      font-weight: 900;
+
+      margin-bottom: 30px;
+    }
+
+    .step h3 {
+      font-size: 18px;
+
+      margin-bottom: 8px;
+    }
+
+    .step p {
+      color: var(--muted);
+
+      font-size: 14px;
+    }
 
     /* =========================
        FEATURES
     ========================= */
 
     .features {
-      width: 86%;
-
-      max-width: 1100px;
-
-      margin:
-        0 auto 80px;
-
       display: grid;
 
-      grid-template-columns:
-        repeat(3, 1fr);
+      grid-template-columns: repeat(3, 1fr);
 
-      gap: 18px;
+      gap: 16px;
     }
 
     .feature {
       padding: 28px;
 
-      background:
-        rgba(255,255,255,0.045);
+      background: var(--surface);
 
-      border:
-        1px solid
-        rgba(255,255,255,0.08);
+      border: 1px solid var(--border);
 
-      border-radius: 18px;
+      border-radius: 16px;
     }
 
     .feature-icon {
-      font-size: 28px;
+      width: 42px;
+      height: 42px;
 
-      margin-bottom: 18px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      margin-bottom: 20px;
+
+      border-radius: 12px;
+
+      background: rgba(139,92,246,0.12);
+
+      font-size: 19px;
     }
 
-    .feature h2 {
-      font-size: 18px;
+    .feature h3 {
+      font-size: 17px;
 
-      margin-bottom: 10px;
+      margin-bottom: 8px;
     }
 
     .feature p {
-      color: #888;
+      color: var(--muted);
 
       font-size: 14px;
-
-      line-height: 1.6;
     }
 
+    /* =========================
+       STREAMER CTA
+    ========================= */
+
+    .streamer-section {
+      padding: 40px 24px 100px;
+    }
+
+    .streamer-card {
+      max-width: 1152px;
+
+      margin: auto;
+
+      padding: 60px 45px;
+
+      border: 1px solid rgba(139,92,246,0.25);
+
+      border-radius: 24px;
+
+      background:
+        radial-gradient(
+          circle at top right,
+          rgba(139,92,246,0.15),
+          transparent 45%
+        ),
+        var(--surface);
+
+      text-align: center;
+    }
+
+    .streamer-card h2 {
+      font-size: clamp(30px, 5vw, 45px);
+
+      letter-spacing: -1.5px;
+
+      margin-bottom: 14px;
+    }
+
+    .streamer-card p {
+      max-width: 600px;
+
+      margin: 0 auto 28px;
+
+      color: var(--muted);
+    }
+
+    /* =========================
+       FAQ
+    ========================= */
+
+    .faq {
+      max-width: 800px;
+    }
+
+    .faq-item {
+      border-bottom: 1px solid var(--border);
+    }
+
+    .faq-question {
+      width: 100%;
+
+      padding: 20px 0;
+
+      border: 0;
+
+      background: transparent;
+
+      color: white;
+
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+
+      text-align: left;
+
+      font-size: 15px;
+      font-weight: 800;
+
+      cursor: pointer;
+    }
+
+    .faq-answer {
+      display: none;
+
+      padding: 0 0 20px;
+
+      color: var(--muted);
+
+      font-size: 14px;
+    }
+
+    .faq-item.open .faq-answer {
+      display: block;
+    }
+
+    .faq-item.open .plus {
+      transform: rotate(45deg);
+    }
+
+    .plus {
+      font-size: 22px;
+
+      transition: 0.2s;
+    }
 
     /* =========================
        FOOTER
     ========================= */
 
     footer {
-      text-align: center;
+      border-top: 1px solid var(--border);
 
-      padding: 30px;
-
-      color: #555;
-
-      font-size: 12px;
-
-      border-top:
-        1px solid
-        rgba(255,255,255,0.06);
+      background: #060609;
     }
 
+    .footer-inner {
+      max-width: 1200px;
+
+      margin: auto;
+
+      padding: 45px 24px;
+
+      display: flex;
+      justify-content: space-between;
+      gap: 30px;
+    }
+
+    .footer-brand p {
+      max-width: 300px;
+
+      margin-top: 12px;
+
+      color: var(--muted);
+
+      font-size: 13px;
+    }
+
+    .footer-links {
+      display: flex;
+      gap: 35px;
+    }
+
+    .footer-column h4 {
+      margin-bottom: 12px;
+
+      font-size: 13px;
+    }
+
+    .footer-column a {
+      display: block;
+
+      margin-bottom: 8px;
+
+      color: var(--muted);
+
+      font-size: 13px;
+    }
+
+    .footer-column a:hover {
+      color: white;
+    }
+
+    .copyright {
+      max-width: 1200px;
+
+      margin: auto;
+
+      padding: 20px 24px;
+
+      border-top: 1px solid var(--border);
+
+      color: #666672;
+
+      font-size: 12px;
+    }
 
     /* =========================
        MOBILE
     ========================= */
 
-    @media (max-width: 700px) {
+    @media (max-width: 800px) {
 
-      nav {
-        padding:
-          18px 5%;
+      .nav-links,
+      .nav-actions {
+        display: none;
       }
 
-      .nav-links {
-        gap: 12px;
+      .menu-btn {
+        display: block;
       }
 
-      .nav-links a {
-        font-size: 12px;
+      .nav-inner {
+        height: 64px;
       }
 
-      h1 {
-        letter-spacing: -2px;
+      .hero {
+        min-height: 580px;
+
+        padding-top: 70px;
+      }
+
+      .hero h1 {
+        letter-spacing: -2.5px;
       }
 
       .hero p {
         font-size: 16px;
       }
 
-      .features {
-        grid-template-columns:
-          1fr;
-
-        width: 90%;
+      .steps {
+        grid-template-columns: 1fr 1fr;
       }
 
+      .features {
+        grid-template-columns: 1fr;
+      }
+
+      .footer-inner {
+        flex-direction: column;
+      }
+
+      .footer-links {
+        flex-wrap: wrap;
+      }
     }
 
-  </style>
-</head>
+    @media (max-width: 520px) {
 
+      .hero {
+        padding-left: 18px;
+        padding-right: 18px;
+      }
+
+      .section {
+        padding: 75px 18px;
+      }
+
+      .steps {
+        grid-template-columns: 1fr;
+      }
+
+      .hero-buttons {
+        flex-direction: column;
+      }
+
+      .primary-btn,
+      .secondary-btn {
+        width: 100%;
+      }
+
+      .streamer-card {
+        padding: 45px 22px;
+      }
+    }
+  </style>
+
+</head>
 
 <body>
 
+  <!-- =========================
+       NAVIGATION
+  ========================= -->
 
-<!-- =========================
-     NAVIGATION
-========================= -->
+  <nav class="navbar">
 
-<nav>
+```
+<div class="nav-inner">
 
-  <div class="logo">
-    🎯 DARE<span>SYSTEM</span>
-  </div>
+  <a href="index.html" class="logo">
+    <div class="logo-icon">🎯</div>
+    <span>Dare System</span>
+  </a>
 
   <div class="nav-links">
 
-    <a href="index.html">
-      Home
-    </a>
+    <a href="index.html">Home</a>
 
-    <a href="submit.html">
-      Send a Dare
-    </a>
+    <a href="#how-it-works">How It Works</a>
 
-    <a href="controller.html">
-      Dashboard
+    <a href="submit.html">Submit a Dare</a>
+
+    <a href="#for-streamers">For Streamers</a>
+
+  </div>
+
+  <div class="nav-actions">
+
+    <a href="login.html" class="login-btn">
+      Login
     </a>
 
   </div>
 
-</nav>
+  <button
+    class="menu-btn"
+    id="menuBtn"
+    aria-label="Open menu">
+    ☰
+  </button>
+
+</div>
+```
+
+  </nav>
+
+  <!-- =========================
+       HERO
+  ========================= -->
+
+  <main>
+
+```
+<section class="hero">
+
+  <div class="hero-glow"></div>
+
+  <div class="hero-content">
+
+    <div class="badge">
+      <span class="badge-dot"></span>
+      Built for interactive streams
+    </div>
+
+    <h1>
+      Make every stream
+      <span>unpredictable.</span>
+    </h1>
+
+    <p>
+      Dare System lets viewers send challenges directly
+      to streamers while giving creators complete control
+      over what happens on stream.
+    </p>
+
+    <div class="hero-buttons">
+
+      <a
+        href="submit.html"
+        class="primary-btn">
+        🎯 Submit a Dare
+      </a>
+
+      <a
+        href="#for-streamers"
+        class="secondary-btn">
+        🎥 I'm a Streamer
+      </a>
+
+    </div>
+
+  </div>
+
+</section>
 
 
 <!-- =========================
-     HERO
+     HOW IT WORKS
 ========================= -->
 
-<section class="hero">
+<section
+  class="section"
+  id="how-it-works">
 
-  <div class="badge">
-    🎥 BUILT FOR STREAMERS
+  <div class="section-heading">
+
+    <div class="eyebrow">
+      How it works
+    </div>
+
+    <h2>
+      From dare to stream in seconds.
+    </h2>
+
+    <p>
+      A simple system designed for viewers and
+      streamers.
+    </p>
+
   </div>
 
 
-  <h1>
-    Dare the streamer.
-  </h1>
+  <div class="steps">
+
+    <div class="step">
+
+      <div class="step-number">
+        01
+      </div>
+
+      <h3>
+        Choose a streamer
+      </h3>
+
+      <p>
+        Pick the creator you want to send
+        your dare to.
+      </p>
+
+    </div>
 
 
-  <p>
-    Send challenges to your favorite streamers
-    and watch them decide whether they're brave
-    enough to accept.
-  </p>
+    <div class="step">
+
+      <div class="step-number">
+        02
+      </div>
+
+      <h3>
+        Create your dare
+      </h3>
+
+      <p>
+        Write a challenge and choose the
+        reward and duration.
+      </p>
+
+    </div>
 
 
-  <div class="buttons">
+    <div class="step">
 
-    <a
-      class="button primary"
-      href="submit.html"
-    >
-      🎯 SEND A DARE
-    </a>
+      <div class="step-number">
+        03
+      </div>
+
+      <h3>
+        Send it
+      </h3>
+
+      <p>
+        Your dare enters the streamer's
+        queue.
+      </p>
+
+    </div>
 
 
-    <a
-      class="button secondary"
-      href="controller.html"
-    >
-      📱 STREAMER DASHBOARD
-    </a>
+    <div class="step">
+
+      <div class="step-number">
+        04
+      </div>
+
+      <h3>
+        Watch it happen
+      </h3>
+
+      <p>
+        If accepted, the dare appears
+        live on stream.
+      </p>
+
+    </div>
 
   </div>
 
@@ -428,77 +930,436 @@
      FEATURES
 ========================= -->
 
-<section class="features">
+<section class="section">
 
+  <div class="section-heading">
 
-  <div class="feature">
-
-    <div class="feature-icon">
-      🎯
+    <div class="eyebrow">
+      Features
     </div>
 
     <h2>
-      Submit Dares
+      Built around the streamer.
     </h2>
 
     <p>
-      Send a challenge to a streamer
-      through the Dare System.
+      Streamers stay in control while viewers
+      get a more interactive experience.
     </p>
 
   </div>
 
 
-  <div class="feature">
+  <div class="features">
 
-    <div class="feature-icon">
-      📱
+    <div class="feature">
+
+      <div class="feature-icon">
+        🎯
+      </div>
+
+      <h3>
+        Dare Queue
+      </h3>
+
+      <p>
+        Keep incoming challenges organized
+        instead of dealing with them manually.
+      </p>
+
     </div>
 
-    <h2>
-      Streamer Control
-    </h2>
 
-    <p>
-      Streamers can review incoming
-      dares and decide whether to
-      accept or reject them.
-    </p>
+    <div class="feature">
 
-  </div>
+      <div class="feature-icon">
+        📱
+      </div>
 
+      <h3>
+        Mobile Control
+      </h3>
 
-  <div class="feature">
+      <p>
+        Manage your dares from your phone
+        while streaming.
+      </p>
 
-    <div class="feature-icon">
-      📺
     </div>
 
-    <h2>
-      Live Overlay
-    </h2>
 
-    <p>
-      Accepted dares can automatically
-      appear on the stream overlay.
-    </p>
+    <div class="feature">
+
+      <div class="feature-icon">
+        📺
+      </div>
+
+      <h3>
+        Live Overlay
+      </h3>
+
+      <p>
+        Accepted dares can appear directly
+        on your stream.
+      </p>
+
+    </div>
+
+
+    <div class="feature">
+
+      <div class="feature-icon">
+        📜
+      </div>
+
+      <h3>
+        Dare History
+      </h3>
+
+      <p>
+        Keep track of completed, failed,
+        rejected and accepted dares.
+      </p>
+
+    </div>
+
+
+    <div class="feature">
+
+      <div class="feature-icon">
+        ⚙️
+      </div>
+
+      <h3>
+        Stream Settings
+      </h3>
+
+      <p>
+        Configure durations, limits,
+        queue settings and more.
+      </p>
+
+    </div>
+
+
+    <div class="feature">
+
+      <div class="feature-icon">
+        🔒
+      </div>
+
+      <h3>
+        Account Security
+      </h3>
+
+      <p>
+        Your future account system will keep
+        viewer identities tied to verified accounts.
+      </p>
+
+    </div>
 
   </div>
-
 
 </section>
 
 
 <!-- =========================
-     FOOTER
+     STREAMER CTA
 ========================= -->
 
-<footer>
+<section
+  class="streamer-section"
+  id="for-streamers">
 
-  Dare System • Built for livestreaming
+  <div class="streamer-card">
 
-</footer>
+    <h2>
+      Are you a streamer?
+    </h2>
 
+    <p>
+      Turn your audience into part of the gameplay.
+      Manage incoming dares from your phone and
+      display accepted challenges directly on stream.
+    </p>
+
+    <a
+      href="login.html"
+      class="primary-btn">
+      🎥 Open Streamer Dashboard
+    </a>
+
+  </div>
+
+</section>
+
+
+<!-- =========================
+     FAQ
+========================= -->
+
+<section class="section">
+
+  <div class="section-heading">
+
+    <div class="eyebrow">
+      FAQ
+    </div>
+
+    <h2>
+      Frequently asked questions.
+    </h2>
+
+  </div>
+
+
+  <div class="faq">
+
+    <div class="faq-item">
+
+      <button class="faq-question">
+
+        How does Dare System work?
+
+        <span class="plus">+</span>
+
+      </button>
+
+      <div class="faq-answer">
+
+        Viewers submit challenges through the
+        website. Streamers can review, accept or
+        reject them from their dashboard.
+
+      </div>
+
+    </div>
+
+
+    <div class="faq-item">
+
+      <button class="faq-question">
+
+        Can a streamer reject a dare?
+
+        <span class="plus">+</span>
+
+      </button>
+
+      <div class="faq-answer">
+
+        Yes. Streamers remain in control of which
+        challenges they accept.
+
+      </div>
+
+    </div>
+
+
+    <div class="faq-item">
+
+      <button class="faq-question">
+
+        Will viewers need Twitch?
+
+        <span class="plus">+</span>
+
+      </button>
+
+      <div class="faq-answer">
+
+        The system is designed to operate
+        independently from Twitch chat. Twitch
+        account login can be added later.
+
+      </div>
+
+    </div>
+
+
+    <div class="faq-item">
+
+      <button class="faq-question">
+
+        Can I use it from my phone?
+
+        <span class="plus">+</span>
+
+      </button>
+
+      <div class="faq-answer">
+
+        Yes. The website and streamer dashboard
+        are being designed for phone, tablet and
+        desktop use.
+
+      </div>
+
+    </div>
+
+
+    <div class="faq-item">
+
+      <button class="faq-question">
+
+        How will payments work?
+
+        <span class="plus">+</span>
+
+      </button>
+
+      <div class="faq-answer">
+
+        Payment functionality will be added later.
+        The current system focuses on the core
+        dare experience first.
+
+      </div>
+
+    </div>
+
+  </div>
+
+</section>
+```
+
+  </main>
+
+  <!-- =========================
+       FOOTER
+  ========================= -->
+
+  <footer>
+
+```
+<div class="footer-inner">
+
+  <div class="footer-brand">
+
+    <a href="index.html" class="logo">
+
+      <div class="logo-icon">🎯</div>
+
+      <span>Dare System</span>
+
+    </a>
+
+    <p>
+      Make every stream more interactive,
+      unpredictable and fun.
+    </p>
+
+  </div>
+
+
+  <div class="footer-links">
+
+    <div class="footer-column">
+
+      <h4>
+        Platform
+      </h4>
+
+      <a href="index.html">
+        Home
+      </a>
+
+      <a href="submit.html">
+        Submit a Dare
+      </a>
+
+      <a href="login.html">
+        Login
+      </a>
+
+    </div>
+
+
+    <div class="footer-column">
+
+      <h4>
+        Resources
+      </h4>
+
+      <a href="#how-it-works">
+        How It Works
+      </a>
+
+      <a href="#for-streamers">
+        For Streamers
+      </a>
+
+      <a href="#">
+        FAQ
+      </a>
+
+    </div>
+
+  </div>
+
+</div>
+
+
+<div class="copyright">
+
+  © 2026 Dare System. All rights reserved.
+
+</div>
+```
+
+  </footer>
+
+  <script>
+
+    /*
+    =========================
+    FAQ
+    =========================
+    */
+
+    const faqItems =
+      document.querySelectorAll(".faq-item");
+
+
+    faqItems.forEach(function(item) {
+
+      const button =
+        item.querySelector(".faq-question");
+
+
+      button.addEventListener("click", function() {
+
+        item.classList.toggle("open");
+
+      });
+
+    });
+
+
+    /*
+    =========================
+    MOBILE MENU
+    =========================
+
+    Placeholder for the full
+    mobile navigation we'll add
+    during Phase 1.
+    */
+
+    const menuBtn =
+      document.getElementById("menuBtn");
+
+
+    menuBtn.addEventListener("click", function() {
+
+      alert(
+        "Mobile navigation will be added in the next Phase 1 step."
+      );
+
+    });
+
+  </script>
 
 </body>
 </html>
