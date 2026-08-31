@@ -1,13 +1,21 @@
 <!DOCTYPE html>
 
 <html lang="en">
+
 <head>
+
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<meta
+name="viewport"
+content="width=device-width, initial-scale=1.0"
+
+>
 
   <title>Nerve — Make Every Stream Unpredictable</title>
 
   <style>
+
     * {
       box-sizing: border-box;
       margin: 0;
@@ -23,6 +31,9 @@
       --muted: #9999a6;
       --accent: #8b5cf6;
       --accent-2: #a78bfa;
+      --green: #22c55e;
+      --red: #ef4444;
+      --orange: #f59e0b;
     }
 
     html {
@@ -31,9 +42,17 @@
 
     body {
       min-height: 100vh;
+
       background: var(--bg);
+
       color: var(--text);
-      font-family: Inter, Arial, Helvetica, sans-serif;
+
+      font-family:
+        Inter,
+        Arial,
+        Helvetica,
+        sans-serif;
+
       line-height: 1.5;
     }
 
@@ -46,25 +65,37 @@
       font: inherit;
     }
 
-    /* =========================
+
+    /* ==================================================
        NAVIGATION
-    ========================= */
+    ================================================== */
 
     .navbar {
+
       position: sticky;
+
       top: 0;
+
       z-index: 1000;
 
       width: 100%;
 
-      background: rgba(8,8,12,0.88);
-      backdrop-filter: blur(18px);
+      background:
+        rgba(8,8,12,0.88);
 
-      border-bottom: 1px solid var(--border);
+      backdrop-filter:
+        blur(18px);
+
+      border-bottom:
+        1px solid var(--border);
+
     }
 
+
     .nav-inner {
+
       max-width: 1200px;
+
       margin: auto;
 
       height: 72px;
@@ -72,172 +103,268 @@
       padding: 0 24px;
 
       display: flex;
+
       align-items: center;
+
       justify-content: space-between;
+
     }
 
+
     .logo {
+
       display: flex;
+
       align-items: center;
+
       gap: 10px;
 
       font-size: 20px;
+
       font-weight: 900;
+
       letter-spacing: -0.5px;
+
     }
 
+
     .logo-icon {
+
       width: 38px;
+
       height: 38px;
 
       display: flex;
+
       align-items: center;
+
       justify-content: center;
 
       border-radius: 11px;
 
-      background: linear-gradient(
-        135deg,
-        var(--accent),
-        #6d28d9
-      );
+      background:
+        linear-gradient(
+          135deg,
+          var(--accent),
+          #6d28d9
+        );
 
-      box-shadow: 0 8px 25px rgba(139,92,246,0.25);
+      box-shadow:
+        0 8px 25px
+        rgba(139,92,246,0.25);
+
     }
+
 
     .nav-links {
+
       display: flex;
+
       align-items: center;
+
       gap: 28px;
+
     }
 
+
     .nav-links a {
+
       color: var(--muted);
+
       font-size: 14px;
+
       font-weight: 600;
 
       transition: 0.2s;
+
     }
+
 
     .nav-links a:hover {
+
       color: white;
+
     }
+
 
     .nav-actions {
+
       display: flex;
+
       align-items: center;
+
       gap: 10px;
+
     }
 
-    .login-btn {
-      padding: 10px 16px;
 
-      border: 1px solid var(--border);
+    .login-btn {
+
+      padding:
+        10px 16px;
+
+      border:
+        1px solid var(--border);
+
       border-radius: 10px;
 
       color: white;
 
       font-size: 14px;
+
       font-weight: 700;
 
       transition: 0.2s;
+
     }
+
 
     .login-btn:hover {
-      background: var(--surface-2);
+
+      background:
+        var(--surface-2);
+
     }
 
+
     .menu-btn {
+
       display: none;
 
       width: 42px;
+
       height: 42px;
 
-      border: 1px solid var(--border);
+      border:
+        1px solid var(--border);
+
       border-radius: 10px;
 
-      background: var(--surface);
+      background:
+        var(--surface);
+
       color: white;
 
       cursor: pointer;
+
     }
 
-    /* =========================
+
+    /* ==================================================
        HERO
-    ========================= */
+    ================================================== */
 
     .hero {
+
       position: relative;
 
       max-width: 1200px;
+
       min-height: 650px;
 
       margin: auto;
-      padding: 100px 24px 80px;
+
+      padding:
+        100px 24px 80px;
 
       display: flex;
+
       align-items: center;
+
       justify-content: center;
 
       text-align: center;
 
       overflow: hidden;
+
     }
 
+
     .hero-glow {
+
       position: absolute;
 
       width: 500px;
+
       height: 500px;
 
-      background: rgba(139,92,246,0.14);
+      background:
+        rgba(139,92,246,0.14);
 
       filter: blur(100px);
 
       border-radius: 50%;
 
       pointer-events: none;
+
     }
 
+
     .hero-content {
+
       position: relative;
+
       z-index: 2;
 
       max-width: 800px;
+
     }
 
+
     .badge {
+
       display: inline-flex;
+
       align-items: center;
+
       gap: 8px;
 
-      padding: 7px 12px;
+      padding:
+        7px 12px;
 
       margin-bottom: 25px;
 
-      border: 1px solid rgba(139,92,246,0.3);
+      border:
+        1px solid
+        rgba(139,92,246,0.3);
+
       border-radius: 999px;
 
-      background: rgba(139,92,246,0.08);
+      background:
+        rgba(139,92,246,0.08);
 
-      color: var(--accent-2);
+      color:
+        var(--accent-2);
 
       font-size: 12px;
+
       font-weight: 800;
+
     }
 
+
     .badge-dot {
+
       width: 7px;
+
       height: 7px;
 
       border-radius: 50%;
 
-      background: #22c55e;
-      box-shadow: 0 0 10px rgba(34,197,94,0.8);
+      background:
+        var(--green);
+
+      box-shadow:
+        0 0 10px
+        rgba(34,197,94,0.8);
+
     }
 
+
     .hero h1 {
-      font-size: clamp(46px, 7vw, 82px);
+
+      font-size:
+        clamp(46px, 7vw, 82px);
 
       line-height: 0.98;
 
@@ -246,405 +373,1035 @@
       font-weight: 950;
 
       margin-bottom: 25px;
+
     }
+
 
     .hero h1 span {
-      background: linear-gradient(
-        135deg,
-        #ffffff,
-        var(--accent-2)
-      );
+
+      background:
+        linear-gradient(
+          135deg,
+          #ffffff,
+          var(--accent-2)
+        );
 
       -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
+
+      -webkit-text-fill-color:
+        transparent;
+
     }
 
+
     .hero p {
+
       max-width: 650px;
+
       margin: auto;
 
       color: var(--muted);
 
       font-size: 18px;
+
       line-height: 1.7;
+
     }
 
+
     .hero-buttons {
+
       margin-top: 35px;
 
       display: flex;
+
       justify-content: center;
+
       gap: 12px;
 
       flex-wrap: wrap;
+
     }
+
 
     .primary-btn,
     .secondary-btn {
-      padding: 14px 22px;
+
+      padding:
+        14px 22px;
 
       border-radius: 12px;
 
       font-size: 14px;
+
       font-weight: 800;
 
       cursor: pointer;
 
       transition: 0.2s;
+
+      display: inline-block;
+
     }
+
 
     .primary-btn {
+
       border: 0;
 
-      background: var(--accent);
+      background:
+        var(--accent);
+
       color: white;
 
-      box-shadow: 0 10px 30px rgba(139,92,246,0.25);
+      box-shadow:
+        0 10px 30px
+        rgba(139,92,246,0.25);
+
     }
+
 
     .primary-btn:hover {
-      transform: translateY(-2px);
-      background: #7c3aed;
+
+      transform:
+        translateY(-2px);
+
+      background:
+        #7c3aed;
+
     }
+
 
     .secondary-btn {
-      border: 1px solid var(--border);
 
-      background: var(--surface);
+      border:
+        1px solid var(--border);
+
+      background:
+        var(--surface);
+
       color: white;
+
     }
+
 
     .secondary-btn:hover {
-      background: var(--surface-2);
-      transform: translateY(-2px);
+
+      background:
+        var(--surface-2);
+
+      transform:
+        translateY(-2px);
+
     }
 
-    /* =========================
-       SECTIONS
-    ========================= */
 
-    .section {
+    /* ==================================================
+       LIVE DARE
+    ================================================== */
+
+    .live-section {
+
       max-width: 1200px;
 
       margin: auto;
 
-      padding: 100px 24px;
+      padding:
+        20px 24px 100px;
+
     }
 
-    .section-heading {
-      max-width: 650px;
 
-      margin-bottom: 45px;
+    .live-section.hidden {
+
+      display: none;
+
     }
 
-    .section-heading .eyebrow {
-      color: var(--accent-2);
+
+    .live-heading {
+
+      margin-bottom: 28px;
+
+    }
+
+
+    .live-eyebrow {
+
+      color:
+        var(--red);
 
       font-size: 12px;
+
       font-weight: 900;
 
       letter-spacing: 1.5px;
-      text-transform: uppercase;
 
-      margin-bottom: 10px;
+      text-transform:
+        uppercase;
+
+      margin-bottom: 8px;
+
     }
 
+
+    .live-heading h2 {
+
+      font-size:
+        clamp(30px, 5vw, 45px);
+
+      letter-spacing: -1.5px;
+
+      margin-bottom: 10px;
+
+    }
+
+
+    .live-heading p {
+
+      color:
+        var(--muted);
+
+    }
+
+
+    .live-card {
+
+      overflow: hidden;
+
+      border:
+        1px solid
+        rgba(239,68,68,0.25);
+
+      border-radius: 22px;
+
+      background:
+        var(--surface);
+
+      box-shadow:
+        0 20px 70px
+        rgba(0,0,0,0.35);
+
+      animation:
+        liveIn 0.45s ease;
+
+    }
+
+
+    @keyframes liveIn {
+
+      from {
+
+        opacity: 0;
+
+        transform:
+          translateY(20px);
+
+      }
+
+      to {
+
+        opacity: 1;
+
+        transform:
+          translateY(0);
+
+      }
+
+    }
+
+
+    .stream-wrapper {
+
+      position: relative;
+
+      width: 100%;
+
+      aspect-ratio: 16 / 9;
+
+      background: #000;
+
+    }
+
+
+    .stream-wrapper iframe {
+
+      position: absolute;
+
+      inset: 0;
+
+      width: 100%;
+
+      height: 100%;
+
+      border: 0;
+
+    }
+
+
+    .live-info {
+
+      padding: 25px;
+
+    }
+
+
+    .live-top {
+
+      display: flex;
+
+      align-items: center;
+
+      justify-content: space-between;
+
+      gap: 15px;
+
+      margin-bottom: 15px;
+
+    }
+
+
+    .streamer-name {
+
+      font-size: 20px;
+
+      font-weight: 900;
+
+    }
+
+
+    .live-indicator {
+
+      display: inline-flex;
+
+      align-items: center;
+
+      gap: 7px;
+
+      padding:
+        6px 10px;
+
+      border-radius: 8px;
+
+      background:
+        rgba(239,68,68,0.12);
+
+      border:
+        1px solid
+        rgba(239,68,68,0.25);
+
+      color:
+        #f87171;
+
+      font-size: 11px;
+
+      font-weight: 900;
+
+    }
+
+
+    .live-dot {
+
+      width: 7px;
+
+      height: 7px;
+
+      border-radius: 50%;
+
+      background:
+        var(--red);
+
+      box-shadow:
+        0 0 10px
+        rgba(239,68,68,0.8);
+
+      animation:
+        livePulse 1.3s infinite;
+
+    }
+
+
+    @keyframes livePulse {
+
+      0%,
+      100% {
+        opacity: 1;
+      }
+
+      50% {
+        opacity: 0.4;
+      }
+
+    }
+
+
+    .live-dare {
+
+      padding:
+        18px;
+
+      border:
+        1px solid var(--border);
+
+      border-radius: 14px;
+
+      background:
+        rgba(255,255,255,0.03);
+
+      margin-bottom: 18px;
+
+    }
+
+
+    .live-dare-label {
+
+      color:
+        var(--muted);
+
+      font-size: 11px;
+
+      font-weight: 800;
+
+      text-transform:
+        uppercase;
+
+      letter-spacing: 1px;
+
+      margin-bottom: 7px;
+
+    }
+
+
+    .live-dare-text {
+
+      font-size: 19px;
+
+      line-height: 1.45;
+
+      font-weight: 800;
+
+      word-break: break-word;
+
+    }
+
+
+    .live-stats {
+
+      display: grid;
+
+      grid-template-columns:
+        repeat(3, 1fr);
+
+      gap: 12px;
+
+    }
+
+
+    .live-stat {
+
+      padding:
+        15px;
+
+      border:
+        1px solid var(--border);
+
+      border-radius: 12px;
+
+      background:
+        rgba(255,255,255,0.025);
+
+    }
+
+
+    .live-stat-label {
+
+      color:
+        var(--muted);
+
+      font-size: 10px;
+
+      font-weight: 800;
+
+      text-transform:
+        uppercase;
+
+      margin-bottom: 4px;
+
+    }
+
+
+    .live-stat-value {
+
+      font-size: 16px;
+
+      font-weight: 900;
+
+    }
+
+
+    .accepted {
+
+      color:
+        #4ade80;
+
+    }
+
+
+    .empty-live {
+
+      border:
+        1px solid var(--border);
+
+      border-radius: 22px;
+
+      background:
+        var(--surface);
+
+      padding:
+        65px 25px;
+
+      text-align: center;
+
+    }
+
+
+    .empty-icon {
+
+      width: 60px;
+
+      height: 60px;
+
+      margin:
+        0 auto 18px;
+
+      display: flex;
+
+      align-items: center;
+
+      justify-content: center;
+
+      border-radius: 18px;
+
+      background:
+        rgba(255,255,255,0.05);
+
+      border:
+        1px solid var(--border);
+
+      font-size: 25px;
+
+    }
+
+
+    .empty-live h3 {
+
+      font-size: 22px;
+
+      margin-bottom: 8px;
+
+    }
+
+
+    .empty-live p {
+
+      max-width: 500px;
+
+      margin: auto;
+
+      color:
+        var(--muted);
+
+      font-size: 14px;
+
+    }
+
+
+    /* ==================================================
+       SECTIONS
+    ================================================== */
+
+    .section {
+
+      max-width: 1200px;
+
+      margin: auto;
+
+      padding:
+        100px 24px;
+
+    }
+
+
+    .section-heading {
+
+      max-width: 650px;
+
+      margin-bottom: 45px;
+
+    }
+
+
+    .section-heading .eyebrow {
+
+      color:
+        var(--accent-2);
+
+      font-size: 12px;
+
+      font-weight: 900;
+
+      letter-spacing: 1.5px;
+
+      text-transform:
+        uppercase;
+
+      margin-bottom: 10px;
+
+    }
+
+
     .section-heading h2 {
-      font-size: clamp(30px, 5vw, 45px);
+
+      font-size:
+        clamp(30px, 5vw, 45px);
 
       line-height: 1.1;
 
       letter-spacing: -1.5px;
 
       margin-bottom: 14px;
+
     }
+
 
     .section-heading p {
-      color: var(--muted);
+
+      color:
+        var(--muted);
+
       font-size: 16px;
+
     }
 
-    /* =========================
+
+    /* ==================================================
        HOW IT WORKS
-    ========================= */
+    ================================================== */
 
     .steps {
+
       display: grid;
 
-      grid-template-columns: repeat(4, 1fr);
+      grid-template-columns:
+        repeat(4, 1fr);
 
       gap: 16px;
+
     }
 
+
     .step {
+
       padding: 25px;
 
-      background: var(--surface);
+      background:
+        var(--surface);
 
-      border: 1px solid var(--border);
+      border:
+        1px solid var(--border);
 
       border-radius: 16px;
 
       transition: 0.2s;
+
     }
+
 
     .step:hover {
-      transform: translateY(-4px);
 
-      border-color: rgba(139,92,246,0.35);
+      transform:
+        translateY(-4px);
+
+      border-color:
+        rgba(139,92,246,0.35);
+
     }
 
+
     .step-number {
-      color: var(--accent-2);
+
+      color:
+        var(--accent-2);
 
       font-size: 12px;
+
       font-weight: 900;
 
       margin-bottom: 30px;
+
     }
 
+
     .step h3 {
+
       font-size: 18px;
 
       margin-bottom: 8px;
+
     }
+
 
     .step p {
-      color: var(--muted);
+
+      color:
+        var(--muted);
 
       font-size: 14px;
+
     }
 
-    /* =========================
+
+    /* ==================================================
        FEATURES
-    ========================= */
+    ================================================== */
 
     .features {
+
       display: grid;
 
-      grid-template-columns: repeat(3, 1fr);
+      grid-template-columns:
+        repeat(3, 1fr);
 
       gap: 16px;
+
     }
+
 
     .feature {
+
       padding: 28px;
 
-      background: var(--surface);
+      background:
+        var(--surface);
 
-      border: 1px solid var(--border);
+      border:
+        1px solid var(--border);
 
       border-radius: 16px;
+
     }
 
+
     .feature-icon {
+
       width: 42px;
+
       height: 42px;
 
       display: flex;
+
       align-items: center;
+
       justify-content: center;
 
       margin-bottom: 20px;
 
       border-radius: 12px;
 
-      background: rgba(139,92,246,0.12);
+      background:
+        rgba(139,92,246,0.12);
 
       font-size: 19px;
+
     }
 
+
     .feature h3 {
+
       font-size: 17px;
 
       margin-bottom: 8px;
+
     }
+
 
     .feature p {
-      color: var(--muted);
+
+      color:
+        var(--muted);
 
       font-size: 14px;
+
     }
 
-    /* =========================
+
+    /* ==================================================
        STREAMER CTA
-    ========================= */
+    ================================================== */
 
     .streamer-section {
-      padding: 40px 24px 100px;
+
+      padding:
+        40px 24px 100px;
+
     }
 
+
     .streamer-card {
+
       max-width: 1152px;
 
       margin: auto;
 
-      padding: 60px 45px;
+      padding:
+        60px 45px;
 
-      border: 1px solid rgba(139,92,246,0.25);
+      border:
+        1px solid
+        rgba(139,92,246,0.25);
 
       border-radius: 24px;
 
       background:
+
         radial-gradient(
           circle at top right,
           rgba(139,92,246,0.15),
           transparent 45%
         ),
+
         var(--surface);
 
       text-align: center;
+
     }
 
+
     .streamer-card h2 {
-      font-size: clamp(30px, 5vw, 45px);
+
+      font-size:
+        clamp(30px, 5vw, 45px);
 
       letter-spacing: -1.5px;
 
       margin-bottom: 14px;
+
     }
+
 
     .streamer-card p {
+
       max-width: 600px;
 
-      margin: 0 auto 28px;
+      margin:
+        0 auto 28px;
 
-      color: var(--muted);
+      color:
+        var(--muted);
+
     }
 
-    /* =========================
+
+    /* ==================================================
        FAQ
-    ========================= */
+    ================================================== */
 
     .faq {
+
       max-width: 800px;
+
     }
+
 
     .faq-item {
-      border-bottom: 1px solid var(--border);
+
+      border-bottom:
+        1px solid var(--border);
+
     }
 
+
     .faq-question {
+
       width: 100%;
 
-      padding: 20px 0;
+      padding:
+        20px 0;
 
       border: 0;
 
-      background: transparent;
+      background:
+        transparent;
 
       color: white;
 
       display: flex;
-      justify-content: space-between;
+
+      justify-content:
+        space-between;
+
       align-items: center;
 
       text-align: left;
 
       font-size: 15px;
+
       font-weight: 800;
 
       cursor: pointer;
+
     }
+
 
     .faq-answer {
+
       display: none;
 
-      padding: 0 0 20px;
+      padding:
+        0 0 20px;
 
-      color: var(--muted);
+      color:
+        var(--muted);
 
       font-size: 14px;
+
     }
+
 
     .faq-item.open .faq-answer {
+
       display: block;
+
     }
+
 
     .faq-item.open .plus {
-      transform: rotate(45deg);
+
+      transform:
+        rotate(45deg);
+
     }
 
+
     .plus {
+
       font-size: 22px;
 
       transition: 0.2s;
+
     }
 
-    /* =========================
+
+    /* ==================================================
        FOOTER
-    ========================= */
+    ================================================== */
 
     footer {
-      border-top: 1px solid var(--border);
 
-      background: #060609;
+      border-top:
+        1px solid var(--border);
+
+      background:
+        #060609;
+
     }
 
+
     .footer-inner {
+
       max-width: 1200px;
 
       margin: auto;
 
-      padding: 45px 24px;
+      padding:
+        45px 24px;
 
       display: flex;
-      justify-content: space-between;
+
+      justify-content:
+        space-between;
+
       gap: 30px;
+
     }
 
+
     .footer-brand p {
+
       max-width: 300px;
 
       margin-top: 12px;
 
-      color: var(--muted);
+      color:
+        var(--muted);
 
       font-size: 13px;
+
     }
+
 
     .footer-links {
+
       display: flex;
+
       gap: 35px;
+
     }
 
+
     .footer-column h4 {
+
       margin-bottom: 12px;
 
       font-size: 13px;
+
     }
 
+
     .footer-column a {
+
       display: block;
 
       margin-bottom: 8px;
 
-      color: var(--muted);
+      color:
+        var(--muted);
 
       font-size: 13px;
+
     }
+
 
     .footer-column a:hover {
+
       color: white;
+
     }
 
+
     .copyright {
+
       max-width: 1200px;
 
       margin: auto;
 
-      padding: 20px 24px;
+      padding:
+        20px 24px;
 
-      border-top: 1px solid var(--border);
+      border-top:
+        1px solid var(--border);
 
-      color: #666672;
+      color:
+        #666672;
 
       font-size: 12px;
+
     }
 
-    /* =========================
+
+    /* ==================================================
        MOBILE
-    ========================= */
+    ================================================== */
 
     @media (max-width: 800px) {
 
@@ -653,131 +1410,256 @@
         display: none;
       }
 
+
       .menu-btn {
         display: block;
       }
+
 
       .nav-inner {
         height: 64px;
       }
 
+
       .hero {
+
         min-height: 580px;
 
         padding-top: 70px;
+
       }
+
 
       .hero h1 {
-        letter-spacing: -2.5px;
+
+        letter-spacing:
+          -2.5px;
+
       }
+
 
       .hero p {
+
         font-size: 16px;
+
       }
+
 
       .steps {
-        grid-template-columns: 1fr 1fr;
+
+        grid-template-columns:
+          1fr 1fr;
+
       }
+
 
       .features {
-        grid-template-columns: 1fr;
+
+        grid-template-columns:
+          1fr;
+
       }
+
 
       .footer-inner {
-        flex-direction: column;
+
+        flex-direction:
+          column;
+
       }
 
+
       .footer-links {
+
         flex-wrap: wrap;
+
       }
+
+
+      .live-section {
+
+        padding-left: 18px;
+
+        padding-right: 18px;
+
+      }
+
+
+      .live-stats {
+
+        grid-template-columns:
+          1fr;
+
+      }
+
     }
+
 
     @media (max-width: 520px) {
 
       .hero {
+
         padding-left: 18px;
+
         padding-right: 18px;
+
       }
+
 
       .section {
-        padding: 75px 18px;
+
+        padding:
+          75px 18px;
+
       }
+
 
       .steps {
-        grid-template-columns: 1fr;
+
+        grid-template-columns:
+          1fr;
+
       }
 
+
       .hero-buttons {
-        flex-direction: column;
+
+        flex-direction:
+          column;
+
       }
+
 
       .primary-btn,
       .secondary-btn {
+
         width: 100%;
+
+        text-align: center;
+
       }
 
+
       .streamer-card {
-        padding: 45px 22px;
+
+        padding:
+          45px 22px;
+
       }
+
+
+      .live-info {
+
+        padding: 18px;
+
+      }
+
+
+      .live-top {
+
+        align-items:
+          flex-start;
+
+        flex-direction:
+          column;
+
+      }
+
+
+      .live-dare-text {
+
+        font-size: 17px;
+
+      }
+
     }
+
   </style>
 
 </head>
 
 <body>
 
-  <!-- =========================
-       NAVIGATION
-  ========================= -->
+<!-- ==================================================
+     NAVIGATION
+================================================== -->
 
-  <nav class="navbar">
+<nav class="navbar">
+
+  <div class="nav-inner">
 
 
-<div class="nav-inner">
+<a
+  href="index.html"
+  class="logo"
+>
 
-  <a href="index.html" class="logo">
-    <div class="logo-icon">🎯</div>
-    <span>Nerve</span>
+  <div class="logo-icon">
+    🎯
+  </div>
+
+  <span>
+    Nerve
+  </span>
+
+</a>
+
+
+<div class="nav-links">
+
+  <a href="index.html">
+    Home
   </a>
 
-  <div class="nav-links">
+  <a href="#live-dare">
+    Live Dare
+  </a>
 
-    <a href="index.html">Home</a>
+  <a href="#how-it-works">
+    How It Works
+  </a>
 
-    <a href="#how-it-works">How It Works</a>
+  <a href="submit.html">
+    Submit a Dare
+  </a>
 
-    <a href="submit.html">Submit a Dare</a>
-
-    <a href="#for-streamers">For Streamers</a>
-
-  </div>
-
-  <div class="nav-actions">
-
-    <a href="login.html" class="login-btn">
-      Login
-    </a>
-
-  </div>
-
-  <button
-    class="menu-btn"
-    id="menuBtn"
-    aria-label="Open menu">
-    ☰
-  </button>
+  <a href="#for-streamers">
+    For Streamers
+  </a>
 
 </div>
 
 
-  </nav>
+<div class="nav-actions">
 
-  <!-- =========================
-       HERO
-  ========================= -->
+  <a
+    href="login.html"
+    class="login-btn"
+  >
+    Login
+  </a>
 
-  <main>
+</div>
 
+
+<button
+  class="menu-btn"
+  id="menuBtn"
+  aria-label="Open menu"
+>
+  ☰
+</button>
+
+
+  </div>
+
+</nav>
+
+<!-- ==================================================
+     HERO
+================================================== -->
+
+<main>
 
 <section class="hero">
 
@@ -785,581 +1667,1798 @@
 
   <div class="hero-content">
 
-    <div class="badge">
-      <span class="badge-dot"></span>
-      Built for interactive streams
-    </div>
 
-    <h1>
-      Make every stream
-      <span>unpredictable.</span>
-    </h1>
+<div class="badge">
 
-    <p>
-      Dare System lets viewers send challenges directly
-      to streamers while giving creators complete control
-      over what happens on stream.
-    </p>
+  <span class="badge-dot"></span>
 
-    <div class="hero-buttons">
+  Built for interactive streams
 
-      <a
-        href="submit.html"
-        class="primary-btn">
-        🎯 Submit a Dare
-      </a>
+</div>
 
-      <a
-        href="#for-streamers"
-        class="secondary-btn">
-        🎥 I'm a Streamer
-      </a>
 
-    </div>
+<h1>
+
+  Make every stream
+
+  <span>
+    unpredictable.
+  </span>
+
+</h1>
+
+
+<p>
+
+  Dare System lets viewers send challenges
+  directly to streamers while giving creators
+  complete control over what happens on stream.
+
+</p>
+
+
+<div class="hero-buttons">
+
+  <a
+    href="submit.html"
+    class="primary-btn"
+  >
+    🎯 Submit a Dare
+  </a>
+
+
+  <a
+    href="#for-streamers"
+    class="secondary-btn"
+  >
+    🎥 I'm a Streamer
+  </a>
+
+</div>
+
 
   </div>
 
 </section>
 
+<!-- ==================================================
+     LIVE DARE
+================================================== -->
 
-<!-- =========================
+<section
+  class="live-section"
+  id="live-dare"
+>
+
+  <!-- EMPTY STATE -->
+
+  <div
+    id="emptyLive"
+    class="empty-live"
+  >
+
+
+<div class="empty-icon">
+  📺
+</div>
+
+
+<h3>
+  No Live Dares Right Now
+</h3>
+
+
+<p>
+  When a streamer accepts a dare,
+  their live stream will appear here.
+</p>
+
+
+  </div>
+
+  <!-- ACTIVE STATE -->
+
+  <div
+    id="activeLive"
+    style="display:none;"
+  >
+
+
+<div class="live-heading">
+
+  <div class="live-eyebrow">
+    🔴 LIVE DARE
+  </div>
+
+  <h2>
+    Watch the dare happen live.
+  </h2>
+
+  <p>
+    A streamer is currently taking on a dare.
+  </p>
+
+</div>
+
+
+<div class="live-card">
+
+
+  <!-- TWITCH PLAYER -->
+
+  <div class="stream-wrapper">
+
+    <iframe
+      id="twitchPlayer"
+      allowfullscreen
+      scrolling="no"
+      frameborder="0"
+    >
+    </iframe>
+
+  </div>
+
+
+  <!-- INFORMATION -->
+
+  <div class="live-info">
+
+
+    <div class="live-top">
+
+      <div
+        id="streamerName"
+        class="streamer-name"
+      >
+        @Streamer
+      </div>
+
+
+      <div class="live-indicator">
+
+        <span class="live-dot"></span>
+
+        LIVE DARE
+
+      </div>
+
+    </div>
+
+
+    <div class="live-dare">
+
+      <div class="live-dare-label">
+        Current Dare
+      </div>
+
+
+      <div
+        id="liveDareText"
+        class="live-dare-text"
+      >
+        Dare goes here
+      </div>
+
+    </div>
+
+
+    <div class="live-stats">
+
+
+      <div class="live-stat">
+
+        <div class="live-stat-label">
+          Reward
+        </div>
+
+        <div
+          id="liveReward"
+          class="live-stat-value"
+        >
+          ₱0
+        </div>
+
+      </div>
+
+
+      <div class="live-stat">
+
+        <div class="live-stat-label">
+          Time Remaining
+        </div>
+
+        <div
+          id="liveTimer"
+          class="live-stat-value"
+        >
+          00:30
+        </div>
+
+      </div>
+
+
+      <div class="live-stat">
+
+        <div class="live-stat-label">
+          Status
+        </div>
+
+        <div
+          id="liveStatus"
+          class="live-stat-value accepted"
+        >
+          ACCEPTED
+        </div>
+
+      </div>
+
+
+    </div>
+
+  </div>
+
+</div>
+
+
+  </div>
+
+</section>
+
+<!-- ==================================================
      HOW IT WORKS
-========================= -->
+================================================== -->
 
 <section
   class="section"
-  id="how-it-works">
+  id="how-it-works"
+>
 
   <div class="section-heading">
 
-    <div class="eyebrow">
-      How it works
-    </div>
 
-    <h2>
-      From dare to stream in seconds.
-    </h2>
+<div class="eyebrow">
+  How it works
+</div>
 
-    <p>
-      A simple system designed for viewers and
-      streamers.
-    </p>
+<h2>
+  From dare to stream in seconds.
+</h2>
+
+<p>
+  A simple system designed for viewers
+  and streamers.
+</p>
+
 
   </div>
-
 
   <div class="steps">
 
-    <div class="step">
 
-      <div class="step-number">
-        01
-      </div>
+<div class="step">
 
-      <h3>
-        Choose a streamer
-      </h3>
+  <div class="step-number">
+    01
+  </div>
 
-      <p>
-        Pick the creator you want to send
-        your dare to.
-      </p>
+  <h3>
+    Choose a streamer
+  </h3>
 
-    </div>
+  <p>
+    Pick the creator you want to send
+    your dare to.
+  </p>
 
-
-    <div class="step">
-
-      <div class="step-number">
-        02
-      </div>
-
-      <h3>
-        Create your dare
-      </h3>
-
-      <p>
-        Write a challenge and choose the
-        reward and duration.
-      </p>
-
-    </div>
+</div>
 
 
-    <div class="step">
+<div class="step">
 
-      <div class="step-number">
-        03
-      </div>
+  <div class="step-number">
+    02
+  </div>
 
-      <h3>
-        Send it
-      </h3>
+  <h3>
+    Create your dare
+  </h3>
 
-      <p>
-        Your dare enters the streamer's
-        queue.
-      </p>
+  <p>
+    Write a challenge and choose the
+    reward and duration.
+  </p>
 
-    </div>
+</div>
 
 
-    <div class="step">
+<div class="step">
 
-      <div class="step-number">
-        04
-      </div>
+  <div class="step-number">
+    03
+  </div>
 
-      <h3>
-        Watch it happen
-      </h3>
+  <h3>
+    Send it
+  </h3>
 
-      <p>
-        If accepted, the dare appears
-        live on stream.
-      </p>
+  <p>
+    Your dare enters the streamer's queue.
+  </p>
 
-    </div>
+</div>
+
+
+<div class="step">
+
+  <div class="step-number">
+    04
+  </div>
+
+  <h3>
+    Watch it happen
+  </h3>
+
+  <p>
+    If accepted, the dare appears
+    live on stream.
+  </p>
+
+</div>
+
 
   </div>
 
 </section>
 
-
-<!-- =========================
+<!-- ==================================================
      FEATURES
-========================= -->
+================================================== -->
 
 <section class="section">
 
   <div class="section-heading">
 
-    <div class="eyebrow">
-      Features
-    </div>
 
-    <h2>
-      Built around the streamer.
-    </h2>
+<div class="eyebrow">
+  Features
+</div>
 
-    <p>
-      Streamers stay in control while viewers
-      get a more interactive experience.
-    </p>
+<h2>
+  Built around the streamer.
+</h2>
+
+<p>
+  Streamers stay in control while viewers
+  get a more interactive experience.
+</p>
+
 
   </div>
-
 
   <div class="features">
 
-    <div class="feature">
 
-      <div class="feature-icon">
-        🎯
-      </div>
+<div class="feature">
 
-      <h3>
-        Dare Queue
-      </h3>
+  <div class="feature-icon">
+    🎯
+  </div>
 
-      <p>
-        Keep incoming challenges organized
-        instead of dealing with them manually.
-      </p>
+  <h3>
+    Dare Queue
+  </h3>
 
-    </div>
+  <p>
+    Keep incoming challenges organized
+    instead of dealing with them manually.
+  </p>
 
-
-    <div class="feature">
-
-      <div class="feature-icon">
-        📱
-      </div>
-
-      <h3>
-        Mobile Control
-      </h3>
-
-      <p>
-        Manage your dares from your phone
-        while streaming.
-      </p>
-
-    </div>
+</div>
 
 
-    <div class="feature">
+<div class="feature">
 
-      <div class="feature-icon">
-        📺
-      </div>
+  <div class="feature-icon">
+    📱
+  </div>
 
-      <h3>
-        Live Overlay
-      </h3>
+  <h3>
+    Mobile Control
+  </h3>
 
-      <p>
-        Accepted dares can appear directly
-        on your stream.
-      </p>
+  <p>
+    Manage your dares from your phone
+    while streaming.
+  </p>
 
-    </div>
-
-
-    <div class="feature">
-
-      <div class="feature-icon">
-        📜
-      </div>
-
-      <h3>
-        Dare History
-      </h3>
-
-      <p>
-        Keep track of completed, failed,
-        rejected and accepted dares.
-      </p>
-
-    </div>
+</div>
 
 
-    <div class="feature">
+<div class="feature">
 
-      <div class="feature-icon">
-        ⚙️
-      </div>
+  <div class="feature-icon">
+    📺
+  </div>
 
-      <h3>
-        Stream Settings
-      </h3>
+  <h3>
+    Live Overlay
+  </h3>
 
-      <p>
-        Configure durations, limits,
-        queue settings and more.
-      </p>
+  <p>
+    Accepted dares can appear directly
+    on your stream.
+  </p>
 
-    </div>
+</div>
 
 
-    <div class="feature">
+<div class="feature">
 
-      <div class="feature-icon">
-        🔒
-      </div>
+  <div class="feature-icon">
+    📜
+  </div>
 
-      <h3>
-        Account Security
-      </h3>
+  <h3>
+    Dare History
+  </h3>
 
-      <p>
-        Your future account system will keep
-        viewer identities tied to verified accounts.
-      </p>
+  <p>
+    Keep track of completed, failed,
+    rejected and accepted dares.
+  </p>
 
-    </div>
+</div>
+
+
+<div class="feature">
+
+  <div class="feature-icon">
+    ⚙️
+  </div>
+
+  <h3>
+    Stream Settings
+  </h3>
+
+  <p>
+    Configure durations, limits,
+    queue settings and more.
+  </p>
+
+</div>
+
+
+<div class="feature">
+
+  <div class="feature-icon">
+    🔒
+  </div>
+
+  <h3>
+    Account Security
+  </h3>
+
+  <p>
+    Your future account system will keep
+    viewer identities tied to verified accounts.
+  </p>
+
+</div>
+
 
   </div>
 
 </section>
 
-
-<!-- =========================
+<!-- ==================================================
      STREAMER CTA
-========================= -->
+================================================== -->
 
 <section
   class="streamer-section"
-  id="for-streamers">
+  id="for-streamers"
+>
 
   <div class="streamer-card">
 
-    <h2>
-      Are you a streamer?
-    </h2>
 
-    <p>
-      Turn your audience into part of the gameplay.
-      Manage incoming dares from your phone and
-      display accepted challenges directly on stream.
-    </p>
+<h2>
+  Are you a streamer?
+</h2>
 
-    <a
-      href="login.html"
-      class="primary-btn">
-      🎥 Open Streamer Dashboard
-    </a>
+<p>
+  Turn your audience into part of the gameplay.
+  Manage incoming dares from your phone and
+  display accepted challenges directly on stream.
+</p>
+
+
+<a
+  href="login.html"
+  class="primary-btn"
+>
+  🎥 Open Streamer Dashboard
+</a>
+
 
   </div>
 
 </section>
 
-
-<!-- =========================
+<!-- ==================================================
      FAQ
-========================= -->
+================================================== -->
 
 <section class="section">
 
   <div class="section-heading">
 
-    <div class="eyebrow">
-      FAQ
-    </div>
 
-    <h2>
-      Frequently asked questions.
-    </h2>
+<div class="eyebrow">
+  FAQ
+</div>
+
+<h2>
+  Frequently asked questions.
+</h2>
+
 
   </div>
 
-
   <div class="faq">
 
-    <div class="faq-item">
 
-      <button class="faq-question">
+<div class="faq-item">
 
-        How does Dare System work?
+  <button
+    class="faq-question"
+  >
 
-        <span class="plus">+</span>
+    How does Dare System work?
 
-      </button>
+    <span class="plus">
+      +
+    </span>
 
-      <div class="faq-answer">
-
-        Viewers submit challenges through the
-        website. Streamers can review, accept or
-        reject them from their dashboard.
-
-      </div>
-
-    </div>
+  </button>
 
 
-    <div class="faq-item">
+  <div class="faq-answer">
 
-      <button class="faq-question">
+    Viewers submit challenges through the
+    website. Streamers can review, accept
+    or reject them from their dashboard.
 
-        Can a streamer reject a dare?
+  </div>
 
-        <span class="plus">+</span>
-
-      </button>
-
-      <div class="faq-answer">
-
-        Yes. Streamers remain in control of which
-        challenges they accept.
-
-      </div>
-
-    </div>
+</div>
 
 
-    <div class="faq-item">
+<div class="faq-item">
 
-      <button class="faq-question">
+  <button
+    class="faq-question"
+  >
 
-        Will viewers need Twitch?
+    Can a streamer reject a dare?
 
-        <span class="plus">+</span>
+    <span class="plus">
+      +
+    </span>
 
-      </button>
-
-      <div class="faq-answer">
-
-        The system is designed to operate
-        independently from Twitch chat. Twitch
-        account login can be added later.
-
-      </div>
-
-    </div>
+  </button>
 
 
-    <div class="faq-item">
+  <div class="faq-answer">
 
-      <button class="faq-question">
+    Yes. Streamers remain in control of
+    which challenges they accept.
 
-        Can I use it from my phone?
+  </div>
 
-        <span class="plus">+</span>
-
-      </button>
-
-      <div class="faq-answer">
-
-        Yes. The website and streamer dashboard
-        are being designed for phone, tablet and
-        desktop use.
-
-      </div>
-
-    </div>
+</div>
 
 
-    <div class="faq-item">
+<div class="faq-item">
 
-      <button class="faq-question">
+  <button
+    class="faq-question"
+  >
 
-        How will payments work?
+    Will viewers need Twitch?
 
-        <span class="plus">+</span>
+    <span class="plus">
+      +
+    </span>
 
-      </button>
+  </button>
 
-      <div class="faq-answer">
 
-        Payment functionality will be added later.
-        The current system focuses on the core
-        dare experience first.
+  <div class="faq-answer">
 
-      </div>
+    The system is designed to operate
+    independently from Twitch chat.
+    Twitch account login can be added later.
 
-    </div>
+  </div>
+
+</div>
+
+
+<div class="faq-item">
+
+  <button
+    class="faq-question"
+  >
+
+    Can I use it from my phone?
+
+    <span class="plus">
+      +
+    </span>
+
+  </button>
+
+
+  <div class="faq-answer">
+
+    Yes. The website and streamer dashboard
+    are designed for phone, tablet and
+    desktop use.
+
+  </div>
+
+</div>
+
+
+<div class="faq-item">
+
+  <button
+    class="faq-question"
+  >
+
+    How will payments work?
+
+    <span class="plus">
+      +
+    </span>
+
+  </button>
+
+
+  <div class="faq-answer">
+
+    Payment functionality will be added later.
+    The current system focuses on the core
+    dare experience first.
+
+  </div>
+
+</div>
+
 
   </div>
 
 </section>
-```
 
-  </main>
+</main>
 
-  <!-- =========================
-       FOOTER
-  ========================= -->
+<!-- ==================================================
+     FOOTER
+================================================== -->
 
-  <footer>
+<footer>
+
+  <div class="footer-inner">
 
 
-<div class="footer-inner">
+<div class="footer-brand">
 
-  <div class="footer-brand">
+  <a
+    href="index.html"
+    class="logo"
+  >
 
-    <a href="index.html" class="logo">
+    <div class="logo-icon">
+      🎯
+    </div>
 
-      <div class="logo-icon">🎯</div>
+    <span>
+      Dare System
+    </span>
 
-      <span>Dare System</span>
+  </a>
 
+
+  <p>
+    Make every stream more interactive,
+    unpredictable and fun.
+  </p>
+
+</div>
+
+
+<div class="footer-links">
+
+
+  <div class="footer-column">
+
+    <h4>
+      Platform
+    </h4>
+
+    <a href="index.html">
+      Home
     </a>
 
-    <p>
-      Make every stream more interactive,
-      unpredictable and fun.
-    </p>
+    <a href="submit.html">
+      Submit a Dare
+    </a>
+
+    <a href="login.html">
+      Login
+    </a>
 
   </div>
 
 
-  <div class="footer-links">
+  <div class="footer-column">
 
-    <div class="footer-column">
+    <h4>
+      Resources
+    </h4>
 
-      <h4>
-        Platform
-      </h4>
+    <a href="#how-it-works">
+      How It Works
+    </a>
 
-      <a href="index.html">
-        Home
-      </a>
+    <a href="#live-dare">
+      Live Dare
+    </a>
 
-      <a href="submit.html">
-        Submit a Dare
-      </a>
-
-      <a href="login.html">
-        Login
-      </a>
-
-    </div>
-
-
-    <div class="footer-column">
-
-      <h4>
-        Resources
-      </h4>
-
-      <a href="#how-it-works">
-        How It Works
-      </a>
-
-      <a href="#for-streamers">
-        For Streamers
-      </a>
-
-      <a href="#">
-        FAQ
-      </a>
-
-    </div>
+    <a href="#for-streamers">
+      For Streamers
+    </a>
 
   </div>
 
 </div>
 
 
-<div class="copyright">
+  </div>
 
-  © 2026 Dare System. All rights reserved.
-
-</div>
+  <div class="copyright">
 
 
-  </footer>
-
-  <script>
-
-    /*
-    =========================
-    FAQ
-    =========================
-    */
-
-    const faqItems =
-      document.querySelectorAll(".faq-item");
+© 2026 Dare System. All rights reserved.
 
 
-    faqItems.forEach(function(item) {
+  </div>
 
-      const button =
-        item.querySelector(".faq-question");
+</footer>
 
-
-      button.addEventListener("click", function() {
-
-        item.classList.toggle("open");
-
-      });
-
-    });
+<script>
 
 
-    /*
-    =========================
-    MOBILE MENU
-    =========================
+/* ==================================================
+   CONFIGURATION
+================================================== */
 
-    Placeholder for the full
-    mobile navigation we'll add
-    during Phase 1.
-    */
-
-    const menuBtn =
-      document.getElementById("menuBtn");
+const BACKEND_URL =
+  "https://dare-backend-vx8w.onrender.com";
 
 
-    menuBtn.addEventListener("click", function() {
+/*
+  GitHub Pages domain.
 
-      alert(
-        "Mobile navigation will be added in the next Phase 1 step."
+  We automatically detect the current
+  website hostname so you don't need to
+  hard-code it.
+
+  Example:
+
+  yourusername.github.io
+*/
+
+const TWITCH_PARENT =
+  window.location.hostname;
+
+
+/* ==================================================
+   ELEMENTS
+================================================== */
+
+const emptyLive =
+  document.getElementById(
+    "emptyLive"
+  );
+
+
+const activeLive =
+  document.getElementById(
+    "activeLive"
+  );
+
+
+const twitchPlayer =
+  document.getElementById(
+    "twitchPlayer"
+  );
+
+
+const streamerName =
+  document.getElementById(
+    "streamerName"
+  );
+
+
+const liveDareText =
+  document.getElementById(
+    "liveDareText"
+  );
+
+
+const liveReward =
+  document.getElementById(
+    "liveReward"
+  );
+
+
+const liveTimer =
+  document.getElementById(
+    "liveTimer"
+  );
+
+
+const liveStatus =
+  document.getElementById(
+    "liveStatus"
+  );
+
+
+/* ==================================================
+   STATE
+================================================== */
+
+let activeDare =
+  null;
+
+
+let timerInterval =
+  null;
+
+
+let activeEndTime =
+  null;
+
+
+/* ==================================================
+   SHOW EMPTY STATE
+================================================== */
+
+function showEmptyLive() {
+
+  clearInterval(
+    timerInterval
+  );
+
+
+  timerInterval =
+    null;
+
+
+  activeDare =
+    null;
+
+
+  activeEndTime =
+    null;
+
+
+  /*
+    Remove Twitch iframe source.
+    This stops the embedded player.
+  */
+
+  twitchPlayer.src =
+    "about:blank";
+
+
+  activeLive.style.display =
+    "none";
+
+
+  emptyLive.style.display =
+    "block";
+
+}
+
+
+/* ==================================================
+   NORMALIZE DARE
+================================================== */
+
+function normalizeDare(dare) {
+
+  if (!dare) {
+
+    return null;
+
+  }
+
+
+  /*
+    Only accepted/active dares should
+    produce a public live stream.
+  */
+
+  const status =
+    String(
+      dare.status || ""
+    ).toLowerCase();
+
+
+  if (
+    status !== "accepted" &&
+    status !== "active"
+  ) {
+
+    return null;
+
+  }
+
+
+  /*
+    Streamer is required for Twitch.
+  */
+
+  if (
+    !dare.streamer ||
+    !String(dare.streamer).trim()
+  ) {
+
+    console.warn(
+      "Active dare has no streamer username:",
+      dare
+    );
+
+    return null;
+
+  }
+
+
+  return dare;
+
+}
+
+
+/* ==================================================
+   SHOW ACTIVE DARE
+================================================== */
+
+function showActiveDare(dare) {
+
+  const normalized =
+    normalizeDare(dare);
+
+
+  if (!normalized) {
+
+    showEmptyLive();
+
+    return;
+
+  }
+
+
+  activeDare =
+    normalized;
+
+
+  const streamer =
+    String(
+      normalized.streamer
+    ).trim();
+
+
+  const safeStreamer =
+    encodeURIComponent(
+      streamer
+    );
+
+
+  /*
+    Twitch requires the parent domain.
+
+    GitHub Pages automatically supplies:
+
+    username.github.io
+  */
+
+  const twitchURL =
+    "https://player.twitch.tv/" +
+    "?channel=" +
+    safeStreamer +
+    "&parent=" +
+    encodeURIComponent(
+      TWITCH_PARENT
+    ) +
+    "&autoplay=true";
+
+
+  /*
+    Only reload the iframe when
+    the streamer changes.
+  */
+
+  if (
+    twitchPlayer.dataset.streamer !==
+    streamer
+  ) {
+
+    twitchPlayer.src =
+      twitchURL;
+
+
+    twitchPlayer.dataset.streamer =
+      streamer;
+
+  }
+
+
+  streamerName.textContent =
+    "@" + streamer;
+
+
+  liveDareText.textContent =
+    normalized.text ||
+    "Dare in progress";
+
+
+  liveReward.textContent =
+    formatReward(
+      normalized.reward
+    );
+
+
+  liveStatus.textContent =
+    String(
+      normalized.status ||
+      "ACCEPTED"
+    ).toUpperCase();
+
+
+  /*
+    Calculate the actual end time.
+
+    If the backend supplied
+    acceptedAt, use it.
+
+    Otherwise, if updatedAt exists,
+    use that.
+
+    Otherwise use now.
+  */
+
+  const startTime =
+    getDareStartTime(
+      normalized
+    );
+
+
+  const duration =
+    Number(
+      normalized.duration
+    ) || 30;
+
+
+  activeEndTime =
+    startTime +
+    duration * 1000;
+
+
+  updateLiveTimer();
+
+
+  clearInterval(
+    timerInterval
+  );
+
+
+  timerInterval =
+    setInterval(
+      updateLiveTimer,
+      1000
+    );
+
+
+  emptyLive.style.display =
+    "none";
+
+
+  activeLive.style.display =
+    "block";
+
+}
+
+
+/* ==================================================
+   GET DARE START TIME
+================================================== */
+
+function getDareStartTime(dare) {
+
+  /*
+    Prefer acceptedAt because that represents
+    when the streamer accepted the dare.
+  */
+
+  if (
+    dare.acceptedAt
+  ) {
+
+    const time =
+      Date.parse(
+        dare.acceptedAt
       );
 
-    });
 
-  </script>
+    if (!Number.isNaN(time)) {
+
+      return time;
+
+    }
+
+  }
+
+
+  /*
+    Some backend versions may use startedAt.
+  */
+
+  if (
+    dare.startedAt
+  ) {
+
+    const time =
+      Date.parse(
+        dare.startedAt
+      );
+
+
+    if (!Number.isNaN(time)) {
+
+      return time;
+
+    }
+
+  }
+
+
+  /*
+    Fallback to updatedAt.
+  */
+
+  if (
+    dare.updatedAt
+  ) {
+
+    const time =
+      Date.parse(
+        dare.updatedAt
+      );
+
+
+    if (!Number.isNaN(time)) {
+
+      return time;
+
+    }
+
+  }
+
+
+  /*
+    Final fallback.
+
+    This is mostly for compatibility with
+    the current backend while testing.
+  */
+
+  return Date.now();
+
+}
+
+
+/* ==================================================
+   TIMER
+================================================== */
+
+function updateLiveTimer() {
+
+  if (
+    !activeDare ||
+    !activeEndTime
+  ) {
+
+    return;
+
+  }
+
+
+  const remaining =
+    Math.max(
+      0,
+      Math.ceil(
+        (
+          activeEndTime -
+          Date.now()
+        ) / 1000
+      )
+    );
+
+
+  liveTimer.textContent =
+    formatTime(
+      remaining
+    );
+
+
+  /*
+    If the timer expires locally,
+    don't immediately hide the stream.
+
+    The backend remains the source
+    of truth for completed/failed states.
+  */
+
+  if (
+    remaining <= 0
+  ) {
+
+    liveStatus.textContent =
+      "TIME'S UP";
+
+  }
+
+}
+
+
+/* ==================================================
+   FORMAT TIME
+================================================== */
+
+function formatTime(seconds) {
+
+  seconds =
+    Math.max(
+      0,
+      Number(seconds) || 0
+    );
+
+
+  const minutes =
+    Math.floor(
+      seconds / 60
+    );
+
+
+  const secs =
+    seconds % 60;
+
+
+  return (
+    String(minutes).padStart(2, "0") +
+    ":" +
+    String(secs).padStart(2, "0")
+  );
+
+}
+
+
+/* ==================================================
+   FORMAT REWARD
+================================================== */
+
+function formatReward(reward) {
+
+  const amount =
+    Number(reward) || 0;
+
+
+  return "₱" +
+    amount.toLocaleString(
+      "en-PH"
+    );
+
+}
+
+
+/* ==================================================
+   HANDLE WEBSOCKET MESSAGE
+================================================== */
+
+function handleWebSocketMessage(message) {
+
+  console.log(
+    "Dare WebSocket event:",
+    message
+  );
+
+
+  const type =
+    message.type;
+
+
+  /*
+    ==============================================
+    ACTIVE DARE
+    ==============================================
+  */
+
+  if (
+    type === "ACTIVE_DARE"
+  ) {
+
+    showActiveDare(
+      message.dare ||
+      message.currentDare
+    );
+
+    return;
+
+  }
+
+
+  /*
+    ==============================================
+    ACTIVE DARE STATE
+    ==============================================
+  */
+
+  if (
+    type === "ACTIVE_DARE_STATE"
+  ) {
+
+    showActiveDare(
+      message.dare ||
+      message.currentDare
+    );
+
+    return;
+
+  }
+
+
+  /*
+    ==============================================
+    INITIAL STATE
+    ==============================================
+  */
+
+  if (
+    type === "STATE"
+  ) {
+
+    const dare =
+      message.currentDare;
+
+
+    if (
+      dare
+    ) {
+
+      showActiveDare(
+        dare
+      );
+
+    } else {
+
+      showEmptyLive();
+
+    }
+
+
+    return;
+
+  }
+
+
+  /*
+    ==============================================
+    DARE STATUS
+    ==============================================
+  */
+
+  if (
+    type === "DARE_STATUS"
+  ) {
+
+    const dare =
+      message.dare;
+
+
+    if (!dare) {
+
+      return;
+
+    }
+
+
+    const status =
+      String(
+        dare.status || ""
+      ).toLowerCase();
+
+
+    /*
+      Accepted = SHOW
+    */
+
+    if (
+      status === "accepted" ||
+      status === "active"
+    ) {
+
+      showActiveDare(
+        dare
+      );
+
+      return;
+
+    }
+
+
+    /*
+      Everything else = HIDE
+    */
+
+    if (
+
+      status === "completed" ||
+
+      status === "failed" ||
+
+      status === "rejected" ||
+
+      status === "expired"
+
+    ) {
+
+      showEmptyLive();
+
+      return;
+
+    }
+
+  }
+
+
+  /*
+    ==============================================
+    DARE CLEARED
+    ==============================================
+  */
+
+  if (
+    type === "DARE_CLEARED"
+  ) {
+
+    showEmptyLive();
+
+    return;
+
+  }
+
+
+  /*
+    ==============================================
+    RESET
+    ==============================================
+  */
+
+  if (
+    type === "RESET"
+  ) {
+
+    showEmptyLive();
+
+    return;
+
+  }
+
+
+  /*
+    ==============================================
+    NEW DARE
+    ==============================================
+    
+    IMPORTANT:
+
+    NEW_DARE does NOT display the Twitch stream.
+
+    A submitted/queued dare is NOT active yet.
+  */
+
+  if (
+    type === "NEW_DARE"
+  ) {
+
+    return;
+
+  }
+
+}
+
+
+/* ==================================================
+   CONNECT WEBSOCKET
+================================================== */
+
+let socket = null;
+
+
+function connectWebSocket() {
+
+  /*
+    Prevent duplicate connections.
+  */
+
+  if (
+    socket &&
+    (
+      socket.readyState ===
+      WebSocket.OPEN ||
+
+      socket.readyState ===
+      WebSocket.CONNECTING
+    )
+  ) {
+
+    return;
+
+  }
+
+
+  const wsURL =
+    BACKEND_URL
+      .replace(
+        "https://",
+        "wss://"
+      )
+      .replace(
+        "http://",
+        "ws://"
+      ) +
+    "/ws";
+
+
+  console.log(
+    "Connecting to Dare WebSocket:",
+    wsURL
+  );
+
+
+  socket =
+    new WebSocket(
+      wsURL
+    );
+
+
+  socket.addEventListener(
+    "open",
+    function() {
+
+      console.log(
+        "Dare WebSocket connected."
+      );
+
+    }
+  );
+
+
+  socket.addEventListener(
+    "message",
+    function(event) {
+
+      try {
+
+        const message =
+          JSON.parse(
+            event.data
+          );
+
+
+        handleWebSocketMessage(
+          message
+        );
+
+      }
+
+      catch (error) {
+
+        console.error(
+          "Invalid WebSocket message:",
+          error
+        );
+
+      }
+
+    }
+  );
+
+
+  socket.addEventListener(
+    "close",
+    function() {
+
+      console.log(
+        "Dare WebSocket disconnected."
+      );
+
+
+      /*
+        Reconnect automatically.
+
+        This also means the website can
+        recover if Render temporarily
+        restarts the service.
+      */
+
+      setTimeout(
+        connectWebSocket,
+        3000
+      );
+
+    }
+  );
+
+
+  socket.addEventListener(
+    "error",
+    function(error) {
+
+      console.error(
+        "Dare WebSocket error:",
+        error
+      );
+
+    }
+  );
+
+}
+
+
+/* ==================================================
+   INITIAL STATE RECOVERY
+================================================== */
+
+async function recoverActiveState() {
+
+  /*
+    WebSocket normally sends STATE immediately
+    after connecting.
+
+    This HTTP request is an additional fallback
+    for page refreshes / connection timing.
+  */
+
+  try {
+
+    const response =
+      await fetch(
+        BACKEND_URL +
+        "/api/dare"
+      );
+
+
+    if (
+      !response.ok
+    ) {
+
+      return;
+
+    }
+
+
+    const data =
+      await response.json();
+
+
+    if (
+      data.currentDare
+    ) {
+
+      showActiveDare(
+        data.currentDare
+      );
+
+    }
+
+  }
+
+  catch (error) {
+
+    console.warn(
+      "Could not recover active dare:",
+      error
+    );
+
+  }
+
+}
+
+
+/* ==================================================
+   FAQ
+================================================== */
+
+const faqItems =
+  document.querySelectorAll(
+    ".faq-item"
+  );
+
+
+faqItems.forEach(
+  function(item) {
+
+    const button =
+      item.querySelector(
+        ".faq-question"
+      );
+
+
+    button.addEventListener(
+      "click",
+      function() {
+
+        item.classList.toggle(
+          "open"
+        );
+
+      }
+    );
+
+  }
+);
+
+
+/* ==================================================
+   MOBILE MENU
+================================================== */
+
+const menuBtn =
+  document.getElementById(
+    "menuBtn"
+  );
+
+
+menuBtn.addEventListener(
+  "click",
+  function() {
+
+    alert(
+      "Mobile navigation will be added in the next Phase 1 step."
+    );
+
+  }
+);
+
+
+/* ==================================================
+   START
+================================================== */
+
+showEmptyLive();
+
+
+connectWebSocket();
+
+
+recoverActiveState();
+
+</script>
 
 </body>
+
 </html>
