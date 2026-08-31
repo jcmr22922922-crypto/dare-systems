@@ -1,0 +1,853 @@
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+
+  <!-- Good for OBS / Streamlabs browser overlays -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Dare Stream Overlay</title>
+
+  <style>
+
+    /*
+    ==================================================
+    RESET
+    ==================================================
+    */
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+
+    /*
+    ==================================================
+    PAGE
+    ==================================================
+    */
+
+    html,
+    body {
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+
+      /*
+      IMPORTANT:
+      Transparent background for Streamlabs/OBS.
+      */
+
+      background: transparent;
+
+      font-family: Arial, Helvetica, sans-serif;
+    }
+
+
+    /*
+    ==================================================
+    OVERLAY CONTAINER
+    ==================================================
+    */
+
+    #overlay {
+      position: absolute;
+
+      top: 30px;
+      right: 30px;
+
+      width: 360px;
+
+      display: none;
+
+      animation: slideIn 0.35s ease;
+    }
+
+
+    /*
+    ==================================================
+    DARE CARD
+    ==================================================
+    */
+
+    .dare-card {
+
+      background: rgba(15, 15, 20, 0.94);
+
+      border: 2px solid rgba(255, 255, 255, 0.15);
+
+      border-radius: 18px;
+
+      padding: 20px;
+
+      color: white;
+
+      box-shadow:
+        0 10px 35px rgba(0, 0, 0, 0.45);
+
+    }
+
+
+    /*
+    ==================================================
+    HEADER
+    ==================================================
+    */
+
+    .header {
+
+      display: flex;
+
+      justify-content: space-between;
+
+      align-items: center;
+
+      margin-bottom: 14px;
+    }
+
+
+    .title {
+
+      font-size: 17px;
+
+      font-weight: 900;
+
+      letter-spacing: 0.5px;
+    }
+
+
+    .status {
+
+      background: #e53935;
+
+      padding: 5px 8px;
+
+      border-radius: 7px;
+
+      font-size: 10px;
+
+      font-weight: 900;
+    }
+
+
+    /*
+    ==================================================
+    VIEWER
+    ==================================================
+    */
+
+    .viewer {
+
+      color: #aaa;
+
+      font-size: 13px;
+
+      margin-bottom: 10px;
+    }
+
+
+    .viewer span {
+
+      color: white;
+
+      font-weight: bold;
+    }
+
+
+    /*
+    ==================================================
+    DARE TEXT
+    ==================================================
+    */
+
+    .dare-text {
+
+      font-size: 23px;
+
+      line-height: 1.25;
+
+      font-weight: 900;
+
+      margin-bottom: 15px;
+
+      word-wrap: break-word;
+    }
+
+
+    /*
+    ==================================================
+    REWARD
+    ==================================================
+    */
+
+    .reward {
+
+      font-size: 16px;
+
+      font-weight: 800;
+
+      margin-bottom: 15px;
+    }
+
+
+    /*
+    ==================================================
+    TIMER
+    ==================================================
+    */
+
+    .timer-container {
+
+      margin-top: 8px;
+    }
+
+
+    .timer-label {
+
+      color: #999;
+
+      font-size: 10px;
+
+      font-weight: bold;
+
+      margin-bottom: 4px;
+    }
+
+
+    .timer {
+
+      font-size: 34px;
+
+      font-weight: 900;
+    }
+
+
+    /*
+    ==================================================
+    PROGRESS BAR
+    ==================================================
+    */
+
+    .progress-background {
+
+      width: 100%;
+
+      height: 6px;
+
+      background: rgba(255,255,255,0.12);
+
+      border-radius: 10px;
+
+      overflow: hidden;
+
+      margin-top: 8px;
+    }
+
+
+    .progress {
+
+      width: 100%;
+
+      height: 100%;
+
+      background: white;
+
+      transition: width 1s linear;
+    }
+
+
+    /*
+    ==================================================
+    RESULT
+    ==================================================
+    */
+
+    #result {
+
+      display: none;
+
+      text-align: center;
+
+      font-size: 22px;
+
+      font-weight: 900;
+
+      padding-top: 10px;
+    }
+
+
+    /*
+    ==================================================
+    ANIMATION
+    ==================================================
+    */
+
+    @keyframes slideIn {
+
+      from {
+
+        opacity: 0;
+
+        transform: translateX(40px);
+
+      }
+
+      to {
+
+        opacity: 1;
+
+        transform: translateX(0);
+
+      }
+
+    }
+
+
+    @keyframes pulse {
+
+      0% {
+        transform: scale(1);
+      }
+
+      50% {
+        transform: scale(1.04);
+      }
+
+      100% {
+        transform: scale(1);
+      }
+
+    }
+
+
+    .pulse {
+
+      animation: pulse 1s infinite;
+    }
+
+
+    /*
+    ==================================================
+    SMALL SCREENS
+    ==================================================
+    */
+
+    @media (max-width: 500px) {
+
+      #overlay {
+
+        top: 15px;
+
+        right: 15px;
+
+        width: calc(100% - 30px);
+
+        max-width: 360px;
+      }
+
+    }
+
+  </style>
+</head>
+
+
+<body>
+
+
+<!-- ==================================================
+     OVERLAY
+================================================== -->
+
+<div id="overlay">
+
+  <div class="dare-card">
+
+
+    <!-- HEADER -->
+
+    <div class="header">
+
+      <div class="title">
+        🎯 DARE
+      </div>
+
+      <div id="status"
+           class="status">
+
+        NEW
+
+      </div>
+
+    </div>
+
+
+    <!-- VIEWER -->
+
+    <div class="viewer">
+
+      From:
+
+      <span id="viewer">
+        @viewer
+      </span>
+
+    </div>
+
+
+    <!-- DARE -->
+
+    <div id="dareText"
+         class="dare-text">
+
+      Dare goes here
+
+    </div>
+
+
+    <!-- REWARD -->
+
+    <div class="reward">
+
+      💰 ₱<span id="reward">0</span>
+
+    </div>
+
+
+    <!-- TIMER -->
+
+    <div id="timerContainer"
+         class="timer-container">
+
+      <div class="timer-label">
+        TIME REMAINING
+      </div>
+
+      <div id="timer"
+           class="timer">
+
+        30
+
+      </div>
+
+
+      <div class="progress-background">
+
+        <div id="progress"
+             class="progress">
+        </div>
+
+      </div>
+
+    </div>
+
+
+    <!-- RESULT -->
+
+    <div id="result">
+    </div>
+
+
+  </div>
+
+</div>
+
+
+<script>
+
+  /*
+  ==================================================
+  DARE OVERLAY
+  ==================================================
+
+  IMPORTANT:
+
+  This is currently DEMO MODE.
+
+  Later this page will connect to the same backend
+  as controller.html.
+
+  The backend will send events such as:
+
+      NEW_DARE
+      ACCEPTED
+      REJECTED
+      COMPLETED
+      FAILED
+
+  ==================================================
+  */
+
+
+  let currentDare = null;
+
+  let timerInterval = null;
+
+  let remainingTime = 30;
+
+  let totalDuration = 30;
+
+
+  /*
+  ==================================================
+  GET ELEMENTS
+  ==================================================
+  */
+
+  const overlay =
+    document.getElementById("overlay");
+
+  const status =
+    document.getElementById("status");
+
+  const viewer =
+    document.getElementById("viewer");
+
+  const dareText =
+    document.getElementById("dareText");
+
+  const reward =
+    document.getElementById("reward");
+
+  const timer =
+    document.getElementById("timer");
+
+  const progress =
+    document.getElementById("progress");
+
+  const timerContainer =
+    document.getElementById("timerContainer");
+
+  const result =
+    document.getElementById("result");
+
+
+  /*
+  ==================================================
+  SHOW DARE
+  ==================================================
+  */
+
+  function showDare(dare) {
+
+    currentDare = dare;
+
+    totalDuration =
+      dare.duration || 30;
+
+    remainingTime =
+      totalDuration;
+
+
+    viewer.textContent =
+      "@" + dare.viewer;
+
+
+    dareText.textContent =
+      dare.text;
+
+
+    reward.textContent =
+      dare.reward;
+
+
+    status.textContent =
+      "NEW";
+
+
+    status.style.background =
+      "#e53935";
+
+
+    result.style.display =
+      "none";
+
+
+    timerContainer.style.display =
+      "block";
+
+
+    overlay.style.display =
+      "block";
+
+
+    updateTimer();
+
+  }
+
+
+  /*
+  ==================================================
+  ACCEPTED
+  ==================================================
+  */
+
+  function dareAccepted() {
+
+    if (!currentDare) return;
+
+
+    status.textContent =
+      "ACCEPTED";
+
+
+    status.style.background =
+      "#16a34a";
+
+
+    startTimer();
+
+  }
+
+
+  /*
+  ==================================================
+  START TIMER
+  ==================================================
+  */
+
+  function startTimer() {
+
+    clearInterval(timerInterval);
+
+
+    updateTimer();
+
+
+    timerInterval =
+      setInterval(function() {
+
+        remainingTime--;
+
+
+        updateTimer();
+
+
+        if (remainingTime <= 0) {
+
+          clearInterval(timerInterval);
+
+
+          status.textContent =
+            "TIME'S UP";
+
+
+          status.style.background =
+            "#f59e0b";
+
+        }
+
+      }, 1000);
+
+  }
+
+
+  /*
+  ==================================================
+  UPDATE TIMER
+  ==================================================
+  */
+
+  function updateTimer() {
+
+    timer.textContent =
+      remainingTime;
+
+
+    const percentage =
+      (remainingTime / totalDuration) * 100;
+
+
+    progress.style.width =
+      Math.max(percentage, 0) + "%";
+
+  }
+
+
+  /*
+  ==================================================
+  COMPLETED
+  ==================================================
+  */
+
+  function dareCompleted() {
+
+    clearInterval(timerInterval);
+
+
+    status.textContent =
+      "COMPLETED";
+
+
+    status.style.background =
+      "#2563eb";
+
+
+    timerContainer.style.display =
+      "none";
+
+
+    result.textContent =
+      "✅ DARE COMPLETED";
+
+
+    result.style.display =
+      "block";
+
+
+    setTimeout(hideOverlay, 4000);
+
+  }
+
+
+  /*
+  ==================================================
+  FAILED
+  ==================================================
+  */
+
+  function dareFailed() {
+
+    clearInterval(timerInterval);
+
+
+    status.textContent =
+      "FAILED";
+
+
+    status.style.background =
+      "#9333ea";
+
+
+    timerContainer.style.display =
+      "none";
+
+
+    result.textContent =
+      "🚫 DARE FAILED";
+
+
+    result.style.display =
+      "block";
+
+
+    setTimeout(hideOverlay, 4000);
+
+  }
+
+
+  /*
+  ==================================================
+  REJECTED
+  ==================================================
+  */
+
+  function dareRejected() {
+
+    clearInterval(timerInterval);
+
+
+    status.textContent =
+      "REJECTED";
+
+
+    status.style.background =
+      "#dc2626";
+
+
+    timerContainer.style.display =
+      "none";
+
+
+    result.textContent =
+      "❌ DARE REJECTED";
+
+
+    result.style.display =
+      "block";
+
+
+    setTimeout(hideOverlay, 3000);
+
+  }
+
+
+  /*
+  ==================================================
+  HIDE
+  ==================================================
+  */
+
+  function hideOverlay() {
+
+    clearInterval(timerInterval);
+
+
+    overlay.style.display =
+      "none";
+
+
+    currentDare = null;
+
+  }
+
+
+  /*
+  ==================================================
+  DEMO
+  ==================================================
+  */
+
+  function demoDare() {
+
+    showDare({
+
+      id: "demo-" + Date.now(),
+
+      viewer: "Viewer123",
+
+      text: "Do 20 push-ups",
+
+      reward: 100,
+
+      duration: 30
+
+    });
+
+
+    /*
+    Simulate ACCEPT after 2 seconds
+    */
+
+    setTimeout(function() {
+
+      dareAccepted();
+
+    }, 2000);
+
+  }
+
+
+  /*
+  ==================================================
+  TEST
+  ==================================================
+
+  Remove/comment this later.
+
+  */
+
+  setTimeout(function() {
+
+    demoDare();
+
+  }, 1000);
+
+
+</script>
+
+</body>
+</html>
+```
