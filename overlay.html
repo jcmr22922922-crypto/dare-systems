@@ -456,167 +456,310 @@
 
 <script>
 
-  /*
-  ==================================================
-  DARE OVERLAY
-  ==================================================
+const BACKEND_URL =
+  "https://dare-backend-vx8w.onrender.com";
 
-  IMPORTANT:
-
-  This is currently DEMO MODE.
-
-  Later this page will connect to the same backend
-  as controller.html.
-
-  The backend will send events such as:
-
-      NEW_DARE
-      ACCEPTED
-      REJECTED
-      COMPLETED
-      FAILED
-
-  ==================================================
-  */
+const WS_URL =
+  BACKEND_URL.replace("https://", "wss://") + "/ws";
 
 
-  let currentDare = null;
+let socket = null;
 
-  let timerInterval = null;
+let currentDare = null;
 
-  let remainingTime = 30;
+let timerInterval = null;
 
-  let totalDuration = 30;
+let remainingTime = 30;
 
-
-  /*
-  ==================================================
-  GET ELEMENTS
-  ==================================================
-  */
-
-  const overlay =
-    document.getElementById("overlay");
-
-  const status =
-    document.getElementById("status");
-
-  const viewer =
-    document.getElementById("viewer");
-
-  const dareText =
-    document.getElementById("dareText");
-
-  const reward =
-    document.getElementById("reward");
-
-  const timer =
-    document.getElementById("timer");
-
-  const progress =
-    document.getElementById("progress");
-
-  const timerContainer =
-    document.getElementById("timerContainer");
-
-  const result =
-    document.getElementById("result");
+let totalDuration = 30;
 
 
-  /*
-  ==================================================
-  SHOW DARE
-  ==================================================
-  */
+/* =========================================
+   GET ELEMENTS
+========================================= */
 
-  function showDare(dare) {
+const overlay =
+  document.getElementById("overlay");
 
-    currentDare = dare;
+const status =
+  document.getElementById("status");
 
-    totalDuration =
-      dare.duration || 30;
+const viewer =
+  document.getElementById("viewer");
 
-    remainingTime =
-      totalDuration;
+const dareText =
+  document.getElementById("dareText");
 
+const reward =
+  document.getElementById("reward");
 
-    viewer.textContent =
-      "@" + dare.viewer;
+const timer =
+  document.getElementById("timer");
 
+const progress =
+  document.getElementById("progress");
 
-    dareText.textContent =
-      dare.text;
+const timerContainer =
+  document.getElementById("timerContainer");
 
-
-    reward.textContent =
-      dare.reward;
-
-
-    status.textContent =
-      "NEW";
-
-
-    status.style.background =
-      "#e53935";
+const result =
+  document.getElementById("result");
 
 
-    result.style.display =
-      "none";
+/* =========================================
+   CONNECT TO RENDER
+========================================= */
+
+function connectToServer() {
+
+  console.log(
+    "Connecting to:",
+    WS_URL
+  );
 
 
-    timerContainer.style.display =
-      "block";
+  socket =
+    new WebSocket(WS_URL);
 
 
-    overlay.style.display =
-      "block";
+  socket.onopen = function() {
+
+    console.log(
+      "Overlay connected to Dare Server"
+    );
+
+  };
 
 
-    updateTimer();
+  socket.onclose = function() {
+
+    console.log(
+      "Overlay disconnected"
+    );
+
+
+    setTimeout(
+      connectToServer,
+      3000
+    );
+
+  };
+
+
+  socket.onerror = function(error) {
+
+    console.error(
+      "Overlay WebSocket error:",
+      error
+    );
+
+  };
+
+
+  socket.onmessage =
+    function(event) {
+
+      const message =
+        JSON.parse(event.data);
+
+
+      console.log(
+        "Overlay received:",
+        message
+      );
+
+
+      /* NEW DARE */
+
+      if (
+        message.type === "NEW_DARE"
+      ) {
+
+        showDare(
+          message.dare
+        );
+
+      }
+
+
+      /* STATUS */
+
+      if (
+        message.type ===
+        "DARE_STATUS"
+      ) {
+
+        handleStatus(
+          message.dare
+        );
+
+      }
+
+
+      /* CLEARED */
+
+      if (
+        message.type ===
+        "DARE_CLEARED"
+      ) {
+
+        hideOverlay();
+
+      }
+
+    };
+
+}
+
+
+/* =========================================
+   SHOW DARE
+========================================= */
+
+function showDare(dare) {
+
+  currentDare =
+    dare;
+
+
+  totalDuration =
+    Number(dare.duration) || 30;
+
+
+  remainingTime =
+    totalDuration;
+
+
+  viewer.textContent =
+    "@" +
+    (dare.viewer || "Viewer");
+
+
+  dareText.textContent =
+    dare.text || "Dare";
+
+
+  reward.textContent =
+    dare.reward || "0";
+
+
+  status.textContent =
+    "NEW";
+
+
+  status.style.background =
+    "#e53935";
+
+
+  result.style.display =
+    "none";
+
+
+  timerContainer.style.display =
+    "block";
+
+
+  overlay.style.display =
+    "block";
+
+
+  updateTimer();
+
+}
+
+
+/* =========================================
+   HANDLE STATUS
+========================================= */
+
+function handleStatus(dare) {
+
+  currentDare =
+    dare;
+
+
+  if (
+    dare.status ===
+    "accepted"
+  ) {
+
+    dareAccepted();
 
   }
 
 
-  /*
-  ==================================================
-  ACCEPTED
-  ==================================================
-  */
+  if (
+    dare.status ===
+    "rejected"
+  ) {
 
-  function dareAccepted() {
-
-    if (!currentDare) return;
-
-
-    status.textContent =
-      "ACCEPTED";
-
-
-    status.style.background =
-      "#16a34a";
-
-
-    startTimer();
+    dareRejected();
 
   }
 
 
-  /*
-  ==================================================
-  START TIMER
-  ==================================================
-  */
+  if (
+    dare.status ===
+    "completed"
+  ) {
 
-  function startTimer() {
+    dareCompleted();
 
-    clearInterval(timerInterval);
-
-
-    updateTimer();
+  }
 
 
-    timerInterval =
-      setInterval(function() {
+  if (
+    dare.status ===
+    "failed"
+  ) {
+
+    dareFailed();
+
+  }
+
+}
+
+
+/* =========================================
+   ACCEPTED
+========================================= */
+
+function dareAccepted() {
+
+  if (!currentDare)
+    return;
+
+
+  status.textContent =
+    "ACCEPTED";
+
+
+  status.style.background =
+    "#16a34a";
+
+
+  startTimer();
+
+}
+
+
+/* =========================================
+   START TIMER
+========================================= */
+
+function startTimer() {
+
+  clearInterval(
+    timerInterval
+  );
+
+
+  updateTimer();
+
+
+  timerInterval =
+    setInterval(
+      function() {
 
         remainingTime--;
 
@@ -624,9 +767,13 @@
         updateTimer();
 
 
-        if (remainingTime <= 0) {
+        if (
+          remainingTime <= 0
+        ) {
 
-          clearInterval(timerInterval);
+          clearInterval(
+            timerInterval
+          );
 
 
           status.textContent =
@@ -638,212 +785,185 @@
 
         }
 
-      }, 1000);
+      },
+      1000
+    );
 
-  }
+}
 
 
-  /*
-  ==================================================
-  UPDATE TIMER
-  ==================================================
-  */
+/* =========================================
+   UPDATE TIMER
+========================================= */
 
-  function updateTimer() {
+function updateTimer() {
 
-    timer.textContent =
-      remainingTime;
+  timer.textContent =
+    Math.max(
+      remainingTime,
+      0
+    );
 
 
-    const percentage =
-      (remainingTime / totalDuration) * 100;
+  const percentage =
+    (
+      remainingTime /
+      totalDuration
+    ) * 100;
 
 
-    progress.style.width =
-      Math.max(percentage, 0) + "%";
+  progress.style.width =
+    Math.max(
+      percentage,
+      0
+    ) + "%";
 
-  }
+}
 
 
-  /*
-  ==================================================
-  COMPLETED
-  ==================================================
-  */
+/* =========================================
+   COMPLETED
+========================================= */
 
-  function dareCompleted() {
+function dareCompleted() {
 
-    clearInterval(timerInterval);
+  clearInterval(
+    timerInterval
+  );
 
 
-    status.textContent =
-      "COMPLETED";
+  status.textContent =
+    "COMPLETED";
 
 
-    status.style.background =
-      "#2563eb";
+  status.style.background =
+    "#2563eb";
 
 
-    timerContainer.style.display =
-      "none";
+  timerContainer.style.display =
+    "none";
 
 
-    result.textContent =
-      "✅ DARE COMPLETED";
+  result.textContent =
+    "✅ DARE COMPLETED";
 
 
-    result.style.display =
-      "block";
+  result.style.display =
+    "block";
 
 
-    setTimeout(hideOverlay, 4000);
+  setTimeout(
+    hideOverlay,
+    4000
+  );
 
-  }
+}
 
 
-  /*
-  ==================================================
-  FAILED
-  ==================================================
-  */
+/* =========================================
+   FAILED
+========================================= */
 
-  function dareFailed() {
+function dareFailed() {
 
-    clearInterval(timerInterval);
+  clearInterval(
+    timerInterval
+  );
 
 
-    status.textContent =
-      "FAILED";
+  status.textContent =
+    "FAILED";
 
 
-    status.style.background =
-      "#9333ea";
+  status.style.background =
+    "#9333ea";
 
 
-    timerContainer.style.display =
-      "none";
+  timerContainer.style.display =
+    "none";
 
 
-    result.textContent =
-      "🚫 DARE FAILED";
+  result.textContent =
+    "🚫 DARE FAILED";
 
 
-    result.style.display =
-      "block";
+  result.style.display =
+    "block";
 
 
-    setTimeout(hideOverlay, 4000);
+  setTimeout(
+    hideOverlay,
+    4000
+  );
 
-  }
+}
 
 
-  /*
-  ==================================================
-  REJECTED
-  ==================================================
-  */
+/* =========================================
+   REJECTED
+========================================= */
 
-  function dareRejected() {
+function dareRejected() {
 
-    clearInterval(timerInterval);
+  clearInterval(
+    timerInterval
+  );
 
 
-    status.textContent =
-      "REJECTED";
+  status.textContent =
+    "REJECTED";
 
 
-    status.style.background =
-      "#dc2626";
+  status.style.background =
+    "#dc2626";
 
 
-    timerContainer.style.display =
-      "none";
+  timerContainer.style.display =
+    "none";
 
 
-    result.textContent =
-      "❌ DARE REJECTED";
+  result.textContent =
+    "❌ DARE REJECTED";
 
 
-    result.style.display =
-      "block";
+  result.style.display =
+    "block";
 
 
-    setTimeout(hideOverlay, 3000);
+  setTimeout(
+    hideOverlay,
+    3000
+  );
 
-  }
+}
 
 
-  /*
-  ==================================================
-  HIDE
-  ==================================================
-  */
+/* =========================================
+   HIDE
+========================================= */
 
-  function hideOverlay() {
+function hideOverlay() {
 
-    clearInterval(timerInterval);
+  clearInterval(
+    timerInterval
+  );
 
 
-    overlay.style.display =
-      "none";
+  overlay.style.display =
+    "none";
 
 
-    currentDare = null;
+  currentDare =
+    null;
 
-  }
+}
 
 
-  /*
-  ==================================================
-  DEMO
-  ==================================================
-  */
+/* =========================================
+   START
+========================================= */
 
-  function demoDare() {
-
-    showDare({
-
-      id: "demo-" + Date.now(),
-
-      viewer: "Viewer123",
-
-      text: "Do 20 push-ups",
-
-      reward: 100,
-
-      duration: 30
-
-    });
-
-
-    /*
-    Simulate ACCEPT after 2 seconds
-    */
-
-    setTimeout(function() {
-
-      dareAccepted();
-
-    }, 2000);
-
-  }
-
-
-  /*
-  ==================================================
-  TEST
-  ==================================================
-
-  Remove/comment this later.
-
-  */
-
-  setTimeout(function() {
-
-    demoDare();
-
-  }, 1000);
-
+connectToServer();
 
 </script>
 
