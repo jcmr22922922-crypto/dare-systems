@@ -1,470 +1,969 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
 
-  <!-- Makes the page fit properly on phones -->
-  <meta name="viewport"
-        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
 
-  <title>IRL Dare Controller</title>
+  <title>Dare System • Streamer Dashboard</title>
 
   <style>
+
     * {
       box-sizing: border-box;
       margin: 0;
       padding: 0;
-      -webkit-tap-highlight-color: transparent;
     }
 
     body {
       min-height: 100vh;
-      background: #0b0b0f;
-      color: white;
+
       font-family: Arial, Helvetica, sans-serif;
-      padding: 16px;
+
+      background:
+        radial-gradient(
+          circle at top,
+          #252538 0%,
+          #0b0b12 45%,
+          #050507 100%
+        );
+
+      color: white;
+
+      padding: 25px;
     }
 
-    .app {
+    .container {
       width: 100%;
-      max-width: 500px;
-      margin: 0 auto;
+      max-width: 900px;
+      margin: auto;
     }
 
-    /* HEADER */
+    /* =========================
+       HEADER
+    ========================= */
 
-    .header {
+    header {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 18px;
+
+      margin-bottom: 25px;
     }
 
-    .title {
-      font-size: 23px;
-      font-weight: 800;
-    }
-
-    .irl-badge {
-      background: #e53935;
-      padding: 7px 11px;
-      border-radius: 8px;
-      font-size: 12px;
-      font-weight: 800;
-    }
-
-    /* CONNECTION */
-
-    .connection {
-      background: #17171d;
-      border-radius: 12px;
-      padding: 12px;
-      margin-bottom: 15px;
-      display: flex;
-      align-items: center;
-      gap: 9px;
-      font-size: 13px;
-      color: #aaa;
-    }
-
-    .connection-dot {
-      width: 10px;
-      height: 10px;
-      border-radius: 50%;
-      background: #777;
-    }
-
-    .connection-dot.online {
-      background: #22c55e;
-      box-shadow: 0 0 10px #22c55e;
-    }
-
-    /* WAITING SCREEN */
-
-    .waiting {
-      background: #17171d;
-      border-radius: 18px;
-      padding: 70px 20px;
-      text-align: center;
-    }
-
-    .waiting-icon {
-      font-size: 55px;
-      margin-bottom: 18px;
-    }
-
-    .waiting h2 {
+    .logo {
       font-size: 22px;
-      margin-bottom: 8px;
-    }
-
-    .waiting p {
-      color: #888;
-      font-size: 14px;
-    }
-
-    /* DARE SCREEN */
-
-    .dare-screen {
-      display: none;
-    }
-
-    .status {
-      text-align: center;
-      font-size: 14px;
-      font-weight: 800;
-      color: #f59e0b;
-      margin-bottom: 12px;
-      letter-spacing: 1px;
-    }
-
-    .dare-card {
-      background: #17171d;
-      border-radius: 18px;
-      padding: 22px;
-      margin-bottom: 15px;
-    }
-
-    .viewer {
-      color: #888;
-      font-size: 14px;
-      margin-bottom: 15px;
-    }
-
-    .viewer span {
-      color: white;
-      font-weight: 700;
-    }
-
-    .dare-text {
-      font-size: 27px;
-      font-weight: 800;
-      line-height: 1.25;
-      margin-bottom: 20px;
-      word-wrap: break-word;
-    }
-
-    .reward {
-      font-size: 19px;
-      font-weight: 800;
-    }
-
-    /* TIMER */
-
-    .timer-box {
-      background: #17171d;
-      border-radius: 18px;
-      text-align: center;
-      padding: 20px;
-      margin-bottom: 15px;
-    }
-
-    .timer-label {
-      color: #888;
-      font-size: 13px;
-      margin-bottom: 5px;
-    }
-
-    .timer {
-      font-size: 55px;
       font-weight: 900;
     }
 
-    /* BUTTONS */
+    .connection {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+
+      font-size: 12px;
+      color: #aaa;
+    }
+
+    .dot {
+      width: 9px;
+      height: 9px;
+
+      border-radius: 50%;
+
+      background: #e53935;
+    }
+
+    .dot.connected {
+      background: #22c55e;
+    }
+
+    /* =========================
+       CARD
+    ========================= */
+
+    .card {
+      background:
+        rgba(255,255,255,0.05);
+
+      border:
+        1px solid
+        rgba(255,255,255,0.1);
+
+      border-radius: 20px;
+
+      padding: 25px;
+
+      margin-bottom: 20px;
+
+      box-shadow:
+        0 15px 50px
+        rgba(0,0,0,0.25);
+    }
+
+    .card-title {
+      color: #888;
+
+      font-size: 11px;
+
+      font-weight: 900;
+
+      letter-spacing: 1px;
+
+      margin-bottom: 20px;
+    }
+
+    /* =========================
+       ACTIVE DARE
+    ========================= */
+
+    .empty {
+      text-align: center;
+
+      padding: 45px 20px;
+
+      color: #666;
+    }
+
+    .empty-icon {
+      font-size: 40px;
+
+      margin-bottom: 12px;
+    }
+
+    .viewer {
+      color: #999;
+
+      font-size: 14px;
+
+      margin-bottom: 12px;
+    }
+
+    .viewer strong {
+      color: white;
+    }
+
+    .dare-text {
+      font-size:
+        clamp(25px, 5vw, 40px);
+
+      line-height: 1.15;
+
+      font-weight: 900;
+
+      margin-bottom: 18px;
+
+      word-break: break-word;
+    }
+
+    .details {
+      display: flex;
+
+      gap: 12px;
+
+      flex-wrap: wrap;
+
+      margin-bottom: 22px;
+    }
+
+    .detail {
+      padding: 9px 12px;
+
+      border-radius: 9px;
+
+      background:
+        rgba(255,255,255,0.07);
+
+      color: #bbb;
+
+      font-size: 12px;
+
+      font-weight: 700;
+    }
+
+    .detail span {
+      color: white;
+    }
+
+    /* =========================
+       BUTTONS
+    ========================= */
 
     .buttons {
       display: grid;
-      grid-template-columns: 1fr 1fr;
+
+      grid-template-columns:
+        1fr 1fr;
+
       gap: 12px;
     }
 
     button {
       border: none;
-      border-radius: 15px;
-      padding: 20px 10px;
-      color: white;
-      font-size: 17px;
-      font-weight: 800;
+
+      border-radius: 12px;
+
+      padding: 16px;
+
+      font-size: 15px;
+
+      font-weight: 900;
+
       cursor: pointer;
-      touch-action: manipulation;
+
+      transition:
+        transform 0.15s,
+        opacity 0.15s;
     }
 
-    button:active {
-      transform: scale(0.96);
+    button:hover {
+      transform:
+        translateY(-2px);
+    }
+
+    button:disabled {
+      opacity: 0.35;
+
+      cursor: not-allowed;
+
+      transform: none;
     }
 
     .accept {
-      background: #16a34a;
+      background: #22c55e;
+
+      color: #041008;
     }
 
     .reject {
-      background: #dc2626;
+      background: #ef4444;
+
+      color: white;
     }
 
     .complete {
-      background: #2563eb;
+      background: #3b82f6;
+
+      color: white;
     }
 
-    .fail {
+    .failed {
       background: #9333ea;
+
+      color: white;
     }
 
-    .new-dare {
-      background: #f59e0b;
-      color: #111;
-      width: 100%;
-      margin-top: 12px;
+    /* =========================
+       STATUS
+    ========================= */
+
+    .status {
+      display: inline-block;
+
+      padding: 6px 10px;
+
+      border-radius: 7px;
+
+      font-size: 10px;
+
+      font-weight: 900;
+
+      background: #e53935;
+
+      margin-bottom: 15px;
     }
 
-    /* HIDDEN */
+    /* =========================
+       QUEUE
+    ========================= */
 
-    .hidden {
-      display: none !important;
+    .queue-count {
+      color: white;
+
+      margin-left: 5px;
     }
 
-    /* PHONE */
+    .queue-item {
+      display: flex;
 
-    @media (max-width: 380px) {
+      justify-content: space-between;
 
-      .title {
-        font-size: 20px;
+      align-items: center;
+
+      gap: 15px;
+
+      padding: 15px 0;
+
+      border-bottom:
+        1px solid
+        rgba(255,255,255,0.07);
+    }
+
+    .queue-item:last-child {
+      border-bottom: none;
+    }
+
+    .queue-number {
+      min-width: 30px;
+
+      color: #777;
+
+      font-weight: 900;
+    }
+
+    .queue-content {
+      flex: 1;
+    }
+
+    .queue-viewer {
+      font-size: 12px;
+
+      color: #aaa;
+
+      margin-bottom: 4px;
+    }
+
+    .queue-text {
+      font-size: 14px;
+
+      font-weight: 700;
+    }
+
+    .queue-reward {
+      color: #aaa;
+
+      font-size: 12px;
+
+      white-space: nowrap;
+    }
+
+    /* =========================
+       CONTROLS
+    ========================= */
+
+    .secondary-buttons {
+      display: flex;
+
+      gap: 10px;
+
+      margin-top: 15px;
+    }
+
+    .secondary-buttons button {
+      background:
+        rgba(255,255,255,0.07);
+
+      color: #bbb;
+
+      font-size: 12px;
+
+      padding: 11px 15px;
+    }
+
+    /* =========================
+       TOAST
+    ========================= */
+
+    #toast {
+      position: fixed;
+
+      left: 50%;
+
+      bottom: 25px;
+
+      transform:
+        translate(-50%, 20px);
+
+      opacity: 0;
+
+      pointer-events: none;
+
+      background:
+        rgba(20,20,25,0.95);
+
+      border:
+        1px solid
+        rgba(255,255,255,0.12);
+
+      border-radius: 12px;
+
+      padding: 13px 18px;
+
+      font-size: 13px;
+
+      transition:
+        opacity 0.2s,
+        transform 0.2s;
+
+      z-index: 100;
+    }
+
+    #toast.show {
+      opacity: 1;
+
+      transform:
+        translate(-50%, 0);
+    }
+
+    /* =========================
+       MOBILE
+    ========================= */
+
+    @media (max-width: 600px) {
+
+      body {
+        padding: 15px;
       }
 
-      .dare-text {
-        font-size: 23px;
+      header {
+        align-items: flex-start;
       }
 
-      button {
-        padding: 17px 8px;
-        font-size: 15px;
+      .buttons {
+        grid-template-columns:
+          1fr;
       }
 
-      .timer {
-        font-size: 45px;
+      .card {
+        padding: 20px;
       }
+
+      .queue-item {
+        align-items: flex-start;
+      }
+
     }
 
   </style>
+
 </head>
+
 
 <body>
 
-<div class="app">
 
-  <!-- HEADER -->
+<div class="container">
 
-  <div class="header">
 
-    <div class="title">
-      🎯 Dare Controller
+  <!-- =========================
+       HEADER
+  ========================= -->
+
+  <header>
+
+    <div class="logo">
+      🎯 DARE SYSTEM
     </div>
 
-    <div class="irl-badge">
-      IRL
+    <div class="connection">
+
+      <div
+        id="connectionDot"
+        class="dot"
+      ></div>
+
+      <span id="connectionText">
+        Connecting...
+      </span>
+
     </div>
 
-  </div>
+  </header>
 
 
-  <!-- CONNECTION STATUS -->
+  <!-- =========================
+       CURRENT DARE
+  ========================= -->
 
-  <div class="connection">
+  <div class="card">
 
-    <div id="connectionDot"
-         class="connection-dot">
-    </div>
-
-    <div id="connectionText">
-      Connecting...
-    </div>
-
-  </div>
-
-
-  <!-- WAITING -->
-
-  <div id="waitingScreen"
-       class="waiting">
-
-    <div class="waiting-icon">
-      📡
-    </div>
-
-    <h2>
-      Waiting for a dare
-    </h2>
-
-    <p>
-      New dares will appear here.
-    </p>
-
-  </div>
-
-
-  <!-- DARE -->
-
-  <div id="dareScreen"
-       class="dare-screen">
-
-    <div id="status"
-         class="status">
-      NEW DARE
+    <div class="card-title">
+      CURRENT DARE
     </div>
 
 
-    <!-- DARE INFORMATION -->
+    <div
+      id="emptyState"
+      class="empty"
+    >
 
-    <div class="dare-card">
+      <div class="empty-icon">
+        🎯
+      </div>
+
+      <div>
+        No active dare
+      </div>
+
+    </div>
+
+
+    <div
+      id="currentDare"
+      style="display:none;"
+    >
+
+      <div
+        id="status"
+        class="status"
+      >
+        NEW
+      </div>
+
 
       <div class="viewer">
         From:
-        <span id="viewer">
+        <strong id="viewer">
           @viewer
-        </span>
+        </strong>
       </div>
 
-      <div id="dareText"
-           class="dare-text">
 
-        Dare goes here
-
+      <div
+        id="dareText"
+        class="dare-text"
+      >
       </div>
 
-      <div class="reward">
 
-        💰 ₱<span id="reward">
-          0
-        </span>
+      <div class="details">
 
-      </div>
-
-    </div>
-
-
-    <!-- ACCEPT / REJECT -->
-
-    <div id="decisionButtons"
-         class="buttons">
-
-      <button
-        class="accept"
-        onclick="acceptDare()">
-
-        ✅ ACCEPT
-
-      </button>
-
-      <button
-        class="reject"
-        onclick="rejectDare()">
-
-        ❌ REJECT
-
-      </button>
-
-    </div>
-
-
-    <!-- TIMER -->
-
-    <div id="timerArea"
-         class="hidden">
-
-      <div class="timer-box">
-
-        <div class="timer-label">
-          TIME REMAINING
+        <div class="detail">
+          💰 ₱<span id="reward">0</span>
         </div>
 
-        <div id="timer"
-             class="timer">
-
-          30
-
+        <div class="detail">
+          ⏱️ <span id="duration">30</span>s
         </div>
 
       </div>
 
-
-      <!-- COMPLETE / FAIL -->
 
       <div class="buttons">
 
         <button
-          class="complete"
-          onclick="completeDare()">
-
-          ✅ COMPLETE
-
+          id="acceptButton"
+          class="accept"
+          onclick="setDareStatus('accepted')"
+        >
+          ✅ ACCEPT
         </button>
 
+
         <button
-          class="fail"
-          onclick="failDare()">
+          id="rejectButton"
+          class="reject"
+          onclick="setDareStatus('rejected')"
+        >
+          ❌ REJECT
+        </button>
 
-          🚫 FAIL
+      </div>
 
+
+      <div
+        id="finishButtons"
+        class="buttons"
+        style="display:none; margin-top:12px;"
+      >
+
+        <button
+          class="complete"
+          onclick="setDareStatus('completed')"
+        >
+          🏁 COMPLETED
+        </button>
+
+
+        <button
+          class="failed"
+          onclick="setDareStatus('failed')"
+        >
+          🚫 FAILED
         </button>
 
       </div>
 
     </div>
 
+  </div>
 
-    <!-- DEMO BUTTON -->
 
-    <button
-      id="newDareButton"
-      class="new-dare"
-      onclick="demoDare()">
+  <!-- =========================
+       QUEUE
+  ========================= -->
 
-      🧪 TEST NEW DARE
+  <div class="card">
 
-    </button>
+    <div class="card-title">
+
+      WAITING QUEUE
+
+      <span
+        id="queueCount"
+        class="queue-count"
+      >
+        0
+      </span>
+
+    </div>
+
+
+    <div id="queueList">
+
+      <div class="empty">
+
+        No dares waiting
+
+      </div>
+
+    </div>
+
+
+    <div class="secondary-buttons">
+
+      <button
+        onclick="clearQueue()"
+      >
+        🗑️ Clear All
+      </button>
+
+      <button
+        onclick="refreshState()"
+      >
+        🔄 Refresh
+      </button>
+
+    </div>
 
   </div>
+
 
 </div>
 
 
+<div id="toast"></div>
+
+
 <script>
-
-const BACKEND_URL = "https://dare-backend-vx8w.onrender.com";
-
-const WS_URL =
-  BACKEND_URL.replace("https://", "wss://") + "/ws";
-
-let socket = null;
-let currentDare = null;
-let timerInterval = null;
-let remainingTime = 30;
 
 
 /* =========================================
-   CONNECTION STATUS
+   BACKEND
 ========================================= */
 
-function setConnectionStatus(online) {
+const BACKEND_URL =
+  "https://dare-backend-vx8w.onrender.com";
 
-  const dot =
-    document.getElementById("connectionDot");
 
-  const text =
-    document.getElementById("connectionText");
+const WS_URL =
+  "wss://dare-backend-vx8w.onrender.com/ws";
 
-  if (online) {
 
-    dot.classList.add("online");
+/* =========================================
+   STATE
+========================================= */
 
-    text.textContent =
-      "Connected to Dare Server";
+let currentDare = null;
 
-  } else {
+let dareQueue = [];
 
-    dot.classList.remove("online");
+let socket = null;
 
-    text.textContent =
-      "Disconnected";
+
+/* =========================================
+   ELEMENTS
+========================================= */
+
+const connectionDot =
+  document.getElementById(
+    "connectionDot"
+  );
+
+const connectionText =
+  document.getElementById(
+    "connectionText"
+  );
+
+const emptyState =
+  document.getElementById(
+    "emptyState"
+  );
+
+const currentDareElement =
+  document.getElementById(
+    "currentDare"
+  );
+
+const statusElement =
+  document.getElementById(
+    "status"
+  );
+
+const viewerElement =
+  document.getElementById(
+    "viewer"
+  );
+
+const dareTextElement =
+  document.getElementById(
+    "dareText"
+  );
+
+const rewardElement =
+  document.getElementById(
+    "reward"
+  );
+
+const durationElement =
+  document.getElementById(
+    "duration"
+  );
+
+const acceptButton =
+  document.getElementById(
+    "acceptButton"
+  );
+
+const rejectButton =
+  document.getElementById(
+    "rejectButton"
+  );
+
+const finishButtons =
+  document.getElementById(
+    "finishButtons"
+  );
+
+const queueList =
+  document.getElementById(
+    "queueList"
+  );
+
+const queueCount =
+  document.getElementById(
+    "queueCount"
+  );
+
+
+/* =========================================
+   CONNECT WEBSOCKET
+========================================= */
+
+function connectWebSocket() {
+
+  connectionText.textContent =
+    "Connecting...";
+
+  connectionDot.classList.remove(
+    "connected"
+  );
+
+
+  socket =
+    new WebSocket(WS_URL);
+
+
+  socket.onopen =
+    function() {
+
+      console.log(
+        "Connected to Dare Server"
+      );
+
+
+      connectionText.textContent =
+        "Connected";
+
+
+      connectionDot.classList.add(
+        "connected"
+      );
+
+    };
+
+
+  socket.onmessage =
+    function(event) {
+
+      try {
+
+        const message =
+          JSON.parse(
+            event.data
+          );
+
+
+        handleMessage(
+          message
+        );
+
+      }
+
+      catch(error) {
+
+        console.error(
+          "Invalid server message:",
+          error
+        );
+
+      }
+
+    };
+
+
+  socket.onclose =
+    function() {
+
+      connectionText.textContent =
+        "Disconnected";
+
+      connectionDot.classList.remove(
+        "connected"
+      );
+
+
+      setTimeout(
+        connectWebSocket,
+        2000
+      );
+
+    };
+
+
+  socket.onerror =
+    function(error) {
+
+      console.error(
+        "WebSocket error:",
+        error
+      );
+
+    };
+
+}
+
+
+/* =========================================
+   HANDLE SERVER MESSAGE
+========================================= */
+
+function handleMessage(message) {
+
+  console.log(
+    "Server message:",
+    message
+  );
+
+
+  if (
+    message.type ===
+    "STATE"
+  ) {
+
+    currentDare =
+      message.currentDare;
+
+    dareQueue =
+      message.queue || [];
+
+
+    render();
+
+  }
+
+
+  else if (
+    message.type ===
+    "NEW_DARE"
+  ) {
+
+    currentDare =
+      message.dare;
+
+
+    dareQueue =
+      message.queue || [];
+
+
+    render();
+
+
+    showToast(
+      "🎯 New dare received!"
+    );
+
+  }
+
+
+  else if (
+    message.type ===
+    "QUEUE_UPDATED"
+  ) {
+
+    currentDare =
+      message.currentDare;
+
+    dareQueue =
+      message.queue || [];
+
+
+    render();
+
+  }
+
+
+  else if (
+    message.type ===
+    "DARE_STATUS"
+  ) {
+
+    currentDare =
+      message.dare;
+
+    dareQueue =
+      message.queue || [];
+
+
+    render();
+
+  }
+
+
+  else if (
+    message.type ===
+    "DARE_CLEARED"
+  ) {
+
+    currentDare =
+      null;
+
+    dareQueue =
+      message.queue || [];
+
+
+    render();
+
+  }
+
+
+  else if (
+    message.type ===
+    "RESET"
+  ) {
+
+    currentDare =
+      null;
+
+    dareQueue =
+      [];
+
+
+    render();
 
   }
 
@@ -472,162 +971,253 @@ function setConnectionStatus(online) {
 
 
 /* =========================================
-   CONNECT TO SERVER
+   RENDER
 ========================================= */
 
-function connectToServer() {
+function render() {
 
-  console.log("Connecting to:", WS_URL);
+  renderCurrentDare();
 
-  socket = new WebSocket(WS_URL);
-
-
-  socket.onopen = function() {
-
-    console.log("Connected!");
-
-    setConnectionStatus(true);
-
-  };
-
-
-  socket.onclose = function() {
-
-    console.log("Disconnected");
-
-    setConnectionStatus(false);
-
-    setTimeout(connectToServer, 3000);
-
-  };
-
-
-  socket.onerror = function(error) {
-
-    console.error(
-      "WebSocket error:",
-      error
-    );
-
-    setConnectionStatus(false);
-
-  };
-
-
-  socket.onmessage = function(event) {
-
-    const message =
-      JSON.parse(event.data);
-
-    console.log(
-      "Server:",
-      message
-    );
-
-
-    /* NEW DARE */
-
-    if (
-      message.type === "NEW_DARE"
-    ) {
-
-      showDare(message.dare);
-
-    }
-
-
-    /* STATUS UPDATE */
-
-    if (
-      message.type === "DARE_STATUS"
-    ) {
-
-      handleServerStatus(
-        message.dare
-      );
-
-    }
-
-
-    /* CLEARED */
-
-    if (
-      message.type === "DARE_CLEARED"
-    ) {
-
-      resetController();
-
-    }
-
-  };
+  renderQueue();
 
 }
 
 
 /* =========================================
-   SHOW DARE
+   CURRENT DARE
 ========================================= */
 
-function showDare(dare) {
-
-  currentDare = dare;
-
-
-  document
-    .getElementById("waitingScreen")
-    .classList.add("hidden");
-
-
-  document
-    .getElementById("dareScreen")
-    .style.display = "block";
-
-
-  document
-    .getElementById("viewer")
-    .textContent =
-    "@" + dare.viewer;
-
-
-  document
-    .getElementById("dareText")
-    .textContent =
-    dare.text;
-
-
-  document
-    .getElementById("reward")
-    .textContent =
-    "0";
-
-
-  document
-    .getElementById("status")
-    .textContent =
-    "NEW DARE";
-
-
-  document
-    .getElementById("decisionButtons")
-    .classList.remove("hidden");
-
-
-  document
-    .getElementById("timerArea")
-    .classList.add("hidden");
-
-}
-
-
-/* =========================================
-   SEND STATUS
-========================================= */
-
-async function sendStatus(status) {
+function renderCurrentDare() {
 
   if (!currentDare) {
 
-    console.log("No active dare");
+    emptyState.style.display =
+      "block";
+
+    currentDareElement.style.display =
+      "none";
+
+    return;
+
+  }
+
+
+  emptyState.style.display =
+    "none";
+
+  currentDareElement.style.display =
+    "block";
+
+
+  viewerElement.textContent =
+    "@" +
+    (
+      currentDare.viewer ||
+      "Anonymous"
+    );
+
+
+  dareTextElement.textContent =
+    currentDare.text ||
+    "";
+
+
+  rewardElement.textContent =
+    currentDare.reward ||
+    0;
+
+
+  durationElement.textContent =
+    currentDare.duration ||
+    30;
+
+
+  statusElement.textContent =
+    (
+      currentDare.status ||
+      "pending"
+    ).toUpperCase();
+
+
+  updateStatusColor();
+
+
+  const accepted =
+    currentDare.status ===
+    "accepted";
+
+
+  acceptButton.disabled =
+    accepted;
+
+
+  rejectButton.disabled =
+    accepted;
+
+
+  finishButtons.style.display =
+    accepted
+      ? "grid"
+      : "none";
+
+}
+
+
+/* =========================================
+   STATUS COLOR
+========================================= */
+
+function updateStatusColor() {
+
+  const status =
+    currentDare.status;
+
+
+  if (
+    status ===
+    "accepted"
+  ) {
+
+    statusElement.style.background =
+      "#16a34a";
+
+  }
+
+  else if (
+    status ===
+    "rejected"
+  ) {
+
+    statusElement.style.background =
+      "#dc2626";
+
+  }
+
+  else if (
+    status ===
+    "completed"
+  ) {
+
+    statusElement.style.background =
+      "#2563eb";
+
+  }
+
+  else if (
+    status ===
+    "failed"
+  ) {
+
+    statusElement.style.background =
+      "#9333ea";
+
+  }
+
+  else {
+
+    statusElement.style.background =
+      "#e53935";
+
+  }
+
+}
+
+
+/* =========================================
+   RENDER QUEUE
+========================================= */
+
+function renderQueue() {
+
+  queueCount.textContent =
+    dareQueue.length;
+
+
+  if (
+    dareQueue.length === 0
+  ) {
+
+    queueList.innerHTML =
+
+      '<div class="empty">' +
+      'No dares waiting' +
+      '</div>';
+
+    return;
+
+  }
+
+
+  queueList.innerHTML =
+    "";
+
+
+  dareQueue.forEach(
+    function(dare, index) {
+
+      const item =
+        document.createElement(
+          "div"
+        );
+
+
+      item.className =
+        "queue-item";
+
+
+      item.innerHTML =
+
+        '<div class="queue-number">' +
+        "#" +
+        (index + 1) +
+        "</div>" +
+
+        '<div class="queue-content">' +
+
+          '<div class="queue-viewer">' +
+          "@" +
+          escapeHtml(
+            dare.viewer ||
+            "Anonymous"
+          ) +
+          "</div>" +
+
+          '<div class="queue-text">' +
+          escapeHtml(
+            dare.text
+          ) +
+          "</div>" +
+
+        "</div>" +
+
+        '<div class="queue-reward">' +
+        "₱" +
+        (
+          dare.reward ||
+          0
+        ) +
+        "</div>";
+
+
+      queueList.appendChild(
+        item
+      );
+
+    }
+  );
+
+}
+
+
+/* =========================================
+   SET DARE STATUS
+========================================= */
+
+async function setDareStatus(
+  newStatus
+) {
+
+  if (!currentDare) {
 
     return;
 
@@ -636,154 +1226,87 @@ async function sendStatus(status) {
 
   try {
 
-    const response = await fetch(
+    const response =
+      await fetch(
 
-      BACKEND_URL +
-      "/api/dare/" +
-      currentDare.id +
-      "/status",
+        BACKEND_URL +
+        "/api/dare/" +
+        encodeURIComponent(
+          currentDare.id
+        ) +
+        "/status",
 
-      {
+        {
 
-        method: "POST",
+          method:
+            "POST",
 
-        headers: {
-          "Content-Type":
-            "application/json"
-        },
+          headers: {
 
-        body: JSON.stringify({
-          status: status
-        })
+            "Content-Type":
+              "application/json"
 
-      }
+          },
 
-    );
+          body:
+            JSON.stringify({
+
+              status:
+                newStatus
+
+            })
+
+        }
+
+      );
 
 
-    const result =
+    const data =
       await response.json();
 
 
-    console.log(
-      "Status response:",
-      result
+    if (!response.ok) {
+
+      throw new Error(
+
+        data.error ||
+        "Request failed"
+
+      );
+
+    }
+
+
+    currentDare =
+      data.dare;
+
+    dareQueue =
+      data.queue || [];
+
+
+    render();
+
+
+    showToast(
+
+      "Status: " +
+      newStatus.toUpperCase()
+
     );
 
+  }
 
-  } catch (error) {
+
+  catch(error) {
 
     console.error(
-      "Failed to send status:",
       error
     );
 
-  }
 
-}
-
-
-/* =========================================
-   ACCEPT
-========================================= */
-
-function acceptDare() {
-
-  if (!currentDare) return;
-
-  sendStatus("accepted");
-
-}
-
-
-/* =========================================
-   REJECT
-========================================= */
-
-function rejectDare() {
-
-  if (!currentDare) return;
-
-  sendStatus("rejected");
-
-}
-
-
-/* =========================================
-   COMPLETE
-========================================= */
-
-function completeDare() {
-
-  if (!currentDare) return;
-
-  sendStatus("completed");
-
-}
-
-
-/* =========================================
-   FAIL
-========================================= */
-
-function failDare() {
-
-  if (!currentDare) return;
-
-  sendStatus("failed");
-
-}
-
-
-/* =========================================
-   HANDLE STATUS
-========================================= */
-
-function handleServerStatus(dare) {
-
-  currentDare = dare;
-
-
-  if (dare.status === "accepted") {
-
-    document
-      .getElementById("status")
-      .textContent =
-      "🔥 DARE ACCEPTED";
-
-
-    document
-      .getElementById("decisionButtons")
-      .classList.add("hidden");
-
-
-    document
-      .getElementById("timerArea")
-      .classList.remove("hidden");
-
-
-    startTimer();
-
-  }
-
-
-  if (dare.status === "rejected") {
-
-    resetController();
-
-  }
-
-
-  if (dare.status === "completed") {
-
-    resetController();
-
-  }
-
-
-  if (dare.status === "failed") {
-
-    resetController();
+    showToast(
+      "❌ Could not update dare"
+    );
 
   }
 
@@ -791,78 +1314,186 @@ function handleServerStatus(dare) {
 
 
 /* =========================================
-   TIMER
+   CLEAR QUEUE
 ========================================= */
 
-function startTimer() {
+async function clearQueue() {
 
-  clearInterval(timerInterval);
+  if (
+    !confirm(
+      "Clear the current dare and all waiting dares?"
+    )
+  ) {
 
+    return;
 
-  remainingTime =
-    currentDare.duration || 30;
-
-
-  updateTimer();
-
-
-  timerInterval =
-    setInterval(function() {
-
-      remainingTime--;
-
-      updateTimer();
+  }
 
 
-      if (remainingTime <= 0) {
+  try {
 
-        clearInterval(timerInterval);
+    const response =
+      await fetch(
 
-        document
-          .getElementById("status")
-          .textContent =
-          "⏰ TIME'S UP";
+        BACKEND_URL +
+        "/api/dare/clear",
 
-      }
+        {
 
-    }, 1000);
+          method:
+            "POST"
+
+        }
+
+      );
+
+
+    if (!response.ok) {
+
+      throw new Error(
+        "Could not clear queue"
+      );
+
+    }
+
+
+    showToast(
+      "🗑️ Queue cleared"
+    );
+
+  }
+
+
+  catch(error) {
+
+    console.error(
+      error
+    );
+
+
+    showToast(
+      "❌ Could not clear queue"
+    );
+
+  }
 
 }
 
 
 /* =========================================
-   UPDATE TIMER
+   REFRESH
 ========================================= */
 
-function updateTimer() {
+async function refreshState() {
 
-  document
-    .getElementById("timer")
-    .textContent =
-    remainingTime;
+  try {
+
+    const response =
+      await fetch(
+
+        BACKEND_URL +
+        "/api/dare"
+
+      );
+
+
+    const data =
+      await response.json();
+
+
+    currentDare =
+      data.currentDare;
+
+    dareQueue =
+      data.queue || [];
+
+
+    render();
+
+
+    showToast(
+      "🔄 Refreshed"
+    );
+
+  }
+
+
+  catch(error) {
+
+    console.error(
+      error
+    );
+
+
+    showToast(
+      "❌ Could not refresh"
+    );
+
+  }
 
 }
 
 
 /* =========================================
-   RESET
+   ESCAPE HTML
 ========================================= */
 
-function resetController() {
+function escapeHtml(text) {
 
-  clearInterval(timerInterval);
+  const div =
+    document.createElement(
+      "div"
+    );
 
-  currentDare = null;
+  div.textContent =
+    text;
+
+  return div.innerHTML;
+
+}
 
 
-  document
-    .getElementById("dareScreen")
-    .style.display = "none";
+/* =========================================
+   TOAST
+========================================= */
+
+let toastTimeout;
 
 
-  document
-    .getElementById("waitingScreen")
-    .classList.remove("hidden");
+function showToast(message) {
+
+  const toast =
+    document.getElementById(
+      "toast"
+    );
+
+
+  toast.textContent =
+    message;
+
+
+  toast.classList.add(
+    "show"
+  );
+
+
+  clearTimeout(
+    toastTimeout
+  );
+
+
+  toastTimeout =
+    setTimeout(
+      function() {
+
+        toast.classList.remove(
+          "show"
+        );
+
+      },
+
+      2500
+    );
 
 }
 
@@ -871,12 +1502,16 @@ function resetController() {
    START
 ========================================= */
 
-connectToServer();
+render();
+
+connectWebSocket();
+
+refreshState();
 
 </script>
 
 
-
 </body>
+
 </html>
 
