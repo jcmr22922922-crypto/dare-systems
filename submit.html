@@ -1,17 +1,18 @@
 <!DOCTYPE html>
+
 <html lang="en">
 
 <head>
 
   <meta charset="UTF-8">
 
-  <meta
-    name="viewport"
-    content="width=device-width, initial-scale=1.0"
-  >
+<meta
+name="viewport"
+content="width=device-width, initial-scale=1.0"
 
-  <title>Send a Dare • Nerve</title>
+>
 
+  <title>Send a Dare • Dare System</title>
 
   <style>
 
@@ -21,44 +22,28 @@
       padding: 0;
     }
 
-
     :root {
-
       --bg: #08080c;
-
       --surface: #111116;
-
       --surface-2: #17171e;
-
-      --border:
-        rgba(255,255,255,0.09);
-
+      --border: rgba(255,255,255,0.09);
       --text: #ffffff;
-
       --muted: #9999a6;
-
       --accent: #8b5cf6;
-
       --accent-2: #a78bfa;
-
+      --danger: #ef4444;
+      --success: #22c55e;
     }
-
-
-    html {
-      scroll-behavior: smooth;
-    }
-
 
     body {
 
       min-height: 100vh;
 
       background:
-
         radial-gradient(
           circle at top,
-          #1d1930 0%,
-          #08080c 45%,
+          #252538 0%,
+          #0b0b12 45%,
           #050507 100%
         );
 
@@ -70,78 +55,42 @@
         Helvetica,
         sans-serif;
 
-      line-height: 1.5;
-
-      padding-bottom: 60px;
+      padding-bottom: 50px;
 
     }
-
 
     a {
-
       color: inherit;
-
       text-decoration: none;
-
     }
-
-
-    button,
-    input,
-    textarea,
-    select {
-
-      font: inherit;
-
-    }
-
 
     /* =========================
-       NAVIGATION
+       NAVBAR
     ========================= */
 
-    .navbar {
-
-      position: sticky;
-
-      top: 0;
-
-      z-index: 1000;
+    nav {
 
       width: 100%;
 
-      background:
-        rgba(8,8,12,0.88);
+      padding: 18px 6%;
 
-      backdrop-filter:
-        blur(18px);
+      display: flex;
+
+      justify-content: space-between;
+
+      align-items: center;
 
       border-bottom:
         1px solid
         var(--border);
 
-    }
+      background:
+        rgba(8,8,12,0.75);
 
-
-    .nav-inner {
-
-      max-width: 1200px;
-
-      margin: auto;
-
-      height: 72px;
-
-      padding:
-        0 24px;
-
-      display: flex;
-
-      align-items: center;
-
-      justify-content: space-between;
+      backdrop-filter:
+        blur(18px);
 
     }
-
 
     .logo {
 
@@ -151,28 +100,25 @@
 
       gap: 10px;
 
+      color: white;
+
       font-size: 20px;
 
       font-weight: 900;
 
-      letter-spacing: -0.5px;
-
     }
-
 
     .logo-icon {
 
-      width: 38px;
-
-      height: 38px;
+      width: 36px;
+      height: 36px;
 
       display: flex;
 
       align-items: center;
-
       justify-content: center;
 
-      border-radius: 11px;
+      border-radius: 10px;
 
       background:
         linear-gradient(
@@ -181,67 +127,19 @@
           #6d28d9
         );
 
-      box-shadow:
-        0 8px 25px
-        rgba(139,92,246,0.25);
-
     }
-
 
     .nav-links {
 
       display: flex;
 
-      align-items: center;
-
-      gap: 28px;
+      gap: 25px;
 
     }
-
 
     .nav-links a {
 
       color: var(--muted);
-
-      font-size: 14px;
-
-      font-weight: 600;
-
-      transition: 0.2s;
-
-    }
-
-
-    .nav-links a:hover {
-
-      color: white;
-
-    }
-
-
-    .nav-actions {
-
-      display: flex;
-
-      align-items: center;
-
-      gap: 10px;
-
-    }
-
-
-    .login-btn {
-
-      padding:
-        10px 16px;
-
-      border:
-        1px solid
-        var(--border);
-
-      border-radius: 10px;
-
-      color: white;
 
       font-size: 14px;
 
@@ -251,14 +149,11 @@
 
     }
 
+    .nav-links a:hover {
 
-    .login-btn:hover {
-
-      background:
-        var(--surface-2);
+      color: white;
 
     }
-
 
     /* =========================
        MAIN
@@ -271,19 +166,17 @@
       max-width: 650px;
 
       margin:
-        70px auto;
+        65px auto;
 
     }
-
 
     .header {
 
       text-align: center;
 
-      margin-bottom: 35px;
+      margin-bottom: 32px;
 
     }
-
 
     .badge {
 
@@ -293,54 +186,33 @@
 
       gap: 8px;
 
-      padding:
-        7px 12px;
+      padding: 8px 14px;
 
-      margin-bottom: 18px;
-
-      border:
-        1px solid
-        rgba(139,92,246,0.3);
-
-      border-radius: 999px;
+      border-radius: 50px;
 
       background:
         rgba(139,92,246,0.08);
 
-      color:
-        var(--accent-2);
+      border:
+        1px solid
+        rgba(139,92,246,0.25);
 
-      font-size: 12px;
+      color: var(--accent-2);
 
-      font-weight: 800;
+      font-size: 11px;
 
-    }
+      font-weight: 900;
 
-
-    .badge-dot {
-
-      width: 7px;
-
-      height: 7px;
-
-      border-radius: 50%;
-
-      background: #22c55e;
-
-      box-shadow:
-        0 0 10px
-        rgba(34,197,94,0.8);
+      margin-bottom: 18px;
 
     }
-
 
     h1 {
 
       font-size:
-        clamp(40px, 7vw, 60px);
+        clamp(38px, 7vw, 58px);
 
-      letter-spacing:
-        -3px;
+      letter-spacing: -3px;
 
       line-height: 1;
 
@@ -348,16 +220,17 @@
 
     }
 
-
     .header p {
 
-      color:
-        var(--muted);
+      color: var(--muted);
 
       line-height: 1.6;
 
-    }
+      max-width: 500px;
 
+      margin: auto;
+
+    }
 
     /* =========================
        CARD
@@ -382,17 +255,15 @@
 
     }
 
-
     /* =========================
-       FIELDS
+       FIELD
     ========================= */
 
     .field {
 
-      margin-bottom: 22px;
+      margin-bottom: 20px;
 
     }
-
 
     label {
 
@@ -408,6 +279,17 @@
 
     }
 
+    .field-description {
+
+      color: #777783;
+
+      font-size: 11px;
+
+      margin-top: 6px;
+
+      line-height: 1.5;
+
+    }
 
     input,
     textarea,
@@ -428,17 +310,17 @@
 
       color: white;
 
-      padding: 14px;
+      font-family: inherit;
 
       font-size: 16px;
 
+      padding: 14px;
+
       transition:
         border-color 0.2s,
-        background 0.2s,
-        box-shadow 0.2s;
+        background 0.2s;
 
     }
-
 
     input:focus,
     textarea:focus,
@@ -450,12 +332,7 @@
       background:
         rgba(0,0,0,0.4);
 
-      box-shadow:
-        0 0 0 3px
-        rgba(139,92,246,0.08);
-
     }
-
 
     select {
 
@@ -464,32 +341,20 @@
       appearance: none;
 
       background-image:
-        linear-gradient(
-          45deg,
-          transparent 50%,
-          #aaa 50%
-        ),
-        linear-gradient(
-          135deg,
-          #aaa 50%,
-          transparent 50%
-        );
+        linear-gradient(45deg, transparent 50%, #aaa 50%),
+        linear-gradient(135deg, #aaa 50%, transparent 50%);
 
       background-position:
-        calc(100% - 18px) 50%,
-        calc(100% - 13px) 50%;
+        calc(100% - 18px) 19px,
+        calc(100% - 12px) 19px;
 
       background-size:
-        5px 5px,
-        5px 5px;
+        6px 6px,
+        6px 6px;
 
-      background-repeat:
-        no-repeat;
-
-      padding-right: 40px;
+      background-repeat: no-repeat;
 
     }
-
 
     select option {
 
@@ -498,7 +363,6 @@
       color: white;
 
     }
-
 
     textarea {
 
@@ -510,117 +374,124 @@
 
     }
 
+    /* =========================
+       STREAMER SELECT
+    ========================= */
 
-    .hint {
+    .streamer-box {
 
-      margin-top: 7px;
+      padding: 16px;
 
-      color: #666672;
+      border:
+        1px solid
+        rgba(139,92,246,0.18);
+
+      border-radius: 15px;
+
+      background:
+        rgba(139,92,246,0.04);
+
+    }
+
+    .streamer-choice {
+
+      display: flex;
+
+      align-items: center;
+
+      gap: 10px;
+
+      margin-bottom: 12px;
+
+    }
+
+    .choice-button {
+
+      flex: 1;
+
+      padding: 11px 12px;
+
+      border:
+        1px solid
+        rgba(255,255,255,0.08);
+
+      border-radius: 10px;
+
+      background:
+        rgba(255,255,255,0.04);
+
+      color: #aaa;
+
+      font-size: 12px;
+
+      font-weight: 800;
+
+      cursor: pointer;
+
+      transition: 0.2s;
+
+    }
+
+    .choice-button:hover {
+
+      background:
+        rgba(255,255,255,0.08);
+
+      color: white;
+
+    }
+
+    .choice-button.active {
+
+      border-color:
+        rgba(139,92,246,0.55);
+
+      background:
+        rgba(139,92,246,0.15);
+
+      color: white;
+
+    }
+
+    .streamer-method {
+
+      display: none;
+
+    }
+
+    .streamer-method.active {
+
+      display: block;
+
+    }
+
+    .connected-status {
+
+      margin-top: 8px;
+
+      color: #777783;
 
       font-size: 11px;
 
     }
 
+    .connected-status.online {
+
+      color: #86efac;
+
+    }
+
+    .connected-status.error {
+
+      color: #fca5a5;
+
+    }
 
     /* =========================
-       STREAMER INFO
+       DURATION + REWARD
     ========================= */
 
-    .streamer-preview {
-
-      display: none;
-
-      align-items: center;
-
-      gap: 12px;
-
-      margin-top: 10px;
-
-      padding: 12px;
-
-      border:
-        1px solid
-        rgba(139,92,246,0.2);
-
-      border-radius: 12px;
-
-      background:
-        rgba(139,92,246,0.06);
-
-    }
-
-
-    .streamer-preview.show {
-
-      display: flex;
-
-    }
-
-
-    .streamer-avatar {
-
-      width: 38px;
-
-      height: 38px;
-
-      display: flex;
-
-      align-items: center;
-
-      justify-content: center;
-
-      border-radius: 50%;
-
-      background:
-        linear-gradient(
-          135deg,
-          var(--accent),
-          #6d28d9
-        );
-
-      font-size: 17px;
-
-    }
-
-
-    .streamer-preview-text {
-
-      flex: 1;
-
-    }
-
-
-    .streamer-preview-label {
-
-      color: #777783;
-
-      font-size: 10px;
-
-      font-weight: 700;
-
-      text-transform: uppercase;
-
-      letter-spacing: 0.5px;
-
-    }
-
-
-    .streamer-preview-name {
-
-      color: white;
-
-      font-size: 14px;
-
-      font-weight: 800;
-
-    }
-
-
-    /* =========================
-       ROW
-    ========================= */
-
-    .field-row {
+    .two-columns {
 
       display: grid;
 
@@ -631,12 +502,42 @@
 
     }
 
+    .input-prefix {
+
+      position: relative;
+
+    }
+
+    .input-prefix span {
+
+      position: absolute;
+
+      left: 14px;
+
+      top: 50%;
+
+      transform:
+        translateY(-50%);
+
+      color: #aaa;
+
+      font-weight: 800;
+
+      pointer-events: none;
+
+    }
+
+    .input-prefix input {
+
+      padding-left: 30px;
+
+    }
 
     /* =========================
-       SUBMIT BUTTON
+       BUTTON
     ========================= */
 
-    .submit-button {
+    button[type="submit"] {
 
       width: 100%;
 
@@ -647,7 +548,11 @@
       padding: 16px;
 
       background:
-        var(--accent);
+        linear-gradient(
+          135deg,
+          var(--accent),
+          #6d28d9
+        );
 
       color: white;
 
@@ -659,38 +564,30 @@
 
       box-shadow:
         0 10px 30px
-        rgba(139,92,246,0.22);
+        rgba(139,92,246,0.2);
 
       transition:
         transform 0.2s,
-        background 0.2s,
         opacity 0.2s;
 
     }
 
-
-    .submit-button:hover {
+    button[type="submit"]:hover {
 
       transform:
         translateY(-2px);
 
-      background:
-        #7c3aed;
-
     }
 
-
-    .submit-button:disabled {
+    button[type="submit"]:disabled {
 
       opacity: 0.5;
 
-      cursor:
-        not-allowed;
+      cursor: not-allowed;
 
       transform: none;
 
     }
-
 
     /* =========================
        STATUS
@@ -714,38 +611,35 @@
 
     }
 
-
     .success {
 
       display: block !important;
 
       background:
-        rgba(22,163,74,0.12);
+        rgba(22,163,74,0.15);
 
       border:
         1px solid
-        rgba(22,163,74,0.3);
+        rgba(22,163,74,0.35);
 
       color: #86efac;
 
     }
-
 
     .error {
 
       display: block !important;
 
       background:
-        rgba(220,38,38,0.12);
+        rgba(220,38,38,0.15);
 
       border:
         1px solid
-        rgba(220,38,38,0.3);
+        rgba(220,38,38,0.35);
 
       color: #fca5a5;
 
     }
-
 
     /* =========================
        NOTICE
@@ -755,7 +649,7 @@
 
       margin-top: 18px;
 
-      color: #666672;
+      color: #666;
 
       text-align: center;
 
@@ -765,119 +659,48 @@
 
     }
 
-
-    /* =========================
-       INFO BOX
-    ========================= */
-
-    .info-box {
-
-      display: flex;
-
-      gap: 12px;
-
-      margin-top: 20px;
-
-      padding: 15px;
-
-      border:
-        1px solid
-        var(--border);
-
-      border-radius: 13px;
-
-      background:
-        rgba(255,255,255,0.025);
-
-    }
-
-
-    .info-icon {
-
-      font-size: 18px;
-
-    }
-
-
-    .info-text {
-
-      color:
-        var(--muted);
-
-      font-size: 12px;
-
-      line-height: 1.5;
-
-    }
-
-
-    .info-text strong {
-
-      color: #ddd;
-
-    }
-
-
     /* =========================
        MOBILE
     ========================= */
 
-    @media (max-width: 700px) {
+    @media (max-width: 600px) {
 
-      .nav-links,
-      .nav-actions {
+      nav {
 
-        display: none;
-
-      }
-
-
-      .nav-inner {
-
-        height: 64px;
+        padding:
+          16px 5%;
 
       }
 
+      .nav-links {
+
+        gap: 12px;
+
+      }
+
+      .nav-links a {
+
+        font-size: 12px;
+
+      }
 
       main {
 
-        margin-top: 45px;
+        margin-top: 40px;
 
       }
-
 
       .card {
 
-        padding: 22px;
+        padding: 20px;
 
       }
 
-    }
+      .two-columns {
 
-
-    @media (max-width: 520px) {
-
-      main {
-
-        width: 94%;
-
-      }
-
-
-      .field-row {
-
-        grid-template-columns:
-          1fr;
+        grid-template-columns: 1fr;
 
         gap: 0;
-
-      }
-
-
-      h1 {
-
-        letter-spacing:
-          -2px;
 
       }
 
@@ -887,72 +710,45 @@
 
 </head>
 
-
 <body>
 
-
 <!-- =========================
-     NAVIGATION
+     NAVBAR
 ========================= -->
 
-<nav class="navbar">
+<nav>
 
-  <div class="nav-inner">
+<a
+class="logo"
+href="index.html"
 
+>
 
-    <a
-      href="index.html"
-      class="logo"
-    >
+```
+<div class="logo-icon">
+  🎯
+</div>
 
-      <div class="logo-icon">
-        🎯
-      </div>
+Dare System
+```
 
-      <span>
-        Nerve
-      </span>
+  </a>
 
-    </a>
+  <div class="nav-links">
 
+```
+<a href="index.html">
+  Home
+</a>
 
-    <div class="nav-links">
-
-      <a href="index.html">
-        Home
-      </a>
-
-      <a href="index.html#how-it-works">
-        How It Works
-      </a>
-
-      <a href="submit.html">
-        Submit a Dare
-      </a>
-
-      <a href="index.html#for-streamers">
-        For Streamers
-      </a>
-
-    </div>
-
-
-    <div class="nav-actions">
-
-      <a
-        href="login.html"
-        class="login-btn"
-      >
-        Login
-      </a>
-
-    </div>
-
+<a href="controller.html">
+  Dashboard
+</a>
+```
 
   </div>
 
 </nav>
-
 
 <!-- =========================
      MAIN
@@ -960,343 +756,276 @@
 
 <main>
 
-
   <div class="header">
 
-    <div class="badge">
+```
+<div class="badge">
+  🎯 DARE A STREAMER
+</div>
 
-      <span class="badge-dot"></span>
+<h1>
+  Send a Dare
+</h1>
 
-      SEND A DARE
-
-    </div>
-
-
-    <h1>
-      Challenge a streamer.
-    </h1>
-
-
-    <p>
-
-      Send a challenge directly to a streamer.
-      They'll decide whether to accept it.
-
-    </p>
+<p>
+  Choose a streamer, create your challenge,
+  and send it directly to their Dare System queue.
+</p>
+```
 
   </div>
 
-
   <!-- =========================
-       FORM CARD
+       FORM
   ========================= -->
 
   <div class="card">
 
+```
+<form id="dareForm">
 
-    <form id="dareForm">
+
+  <!-- =====================
+       STREAMER
+  ===================== -->
+
+  <div class="field">
+
+    <label>
+      🎥 Target Streamer
+    </label>
+
+    <div class="streamer-box">
 
 
-      <!-- =========================
-           STREAMER
-      ========================= -->
+      <div class="streamer-choice">
 
-      <div class="field">
+        <button
+          type="button"
+          class="choice-button active"
+          id="connectedChoice"
+        >
+          Connected Streamer
+        </button>
 
-        <label for="streamer">
+        <button
+          type="button"
+          class="choice-button"
+          id="manualChoice"
+        >
+          Twitch Username
+        </button>
 
-          Choose a streamer
+      </div>
 
-        </label>
 
+      <!-- CONNECTED STREAMERS -->
+
+      <div
+        id="connectedMethod"
+        class="streamer-method active"
+      >
 
         <select
-          id="streamer"
-          required
+          id="streamerSelect"
         >
 
-          <option
-            value=""
-            disabled
-            selected
-          >
-
-            Select a streamer...
-
+          <option value="">
+            Loading connected streamers...
           </option>
-
-
-          <!--
-          ==========================================
-          MANUAL STREAMER LIST
-
-          Add streamers here for now.
-
-          Later this will come from the backend
-          and eventually from Twitch accounts.
-          ==========================================
-          -->
-
-
-          <option value="streamer1">
-            @Streamer1
-          </option>
-
-
-          <option value="streamer2">
-            @Streamer2
-          </option>
-
-
-          <option value="streamer3">
-            @Streamer3
-          </option>
-
 
         </select>
 
 
-        <div class="hint">
-
-          Choose the streamer you want to challenge.
-
-        </div>
-
-
         <div
-          class="streamer-preview"
-          id="streamerPreview"
+          id="streamerStatus"
+          class="connected-status"
         >
-
-          <div class="streamer-avatar">
-            🎥
-          </div>
-
-
-          <div class="streamer-preview-text">
-
-            <div class="streamer-preview-label">
-
-              Target streamer
-
-            </div>
-
-
-            <div
-              class="streamer-preview-name"
-              id="streamerPreviewName"
-            >
-
-              @Streamer
-
-            </div>
-
-          </div>
-
+          Checking connected streamers...
         </div>
 
       </div>
 
 
-      <!-- =========================
-           VIEWER
-      ========================= -->
-
-      <div class="field">
-
-        <label for="viewer">
-
-          Your viewer name
-
-        </label>
-
-
-        <input
-          id="viewer"
-          type="text"
-          maxlength="30"
-          placeholder="Example: Viewer123"
-          required
-        >
-
-
-        <div class="hint">
-
-          For now, this name is entered manually.
-          Account verification will be added later.
-
-        </div>
-
-      </div>
-
-
-      <!-- =========================
-           DARE
-      ========================= -->
-
-      <div class="field">
-
-        <label for="dare">
-
-          Your dare
-
-        </label>
-
-
-        <textarea
-          id="dare"
-          maxlength="250"
-          placeholder="Write your challenge here..."
-          required
-        ></textarea>
-
-
-        <div class="hint">
-
-          Maximum 250 characters.
-
-        </div>
-
-      </div>
-
-
-      <!-- =========================
-           DURATION + REWARD
-      ========================= -->
-
-      <div class="field-row">
-
-
-        <div class="field">
-
-          <label for="duration">
-
-            Time limit
-
-          </label>
-
-
-          <input
-            id="duration"
-            type="number"
-            min="5"
-            max="300"
-            value="30"
-            required
-          >
-
-
-          <div class="hint">
-
-            5–300 seconds.
-
-          </div>
-
-        </div>
-
-
-        <div class="field">
-
-          <label for="reward">
-
-            Reward
-
-          </label>
-
-
-          <input
-            id="reward"
-            type="number"
-            min="0"
-            step="0.01"
-            value="0"
-            placeholder="0.00"
-            required
-          >
-
-
-          <div class="hint">
-
-            Payment is currently UI-only.
-
-          </div>
-
-        </div>
-
-
-      </div>
-
-
-      <!-- =========================
-           SUBMIT
-      ========================= -->
-
-      <button
-        id="submitButton"
-        class="submit-button"
-        type="submit"
-      >
-
-        🎯 SEND DARE
-
-      </button>
-
-
-      <!-- =========================
-           STATUS
-      ========================= -->
+      <!-- MANUAL TWITCH USERNAME -->
 
       <div
-        id="status"
-      ></div>
+        id="manualMethod"
+        class="streamer-method"
+      >
 
+        <input
+          id="manualStreamer"
+          type="text"
+          maxlength="30"
+          placeholder="Example: Ninja"
+          autocomplete="off"
+        >
 
-    </form>
-
-
-    <!-- =========================
-         INFO
-    ========================= -->
-
-    <div class="info-box">
-
-      <div class="info-icon">
-        🔒
-      </div>
-
-
-      <div class="info-text">
-
-        <strong>
-          Streamer controlled.
-        </strong>
-
-        Every dare is sent to the selected
-        streamer's queue. The streamer decides
-        whether to accept or reject it.
+        <div class="field-description">
+          Enter the streamer's Twitch username exactly as it appears on Twitch.
+        </div>
 
       </div>
 
     </div>
 
+  </div>
 
-    <div class="notice">
 
-      By submitting a dare, you agree that
-      the streamer can accept or reject it.
+  <!-- =====================
+       VIEWER
+  ===================== -->
 
-      Keep challenges appropriate and safe.
+  <div class="field">
+
+    <label for="viewer">
+      Your Viewer Name
+    </label>
+
+    <input
+      id="viewer"
+      type="text"
+      maxlength="30"
+      placeholder="Example: Viewer123"
+      autocomplete="off"
+      required
+    >
+
+    <div class="field-description">
+      This will be shown to the streamer.
+      Account verification will be added later.
+    </div>
+
+  </div>
+
+
+  <!-- =====================
+       DARE
+  ===================== -->
+
+  <div class="field">
+
+    <label for="dare">
+      🎯 Your Dare
+    </label>
+
+    <textarea
+      id="dare"
+      maxlength="250"
+      placeholder="Write your dare here..."
+      required
+    ></textarea>
+
+    <div class="field-description">
+      Maximum 250 characters.
+    </div>
+
+  </div>
+
+
+  <!-- =====================
+       DURATION / REWARD
+  ===================== -->
+
+  <div class="two-columns">
+
+
+    <div class="field">
+
+      <label for="duration">
+        ⏱ Time Limit
+      </label>
+
+      <input
+        id="duration"
+        type="number"
+        min="5"
+        max="300"
+        value="30"
+        required
+      >
+
+      <div class="field-description">
+        5–300 seconds.
+      </div>
 
     </div>
 
+
+    <div class="field">
+
+      <label for="reward">
+        💰 Reward
+      </label>
+
+      <div class="input-prefix">
+
+        <span>
+          ₱
+        </span>
+
+        <input
+          id="reward"
+          type="number"
+          min="0"
+          max="100000"
+          step="1"
+          value="0"
+          required
+        >
+
+      </div>
+
+      <div class="field-description">
+        Payment processing will be added later.
+      </div>
+
+    </div>
+
+
+  </div>
+
+
+  <!-- =====================
+       SUBMIT
+  ===================== -->
+
+  <button
+    id="submitButton"
+    type="submit"
+  >
+    🎯 SEND DARE
+  </button>
+
+
+  <!-- =====================
+       STATUS
+  ===================== -->
+
+  <div
+    id="status"
+  ></div>
+
+
+</form>
+
+
+<div class="notice">
+
+  By submitting a dare, you understand that
+  the streamer can accept or reject it.
+
+  Keep dares appropriate and safe.
+
+</div>
+```
 
   </div>
 
 </main>
 
-
 <script>
-
 
 /* =========================================
    BACKEND
@@ -1315,54 +1044,65 @@ const form =
     "dareForm"
   );
 
-
-const streamerInput =
+const connectedChoice =
   document.getElementById(
-    "streamer"
+    "connectedChoice"
   );
 
-
-const streamerPreview =
+const manualChoice =
   document.getElementById(
-    "streamerPreview"
+    "manualChoice"
   );
 
-
-const streamerPreviewName =
+const connectedMethod =
   document.getElementById(
-    "streamerPreviewName"
+    "connectedMethod"
   );
 
+const manualMethod =
+  document.getElementById(
+    "manualMethod"
+  );
+
+const streamerSelect =
+  document.getElementById(
+    "streamerSelect"
+  );
+
+const manualStreamer =
+  document.getElementById(
+    "manualStreamer"
+  );
+
+const streamerStatus =
+  document.getElementById(
+    "streamerStatus"
+  );
 
 const viewerInput =
   document.getElementById(
     "viewer"
   );
 
-
 const dareInput =
   document.getElementById(
     "dare"
   );
-
 
 const durationInput =
   document.getElementById(
     "duration"
   );
 
-
 const rewardInput =
   document.getElementById(
     "reward"
   );
 
-
-const submitButton =
+const button =
   document.getElementById(
     "submitButton"
   );
-
 
 const status =
   document.getElementById(
@@ -1371,38 +1111,398 @@ const status =
 
 
 /* =========================================
-   STREAMER PREVIEW
+   STREAMER MODE
 ========================================= */
 
-streamerInput.addEventListener(
-  "change",
+let streamerMode =
+  "connected";
+
+
+connectedChoice.addEventListener(
+  "click",
   function() {
 
-    const streamer =
-      streamerInput.value.trim();
+    streamerMode =
+      "connected";
+
+    connectedChoice.classList.add(
+      "active"
+    );
+
+    manualChoice.classList.remove(
+      "active"
+    );
+
+    connectedMethod.classList.add(
+      "active"
+    );
+
+    manualMethod.classList.remove(
+      "active"
+    );
+
+    manualStreamer.value = "";
+
+  }
+);
 
 
-    if (!streamer) {
+manualChoice.addEventListener(
+  "click",
+  function() {
 
-      streamerPreview
-        .classList
-        .remove("show");
+    streamerMode =
+      "manual";
+
+    manualChoice.classList.add(
+      "active"
+    );
+
+    connectedChoice.classList.remove(
+      "active"
+    );
+
+    manualMethod.classList.add(
+      "active"
+    );
+
+    connectedMethod.classList.remove(
+      "active"
+    );
+
+    streamerSelect.value = "";
+
+  }
+);
+
+
+/* =========================================
+   LOAD CONNECTED STREAMERS
+========================================= */
+
+async function loadStreamers() {
+
+  streamerStatus.textContent =
+    "Checking connected streamers...";
+
+  streamerStatus.className =
+    "connected-status";
+
+
+  try {
+
+    const response =
+      await fetch(
+        BACKEND_URL +
+        "/api/streamers"
+      );
+
+
+    if (!response.ok) {
+
+      throw new Error(
+        "Streamer endpoint unavailable."
+      );
+
+    }
+
+
+    const data =
+      await response.json();
+
+
+    /*
+    Accept either:
+
+      {
+        streamers: [...]
+      }
+
+    OR directly:
+
+      [...]
+    */
+
+    const streamers =
+      Array.isArray(data)
+        ? data
+        : Array.isArray(data.streamers)
+          ? data.streamers
+          : [];
+
+
+    streamerSelect.innerHTML = "";
+
+
+    if (
+      streamers.length === 0
+    ) {
+
+      const option =
+        document.createElement(
+          "option"
+        );
+
+      option.value = "";
+
+      option.textContent =
+        "No connected streamers";
+
+      streamerSelect.appendChild(
+        option
+      );
+
+
+      streamerStatus.textContent =
+        "No connected streamers are currently available.";
+
+      streamerStatus.className =
+        "connected-status";
+
 
       return;
 
     }
 
 
-    streamerPreviewName.textContent =
-      "@" + streamer;
+    const defaultOption =
+      document.createElement(
+        "option"
+      );
+
+    defaultOption.value = "";
+
+    defaultOption.textContent =
+      "Select a connected streamer...";
+
+    streamerSelect.appendChild(
+      defaultOption
+    );
 
 
-    streamerPreview
-      .classList
-      .add("show");
+    streamers.forEach(
+      function(streamer) {
+
+        /*
+        Support either:
+
+          "username"
+
+        or:
+
+          {
+            username: "username"
+          }
+
+        or:
+
+          {
+            twitchUsername: "username"
+          }
+        */
+
+        const username =
+          typeof streamer === "string"
+            ? streamer
+            : (
+                streamer.username ||
+                streamer.twitchUsername ||
+                streamer.twitch ||
+                ""
+              );
+
+
+        if (!username) {
+          return;
+        }
+
+
+        const option =
+          document.createElement(
+            "option"
+          );
+
+        option.value =
+          username;
+
+        option.textContent =
+          "@" + username;
+
+        streamerSelect.appendChild(
+          option
+        );
+
+      }
+    );
+
+
+    streamerStatus.textContent =
+      streamers.length +
+      " connected streamer" +
+      (
+        streamers.length === 1
+          ? ""
+          : "s"
+      ) +
+      " available.";
+
+    streamerStatus.className =
+      "connected-status online";
 
   }
-);
+
+
+  catch (error) {
+
+    console.error(
+      "Could not load streamers:",
+      error
+    );
+
+
+    streamerSelect.innerHTML = "";
+
+
+    const option =
+      document.createElement(
+        "option"
+      );
+
+    option.value = "";
+
+    option.textContent =
+      "Could not load connected streamers";
+
+    streamerSelect.appendChild(
+      option
+    );
+
+
+    streamerStatus.textContent =
+      "Connected streamer list is unavailable. You can use the Twitch Username option.";
+
+    streamerStatus.className =
+      "connected-status error";
+
+  }
+
+}
+
+
+/* =========================================
+   VALIDATE TWITCH USERNAME
+========================================= */
+
+function cleanTwitchUsername(
+  username
+) {
+
+  return username
+    .trim()
+    .replace(/^@/, "");
+
+}
+
+
+function isValidTwitchUsername(
+  username
+) {
+
+  /*
+  Twitch usernames are normally
+  letters, numbers and underscores.
+  */
+
+  return /^[a-zA-Z0-9_]{1,30}$/.test(
+    username
+  );
+
+}
+
+
+/* =========================================
+   GET TARGET STREAMER
+========================================= */
+
+function getTargetStreamer() {
+
+  if (
+    streamerMode ===
+    "connected"
+  ) {
+
+    const username =
+      streamerSelect.value.trim();
+
+
+    if (!username) {
+
+      return {
+        error:
+          "Please select a connected streamer."
+      };
+
+    }
+
+
+    return {
+
+      streamer:
+        username,
+
+      streamerSource:
+        "connected"
+
+    };
+
+  }
+
+
+  const username =
+    cleanTwitchUsername(
+      manualStreamer.value
+    );
+
+
+  if (!username) {
+
+    return {
+
+      error:
+        "Please enter a Twitch streamer username."
+
+    };
+
+  }
+
+
+  if (
+    !isValidTwitchUsername(
+      username
+    )
+  ) {
+
+    return {
+
+      error:
+        "Please enter a valid Twitch username."
+
+    };
+
+  }
+
+
+  return {
+
+    streamer:
+      username,
+
+    streamerSource:
+      "twitch_username"
+
+  };
+
+}
 
 
 /* =========================================
@@ -1416,47 +1516,38 @@ form.addEventListener(
     event.preventDefault();
 
 
-    /* =========================
-       GET VALUES
-    ========================= */
-
-    const streamer =
-      streamerInput.value.trim();
+    hideStatus();
 
 
-    const viewer =
-      viewerInput.value.trim();
+    /*
+    =========================
+    STREAMER
+    =========================
+    */
+
+    const target =
+      getTargetStreamer();
 
 
-    const text =
-      dareInput.value.trim();
-
-
-    const duration =
-      Number(
-        durationInput.value
-      );
-
-
-    const reward =
-      Number(
-        rewardInput.value
-      );
-
-
-    /* =========================
-       VALIDATION
-    ========================= */
-
-    if (!streamer) {
+    if (target.error) {
 
       showError(
-        "Please choose a streamer."
+        target.error
       );
 
       return;
 
     }
+
+
+    /*
+    =========================
+    VIEWER
+    =========================
+    */
+
+    const viewer =
+      viewerInput.value.trim();
 
 
     if (!viewer) {
@@ -1470,17 +1561,14 @@ form.addEventListener(
     }
 
 
-    if (
-      viewer.length > 30
-    ) {
+    /*
+    =========================
+    DARE
+    =========================
+    */
 
-      showError(
-        "Viewer name is too long."
-      );
-
-      return;
-
-    }
+    const text =
+      dareInput.value.trim();
 
 
     if (!text) {
@@ -1494,17 +1582,16 @@ form.addEventListener(
     }
 
 
-    if (
-      text.length > 250
-    ) {
+    /*
+    =========================
+    DURATION
+    =========================
+    */
 
-      showError(
-        "Your dare cannot exceed 250 characters."
+    const duration =
+      Number(
+        durationInput.value
       );
-
-      return;
-
-    }
 
 
     if (
@@ -1522,13 +1609,26 @@ form.addEventListener(
     }
 
 
+    /*
+    =========================
+    REWARD
+    =========================
+    */
+
+    const reward =
+      Number(
+        rewardInput.value
+      );
+
+
     if (
       !Number.isFinite(reward) ||
-      reward < 0
+      reward < 0 ||
+      reward > 100000
     ) {
 
       showError(
-        "Reward cannot be negative."
+        "Reward must be between ₱0 and ₱100,000."
       );
 
       return;
@@ -1536,34 +1636,32 @@ form.addEventListener(
     }
 
 
-    /* =========================
-       DISABLE
-    ========================= */
+    /*
+    =========================
+    DISABLE
+    =========================
+    */
 
-    submitButton.disabled =
+    button.disabled =
       true;
 
-
-    submitButton.textContent =
+    button.textContent =
       "SENDING...";
-
-
-    hideStatus();
 
 
     try {
 
 
-      /* =========================
-         SEND TO RENDER
-      ========================= */
+      /*
+      =========================
+      SEND TO RENDER
+      =========================
+      */
 
       const response =
         await fetch(
-
           BACKEND_URL +
           "/api/dare",
-
           {
 
             method:
@@ -1579,9 +1677,6 @@ form.addEventListener(
             body:
               JSON.stringify({
 
-                streamer:
-                  streamer,
-
                 viewer:
                   viewer,
 
@@ -1592,20 +1687,22 @@ form.addEventListener(
                   duration,
 
                 reward:
-                  reward
+                  reward,
+
+                streamer:
+                  target.streamer,
+
+                streamerSource:
+                  target.streamerSource
 
               })
 
           }
-
         );
 
 
-      /* =========================
-         RESPONSE
-      ========================= */
-
-      let data = null;
+      let data =
+        null;
 
 
       try {
@@ -1617,14 +1714,17 @@ form.addEventListener(
 
       catch {
 
-        data = null;
+        data =
+          null;
 
       }
 
 
-      /* =========================
-         SERVER ERROR
-      ========================= */
+      /*
+      =========================
+      ERROR
+      =========================
+      */
 
       if (!response.ok) {
 
@@ -1642,51 +1742,20 @@ form.addEventListener(
       }
 
 
-      /* =========================
-         SUCCESS
-      ========================= */
-
-      const position =
-        data &&
-        data.queuePosition !== undefined
-
-          ? data.queuePosition
-
-          : null;
-
-
-      if (
-        position !== null
-      ) {
-
-        showSuccess(
-
-          "✅ Dare sent to @" +
-          streamer +
-          "! Your dare is in position #" +
-          position +
-          "."
-
-        );
-
-      }
-
-      else {
-
-        showSuccess(
-
-          "✅ Dare sent to @" +
-          streamer +
-          "!"
-
-        );
-
-      }
-
-
       /*
-         Reset form.
+      =========================
+      SUCCESS
+      =========================
       */
+
+      showSuccess(
+
+        "✅ Dare sent to @" +
+        target.streamer +
+        "! The streamer can now accept or reject it."
+
+      );
+
 
       form.reset();
 
@@ -1694,15 +1763,36 @@ form.addEventListener(
       durationInput.value =
         "30";
 
-
       rewardInput.value =
         "0";
 
 
-      streamerPreview
-        .classList
-        .remove("show");
+      /*
+      Return to connected
+      streamer mode after
+      successful submission.
+      */
 
+      streamerMode =
+        "connected";
+
+      connectedChoice.classList.add(
+        "active"
+      );
+
+      manualChoice.classList.remove(
+        "active"
+      );
+
+      connectedMethod.classList.add(
+        "active"
+      );
+
+      manualMethod.classList.remove(
+        "active"
+      );
+
+      loadStreamers();
 
     }
 
@@ -1717,8 +1807,8 @@ form.addEventListener(
 
       showError(
 
-        "❌ Could not send the dare. " +
-        "Please check your connection and try again."
+        error.message ||
+        "❌ Could not send the dare. Please try again."
 
       );
 
@@ -1727,11 +1817,10 @@ form.addEventListener(
 
     finally {
 
-      submitButton.disabled =
+      button.disabled =
         false;
 
-
-      submitButton.textContent =
+      button.textContent =
         "🎯 SEND DARE";
 
     }
@@ -1744,11 +1833,12 @@ form.addEventListener(
    SUCCESS
 ========================================= */
 
-function showSuccess(message) {
+function showSuccess(
+  message
+) {
 
   status.className =
     "success";
-
 
   status.textContent =
     message;
@@ -1760,11 +1850,12 @@ function showSuccess(message) {
    ERROR
 ========================================= */
 
-function showError(message) {
+function showError(
+  message
+) {
 
   status.className =
     "error";
-
 
   status.textContent =
     message;
@@ -1785,10 +1876,14 @@ function hideStatus() {
 }
 
 
-</script>
+/* =========================================
+   INITIALIZE
+========================================= */
 
+loadStreamers();
+
+</script>
 
 </body>
 
 </html>
-
