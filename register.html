@@ -1,0 +1,536 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Create Account - Dare System</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            background:
+                radial-gradient(circle at top, #292929, #0b0b0b 60%);
+
+            color: white;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 420px;
+
+            padding: 40px;
+
+            background: rgba(25, 25, 25, 0.95);
+
+            border: 1px solid #333;
+
+            border-radius: 18px;
+
+            box-shadow:
+                0 20px 60px rgba(0, 0, 0, 0.6);
+        }
+
+        .logo {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .logo h1 {
+            font-size: 34px;
+            font-weight: 800;
+
+            background: linear-gradient(
+                90deg,
+                #ff3b3b,
+                #ff7b00
+            );
+
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .logo p {
+            margin-top: 8px;
+            color: #999;
+            font-size: 14px;
+        }
+
+        .form-group {
+            margin-bottom: 18px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+
+            font-size: 14px;
+            color: #ccc;
+        }
+
+        input {
+            width: 100%;
+
+            padding: 14px 15px;
+
+            border-radius: 10px;
+
+            border: 1px solid #3b3b3b;
+
+            background: #111;
+
+            color: white;
+
+            font-size: 15px;
+
+            outline: none;
+
+            transition: 0.2s;
+        }
+
+        input:focus {
+            border-color: #ff3b3b;
+
+            box-shadow:
+                0 0 0 2px rgba(255, 59, 59, 0.15);
+        }
+
+        button {
+            width: 100%;
+
+            padding: 14px;
+
+            margin-top: 8px;
+
+            border: none;
+
+            border-radius: 10px;
+
+            background:
+                linear-gradient(
+                    90deg,
+                    #ff3030,
+                    #ff6a00
+                );
+
+            color: white;
+
+            font-size: 16px;
+
+            font-weight: bold;
+
+            cursor: pointer;
+
+            transition: 0.2s;
+        }
+
+        button:hover {
+            transform: translateY(-1px);
+
+            box-shadow:
+                0 8px 25px rgba(255, 60, 0, 0.3);
+        }
+
+        button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .message {
+            margin-top: 18px;
+
+            padding: 12px;
+
+            border-radius: 8px;
+
+            display: none;
+
+            text-align: center;
+
+            font-size: 14px;
+        }
+
+        .error {
+            display: block;
+
+            background: rgba(255, 50, 50, 0.12);
+
+            border: 1px solid rgba(255, 50, 50, 0.3);
+
+            color: #ff6b6b;
+        }
+
+        .success {
+            display: block;
+
+            background: rgba(50, 255, 120, 0.1);
+
+            border: 1px solid rgba(50, 255, 120, 0.25);
+
+            color: #5cff91;
+        }
+
+        .login-link {
+            text-align: center;
+
+            margin-top: 22px;
+
+            font-size: 14px;
+
+            color: #888;
+        }
+
+        .login-link a {
+            color: #ff5b35;
+
+            text-decoration: none;
+
+            font-weight: bold;
+        }
+
+        .login-link a:hover {
+            text-decoration: underline;
+        }
+
+        .password-info {
+            margin-top: 6px;
+
+            font-size: 12px;
+
+            color: #666;
+        }
+
+    </style>
+</head>
+
+
+<body>
+
+    <div class="container">
+
+        <div class="logo">
+
+            <h1>DARE SYSTEM</h1>
+
+            <p>Create your streamer account</p>
+
+        </div>
+
+
+        <form id="registerForm">
+
+            <!-- USERNAME -->
+
+            <div class="form-group">
+
+                <label for="username">
+                    Username
+                </label>
+
+                <input
+                    type="text"
+                    id="username"
+                    placeholder="Enter username"
+                    minlength="3"
+                    maxlength="30"
+                    required
+                >
+
+            </div>
+
+
+            <!-- EMAIL -->
+
+            <div class="form-group">
+
+                <label for="email">
+                    Email
+                </label>
+
+                <input
+                    type="email"
+                    id="email"
+                    placeholder="Enter email"
+                    required
+                >
+
+            </div>
+
+
+            <!-- PASSWORD -->
+
+            <div class="form-group">
+
+                <label for="password">
+                    Password
+                </label>
+
+                <input
+                    type="password"
+                    id="password"
+                    placeholder="Create password"
+                    minlength="8"
+                    required
+                >
+
+                <div class="password-info">
+                    Password must be at least 8 characters.
+                </div>
+
+            </div>
+
+
+            <!-- CONFIRM PASSWORD -->
+
+            <div class="form-group">
+
+                <label for="confirmPassword">
+                    Confirm Password
+                </label>
+
+                <input
+                    type="password"
+                    id="confirmPassword"
+                    placeholder="Confirm password"
+                    minlength="8"
+                    required
+                >
+
+            </div>
+
+
+            <!-- SUBMIT -->
+
+            <button
+                type="submit"
+                id="registerButton"
+            >
+                CREATE ACCOUNT
+            </button>
+
+
+            <!-- MESSAGE -->
+
+            <div
+                id="message"
+                class="message"
+            ></div>
+
+        </form>
+
+
+        <div class="login-link">
+
+            Already have an account?
+
+            <a href="login.html">
+                Login
+            </a>
+
+        </div>
+
+    </div>
+
+
+    <!-- AUTH SCRIPT -->
+
+    <script src="auth.js"></script>
+
+
+    <script>
+
+        const form =
+            document.getElementById("registerForm");
+
+        const button =
+            document.getElementById("registerButton");
+
+        const message =
+            document.getElementById("message");
+
+
+        form.addEventListener(
+            "submit",
+            async function(event) {
+
+                event.preventDefault();
+
+
+                const username =
+                    document.getElementById("username")
+                    .value
+                    .trim();
+
+
+                const email =
+                    document.getElementById("email")
+                    .value
+                    .trim();
+
+
+                const password =
+                    document.getElementById("password")
+                    .value;
+
+
+                const confirmPassword =
+                    document.getElementById("confirmPassword")
+                    .value;
+
+
+                // -------------------------
+                // VALIDATION
+                // -------------------------
+
+                if (username.length < 3) {
+
+                    showMessage(
+                        "Username must be at least 3 characters.",
+                        "error"
+                    );
+
+                    return;
+                }
+
+
+                if (password.length < 8) {
+
+                    showMessage(
+                        "Password must be at least 8 characters.",
+                        "error"
+                    );
+
+                    return;
+                }
+
+
+                if (password !== confirmPassword) {
+
+                    showMessage(
+                        "Passwords do not match.",
+                        "error"
+                    );
+
+                    return;
+                }
+
+
+                // -------------------------
+                // DISABLE BUTTON
+                // -------------------------
+
+                button.disabled = true;
+
+                button.textContent =
+                    "CREATING ACCOUNT...";
+
+
+                hideMessage();
+
+
+                try {
+
+                    // Call auth.js
+                    const result =
+                        await register(
+                            username,
+                            email,
+                            password
+                        );
+
+
+                    // -------------------------
+                    // SUCCESS
+                    // -------------------------
+
+                    showMessage(
+                        "Account created successfully! Redirecting...",
+                        "success"
+                    );
+
+
+                    console.log(
+                        "Registration result:",
+                        result
+                    );
+
+
+                    // Redirect to login
+                    setTimeout(
+                        function() {
+
+                            window.location.href =
+                                "login.html";
+
+                        },
+                        1500
+                    );
+
+
+                } catch (error) {
+
+                    console.error(error);
+
+
+                    showMessage(
+                        error.message ||
+                        "Unable to create account.",
+                        "error"
+                    );
+
+
+                    button.disabled = false;
+
+                    button.textContent =
+                        "CREATE ACCOUNT";
+                }
+
+            }
+        );
+
+
+        // -------------------------
+        // SHOW MESSAGE
+        // -------------------------
+
+        function showMessage(text, type) {
+
+            message.textContent = text;
+
+            message.className =
+                "message " + type;
+        }
+
+
+        // -------------------------
+        // HIDE MESSAGE
+        // -------------------------
+
+        function hideMessage() {
+
+            message.textContent = "";
+
+            message.className =
+                "message";
+        }
+
+    </script>
+
+</body>
+
+</html>
