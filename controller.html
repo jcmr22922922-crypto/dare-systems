@@ -724,38 +724,31 @@ function handleWebSocketMessage(
        NEW DARE
     ===================================================== */
 
-    if (
-        message.type ===
-        "DARE_CREATED"
-    ) {
+    if (message.type === "DARE_CREATED") {
 
-        const dare =
-            message.dare;
+    const dare = message.dare;
 
-        if (!dare) {
-            return;
-        }
-
-
-        /*
-           New dares ALWAYS begin as pending.
-
-           They are NOT automatically accepted.
-        */
-
-        updateQueueFromDare(
-            dare
-        );
-
-        renderQueue();
-
-        showToast(
-            "🟡 New dare received!"
-        );
-
+    if (!dare) {
         return;
-
     }
+
+    console.log(
+        "🔥 NEW DARE - AUTO ACTIVATING:",
+        dare
+    );
+
+    /*
+     * New dares should immediately become active.
+     * No manual ACCEPT button is required.
+     */
+
+    setDareStatus(
+        dare.id,
+        "accepted"
+    );
+
+    return;
+}
 
 
     /* =====================================================
