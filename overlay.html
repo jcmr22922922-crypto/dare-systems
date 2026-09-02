@@ -1,217 +1,755 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
+
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Dare Overlay</title>
+
+<meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+>
+
+<title>DARE Overlay</title>
 
 <style>
-html, body {
-    width: 100%;
-    height: 100%;
+
+* {
+    box-sizing: border-box;
+}
+
+html,
+body {
     margin: 0;
     padding: 0;
-    overflow: hidden;
-    background: transparent !important;
-}
-
-#overlay {
-    position: absolute;
-    top: 30px;
-    right: 30px;
-    width: 360px;
-    display: none;
-}
-
-.dare-card {
-    background: rgba(12, 12, 18, 0.96);
-    border: 2px solid rgba(255,255,255,0.12);
-    border-radius: 18px;
-    padding: 20px;
-    color: white;
-    font-family: Arial, Helvetica, sans-serif;
-    box-shadow: 0 12px 40px rgba(0,0,0,0.5);
-    animation: slideIn 0.35s ease-out;
-}
-
-.header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 14px;
-}
-
-.title {
-    font-size: 18px;
-    font-weight: 900;
-}
-
-.status {
-    padding: 5px 9px;
-    border-radius: 7px;
-    font-size: 10px;
-    font-weight: 900;
-    background: #16a34a;
-}
-
-.viewer {
-    color: #888;
-    font-size: 13px;
-    margin-bottom: 10px;
-}
-
-.viewer span {
-    color: white;
-    font-weight: 800;
-}
-
-.dare-text {
-    font-size: 23px;
-    line-height: 1.25;
-    font-weight: 900;
-    margin-bottom: 15px;
-    word-break: break-word;
-}
-
-.details {
-    display: flex;
-    gap: 10px;
-    margin-bottom: 15px;
-}
-
-.detail {
-    background: rgba(255,255,255,0.07);
-    border-radius: 8px;
-    padding: 8px 10px;
-    color: #aaa;
-    font-size: 12px;
-    font-weight: 700;
-}
-
-.detail span {
-    color: white;
-}
-
-.timer-label {
-    color: #888;
-    font-size: 10px;
-    font-weight: 900;
-    margin-bottom: 4px;
-}
-
-.timer {
-    font-size: 34px;
-    font-weight: 900;
-}
-
-.progress-background {
-    width: 100%;
-    height: 6px;
-    margin-top: 8px;
-    background: rgba(255,255,255,0.12);
-    border-radius: 10px;
-    overflow: hidden;
-}
-
-.progress {
     width: 100%;
     height: 100%;
-    background: white;
-    transition: width 1s linear;
+    background: transparent;
+    overflow: hidden;
+    font-family:
+        Arial,
+        Helvetica,
+        sans-serif;
 }
+
+
+/* =========================================================
+   OVERLAY POSITION
+========================================================= */
+
+#overlay {
+    position: fixed;
+    top: 30px;
+    right: 30px;
+
+    width: 420px;
+
+    display: none;
+
+    z-index: 999999;
+
+    animation:
+        slideIn 0.45s ease-out;
+}
+
+
+/* =========================================================
+   MAIN CARD
+========================================================= */
+
+.card {
+
+    position: relative;
+
+    width: 100%;
+
+    padding: 22px;
+
+    border-radius: 18px;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(20, 20, 30, 0.97),
+            rgba(10, 10, 16, 0.97)
+        );
+
+    border:
+        2px solid
+        rgba(108, 99, 255, 0.9);
+
+    box-shadow:
+        0 0 25px
+        rgba(108, 99, 255, 0.35),
+
+        0 15px 45px
+        rgba(0, 0, 0, 0.55);
+
+}
+
+
+/* =========================================================
+   TOP HEADER
+========================================================= */
+
+.header {
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    margin-bottom: 14px;
+
+}
+
+
+.title {
+
+    font-size: 21px;
+
+    font-weight: 900;
+
+    letter-spacing: 0.5px;
+
+}
+
+
+.live {
+
+    display: inline-flex;
+
+    align-items: center;
+
+    gap: 6px;
+
+    padding:
+        5px
+        9px;
+
+    border-radius: 7px;
+
+    background:
+        rgba(220, 38, 38, 0.18);
+
+    color:
+        #ff6464;
+
+    border:
+        1px solid
+        rgba(255, 80, 80, 0.35);
+
+    font-size: 11px;
+
+    font-weight: 900;
+
+}
+
+
+.live-dot {
+
+    width: 7px;
+
+    height: 7px;
+
+    border-radius: 50%;
+
+    background: #ff4444;
+
+    animation:
+        pulse 1s infinite;
+
+}
+
+
+/* =========================================================
+   VIEWER
+========================================================= */
+
+.viewer {
+
+    color: #aaa;
+
+    font-size: 14px;
+
+    margin-bottom: 8px;
+
+}
+
+.viewer strong {
+
+    color: white;
+
+}
+
+
+/* =========================================================
+   DARE TEXT
+========================================================= */
+
+.dare {
+
+    font-size: 27px;
+
+    line-height: 1.25;
+
+    font-weight: 900;
+
+    color: white;
+
+    margin:
+        12px
+        0
+        18px;
+
+    word-wrap: break-word;
+
+}
+
+
+/* =========================================================
+   INFO
+========================================================= */
+
+.info {
+
+    display: flex;
+
+    justify-content: space-between;
+
+    gap: 10px;
+
+    margin-bottom: 18px;
+
+}
+
+
+.info-box {
+
+    flex: 1;
+
+    padding: 10px;
+
+    border-radius: 10px;
+
+    background:
+        rgba(255, 255, 255, 0.05);
+
+    border:
+        1px solid
+        rgba(255, 255, 255, 0.08);
+
+    text-align: center;
+
+}
+
+
+.info-label {
+
+    display: block;
+
+    color: #888;
+
+    font-size: 10px;
+
+    text-transform: uppercase;
+
+    letter-spacing: 0.5px;
+
+    margin-bottom: 4px;
+
+}
+
+
+.info-value {
+
+    display: block;
+
+    color: white;
+
+    font-size: 16px;
+
+    font-weight: 800;
+
+}
+
+
+/* =========================================================
+   TIMER
+========================================================= */
+
+.timer-container {
+
+    margin-top: 5px;
+
+}
+
+
+.timer {
+
+    text-align: center;
+
+    font-size: 48px;
+
+    line-height: 1;
+
+    font-weight: 900;
+
+    letter-spacing: 2px;
+
+    color: white;
+
+    margin-bottom: 12px;
+
+}
+
+
+.timer.warning {
+
+    color: #ffd43b;
+
+}
+
+
+.timer.danger {
+
+    color: #ff5555;
+
+    animation:
+        timerPulse 0.7s infinite;
+
+}
+
+
+/* =========================================================
+   PROGRESS BAR
+========================================================= */
+
+.progress {
+
+    width: 100%;
+
+    height: 8px;
+
+    border-radius: 20px;
+
+    overflow: hidden;
+
+    background:
+        rgba(255, 255, 255, 0.1);
+
+}
+
+
+.progress-bar {
+
+    width: 100%;
+
+    height: 100%;
+
+    border-radius: 20px;
+
+    background: #6c63ff;
+
+    transition:
+        width 1s linear;
+
+}
+
+
+/* =========================================================
+   FOOTER
+========================================================= */
+
+.footer {
+
+    margin-top: 13px;
+
+    text-align: center;
+
+    color: #777;
+
+    font-size: 11px;
+
+}
+
+
+/* =========================================================
+   RESULT
+========================================================= */
 
 #result {
+
+    position: fixed;
+
+    top: 30px;
+    right: 30px;
+
+    width: 420px;
+
     display: none;
-    text-align: center;
-    font-size: 21px;
-    font-weight: 900;
-    padding-top: 10px;
+
+    z-index: 999999;
+
+    animation:
+        slideIn 0.45s ease-out;
 }
 
+
+.result-card {
+
+    width: 100%;
+
+    padding: 25px;
+
+    border-radius: 18px;
+
+    background:
+        rgba(15, 15, 22, 0.97);
+
+    border:
+        2px solid
+        rgba(108, 99, 255, 0.8);
+
+    box-shadow:
+        0 0 30px
+        rgba(108, 99, 255, 0.3),
+
+        0 15px 45px
+        rgba(0, 0, 0, 0.55);
+
+    text-align: center;
+
+}
+
+
+.result-icon {
+
+    font-size: 48px;
+
+    margin-bottom: 8px;
+
+}
+
+
+.result-title {
+
+    font-size: 25px;
+
+    font-weight: 900;
+
+    color: white;
+
+}
+
+
+.result-subtitle {
+
+    margin-top: 8px;
+
+    color: #999;
+
+    font-size: 14px;
+
+}
+
+
+/* =========================================================
+   ANIMATIONS
+========================================================= */
+
 @keyframes slideIn {
+
     from {
+
         opacity: 0;
-        transform: translateX(40px);
+
+        transform:
+            translateX(80px)
+            scale(0.95);
+
     }
 
     to {
+
         opacity: 1;
-        transform: translateX(0);
+
+        transform:
+            translateX(0)
+            scale(1);
+
     }
+
 }
 
-@media(max-width:500px) {
-    #overlay {
-        top: 15px;
-        right: 15px;
-        width: calc(100% - 30px);
-        max-width: 360px;
+
+@keyframes slideOut {
+
+    from {
+
+        opacity: 1;
+
+        transform:
+            translateX(0)
+            scale(1);
+
     }
+
+    to {
+
+        opacity: 0;
+
+        transform:
+            translateX(80px)
+            scale(0.95);
+
+    }
+
 }
+
+
+@keyframes pulse {
+
+    0%,
+    100% {
+
+        opacity: 1;
+
+        transform: scale(1);
+
+    }
+
+    50% {
+
+        opacity: 0.4;
+
+        transform: scale(0.75);
+
+    }
+
+}
+
+
+@keyframes timerPulse {
+
+    0%,
+    100% {
+
+        transform: scale(1);
+
+    }
+
+    50% {
+
+        transform: scale(1.05);
+
+    }
+
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 600px) {
+
+    #overlay,
+    #result {
+
+        top: 15px;
+
+        right: 15px;
+
+        left: 15px;
+
+        width: auto;
+
+    }
+
+
+    .card {
+
+        padding: 18px;
+
+    }
+
+
+    .dare {
+
+        font-size: 23px;
+
+    }
+
+
+    .timer {
+
+        font-size: 40px;
+
+    }
+
+}
+
 </style>
+
 </head>
+
 
 <body>
 
+
+<!-- =======================================================
+     ACTIVE DARE
+======================================================= -->
+
 <div id="overlay">
 
-    <div class="dare-card">
+    <div class="card">
 
         <div class="header">
-            <div class="title">🎯 DARE</div>
 
-            <div id="status" class="status">
-                ACCEPTED
+            <div class="title">
+                🎯 DARE CHALLENGE
             </div>
+
+            <div class="live">
+
+                <span class="live-dot"></span>
+
+                LIVE
+
+            </div>
+
         </div>
+
 
         <div class="viewer">
-            From:
-            <span id="viewer">@viewer</span>
-        </div>
 
-        <div id="dareText" class="dare-text">
-            Dare goes here
-        </div>
+            Viewer:
 
-        <div class="details">
-
-            <div class="detail">
-                💰 ₱<span id="reward">0.00</span>
-            </div>
-
-            <div class="detail">
-                ⏱️ <span id="duration">30</span>s
-            </div>
+            <strong id="viewer">
+                Anonymous
+            </strong>
 
         </div>
 
-        <div id="timerContainer">
 
-            <div class="timer-label">
-                TIME REMAINING
+        <div
+            id="dare"
+            class="dare"
+        >
+            Loading dare...
+        </div>
+
+
+        <div class="info">
+
+            <div class="info-box">
+
+                <span class="info-label">
+                    Reward
+                </span>
+
+                <span
+                    id="reward"
+                    class="info-value"
+                >
+                    ₱0.00
+                </span>
+
             </div>
 
-            <div id="timer" class="timer">
-                30
-            </div>
 
-            <div class="progress-background">
-                <div id="progress" class="progress"></div>
+            <div class="info-box">
+
+                <span class="info-label">
+                    Duration
+                </span>
+
+                <span
+                    id="duration"
+                    class="info-value"
+                >
+                    30s
+                </span>
+
             </div>
 
         </div>
 
-        <div id="result"></div>
+
+        <div class="timer-container">
+
+            <div
+                id="timer"
+                class="timer"
+            >
+                00:30
+            </div>
+
+
+            <div class="progress">
+
+                <div
+                    id="progressBar"
+                    class="progress-bar"
+                ></div>
+
+            </div>
+
+        </div>
+
+
+        <div class="footer">
+
+            Complete the dare before the timer runs out!
+
+        </div>
 
     </div>
 
 </div>
 
+
+<!-- =======================================================
+     RESULT
+======================================================= -->
+
+<div id="result">
+
+    <div class="result-card">
+
+        <div
+            id="resultIcon"
+            class="result-icon"
+        >
+            ✅
+        </div>
+
+        <div
+            id="resultTitle"
+            class="result-title"
+        >
+            DARE COMPLETED
+        </div>
+
+        <div
+            id="resultSubtitle"
+            class="result-subtitle"
+        >
+            Nice job!
+        </div>
+
+    </div>
+
+</div>
+
+
 <script>
 
 /* =========================================================
-   BACKEND
+   CONFIG
 ========================================================= */
 
 const WS_URL =
@@ -219,363 +757,171 @@ const WS_URL =
 
 
 /* =========================================================
-   STATE
-========================================================= */
-
-let socket = null;
-
-let currentDare = null;
-
-let timerInterval = null;
-
-let resultTimeout = null;
-
-let totalDuration = 30;
-
-let remainingTime = 30;
-
-
-/* =========================================================
    ELEMENTS
 ========================================================= */
 
 const overlay =
-    document.getElementById("overlay");
-
-const status =
-    document.getElementById("status");
-
-const viewer =
-    document.getElementById("viewer");
-
-const dareText =
-    document.getElementById("dareText");
-
-const reward =
-    document.getElementById("reward");
-
-const duration =
-    document.getElementById("duration");
-
-const timer =
-    document.getElementById("timer");
-
-const progress =
-    document.getElementById("progress");
-
-const timerContainer =
-    document.getElementById("timerContainer");
+    document.getElementById(
+        "overlay"
+    );
 
 const result =
-    document.getElementById("result");
+    document.getElementById(
+        "result"
+    );
+
+const viewerElement =
+    document.getElementById(
+        "viewer"
+    );
+
+const dareElement =
+    document.getElementById(
+        "dare"
+    );
+
+const rewardElement =
+    document.getElementById(
+        "reward"
+    );
+
+const durationElement =
+    document.getElementById(
+        "duration"
+    );
+
+const timerElement =
+    document.getElementById(
+        "timer"
+    );
+
+const progressBar =
+    document.getElementById(
+        "progressBar"
+    );
+
+const resultIcon =
+    document.getElementById(
+        "resultIcon"
+    );
+
+const resultTitle =
+    document.getElementById(
+        "resultTitle"
+    );
+
+const resultSubtitle =
+    document.getElementById(
+        "resultSubtitle"
+    );
 
 
 /* =========================================================
-   CONNECT TO WEBSOCKET
+   STATE
 ========================================================= */
 
-function connect() {
+let ws = null;
 
-    console.log(
-        "[DARE OVERLAY] Connecting..."
+let reconnectTimer = null;
+
+let timerInterval = null;
+
+let currentDareId = null;
+
+let currentDare = null;
+
+let remainingSeconds = 0;
+
+let totalSeconds = 0;
+
+
+/* =========================================================
+   HELPERS
+========================================================= */
+
+function getDareText(dare) {
+
+    if (!dare) {
+        return "";
+    }
+
+    return (
+        dare.dareText ||
+        dare.dare_text ||
+        ""
     );
-
-    socket = new WebSocket(WS_URL);
-
-
-    socket.onopen = function() {
-
-        console.log(
-            "[DARE OVERLAY] Connected!"
-        );
-
-        socket.send(
-            JSON.stringify({
-                type: "GET_STATE"
-            })
-        );
-
-    };
-
-
-    socket.onmessage = function(event) {
-
-        try {
-
-            const message =
-                JSON.parse(event.data);
-
-            console.log(
-                "[DARE OVERLAY] Received:",
-                message
-            );
-
-            handleMessage(message);
-
-        }
-
-        catch(error) {
-
-            console.error(
-                "[DARE OVERLAY] Invalid message:",
-                error
-            );
-
-        }
-
-    };
-
-
-    socket.onerror = function(error) {
-
-        console.error(
-            "[DARE OVERLAY] WebSocket error:",
-            error
-        );
-
-    };
-
-
-    socket.onclose = function() {
-
-        console.log(
-            "[DARE OVERLAY] Disconnected. Reconnecting..."
-        );
-
-        setTimeout(
-            connect,
-            3000
-        );
-
-    };
 
 }
 
 
-/* =========================================================
-   HANDLE MESSAGES
-========================================================= */
+function streamerKey(name) {
 
-function handleMessage(message) {
+    return String(
+        name || ""
+    )
+    .trim()
+    .toLowerCase();
+
+}
 
 
-    /* =====================================================
-       INITIAL STATE
+function escapeHtml(value) {
 
-       BACKEND FORMAT:
+    return String(
+        value ?? ""
+    )
+    .replace(
+        /&/g,
+        "&amp;"
+    )
+    .replace(
+        /</g,
+        "&lt;"
+    )
+    .replace(
+        />/g,
+        "&gt;"
+    )
+    .replace(
+        /"/g,
+        "&quot;"
+    )
+    .replace(
+        /'/g,
+        "&#039;"
+    );
 
-       {
-           type: "STATE",
-           active: {
-               "streamer": dare
-           },
-           queues: {...}
-       }
-    ===================================================== */
+}
 
-    if (message.type === "STATE") {
 
-        console.log(
-            "[DARE OVERLAY] STATE:",
-            message
+function formatTime(seconds) {
+
+    seconds =
+        Math.max(
+            0,
+            Math.floor(
+                Number(seconds) || 0
+            )
         );
 
 
-        const active =
-            message.active || {};
-
-
-        /*
-         * The backend stores active dares
-         * by streamer username.
-         *
-         * We need to find the active dare.
-         */
-
-        const activeKeys =
-            Object.keys(active);
-
-
-        if (activeKeys.length > 0) {
-
-            const dare =
-                active[activeKeys[0]];
-
-
-            if (dare) {
-
-                console.log(
-                    "[DARE OVERLAY] Found active dare:",
-                    dare
-                );
-
-                showDare(dare);
-
-                return;
-
-            }
-
-        }
-
-
-        hideOverlay();
-
-        return;
-    }
-
-
-    /* =====================================================
-       NEW DARE
-
-       DO NOT SHOW.
-
-       It must be accepted first.
-    ===================================================== */
-
-    if (message.type === "DARE_CREATED") {
-
-        console.log(
-            "[DARE OVERLAY] Pending dare received."
-        );
-
-        return;
-    }
-
-
-    /* =====================================================
-       ACCEPTED DARE
-
-       THIS IS WHAT MAKES THE OVERLAY APPEAR.
-    ===================================================== */
-
-    if (message.type === "ACTIVE_DARE") {
-
-        console.log(
-            "[DARE OVERLAY] ACTIVE DARE:",
-            message.dare
+    const minutes =
+        Math.floor(
+            seconds / 60
         );
 
 
-        if (message.dare) {
-
-            showDare(
-                message.dare
-            );
-
-        }
-
-        return;
-    }
+    const secs =
+        seconds % 60;
 
 
-    /* =====================================================
-       REJECTED
-    ===================================================== */
-
-    if (message.type === "DARE_REJECTED") {
-
-        console.log(
-            "[DARE OVERLAY] Dare rejected:",
-            message.dare
-        );
-
-        /*
-         * Normally this won't be visible because
-         * rejected dares were never active.
-         */
-
-        return;
-    }
-
-
-    /* =====================================================
-       COMPLETED
-    ===================================================== */
-
-    if (message.type === "DARE_COMPLETED") {
-
-        console.log(
-            "[DARE OVERLAY] Dare completed:",
-            message.dare
-        );
-
-
-        if (
-            currentDare &&
-            message.dare &&
-            Number(currentDare.id) ===
-            Number(message.dare.id)
-        ) {
-
-            showResult(
-                "✅ DARE COMPLETED"
-            );
-
-        }
-
-        return;
-    }
-
-
-    /* =====================================================
-       FAILED
-    ===================================================== */
-
-    if (message.type === "DARE_FAILED") {
-
-        console.log(
-            "[DARE OVERLAY] Dare failed:",
-            message.dare
-        );
-
-
-        if (
-            currentDare &&
-            message.dare &&
-            Number(currentDare.id) ===
-            Number(message.dare.id)
-        ) {
-
-            showResult(
-                "🚫 DARE FAILED"
-            );
-
-        }
-
-        return;
-    }
-
-
-    /* =====================================================
-       ACTIVE CLEARED
-    ===================================================== */
-
-    if (message.type === "ACTIVE_DARE_CLEARED") {
-
-        console.log(
-            "[DARE OVERLAY] Active dare cleared."
-        );
-
-        hideOverlay();
-
-        return;
-    }
-
-
-    /* =====================================================
-       RESET
-    ===================================================== */
-
-    if (message.type === "RESET") {
-
-        console.log(
-            "[DARE OVERLAY] RESET"
-        );
-
-        hideOverlay();
-
-        return;
-    }
+    return (
+        String(minutes)
+            .padStart(2, "0") +
+        ":" +
+        String(secs)
+            .padStart(2, "0")
+    );
 
 }
 
@@ -587,7 +933,13 @@ function handleMessage(message) {
 function showDare(dare) {
 
     if (!dare) {
+
+        console.warn(
+            "[DARE OVERLAY] No dare received."
+        );
+
         return;
+
     }
 
 
@@ -597,147 +949,117 @@ function showDare(dare) {
     );
 
 
-    clearInterval(
-        timerInterval
-    );
-
-    clearTimeout(
-        resultTimeout
-    );
-
-
     currentDare =
         dare;
 
-
-    totalDuration =
-        Number(dare.duration) || 30;
-
-
-    remainingTime =
-        totalDuration;
+    currentDareId =
+        dare.id;
 
 
-    /* -----------------------------------------------------
-       VIEWER
-    ----------------------------------------------------- */
+    stopTimer();
 
-    viewer.textContent =
-        "@" +
-        (
-            dare.viewer ||
-            "Anonymous"
-        );
-
-
-    /* -----------------------------------------------------
-       DARE TEXT
-
-       Supports both backend formats.
-    ----------------------------------------------------- */
-
-    dareText.textContent =
-        dare.dareText ||
-        dare.dare_text ||
-        dare.text ||
-        "Dare goes here";
-
-
-    /* -----------------------------------------------------
-       REWARD
-    ----------------------------------------------------- */
-
-    reward.textContent =
-        Number(
-            dare.reward || 0
-        ).toFixed(2);
-
-
-    /* -----------------------------------------------------
-       DURATION
-    ----------------------------------------------------- */
-
-    duration.textContent =
-        totalDuration;
-
-
-    /* -----------------------------------------------------
-       UI
-    ----------------------------------------------------- */
 
     result.style.display =
         "none";
-
-
-    timerContainer.style.display =
-        "block";
 
 
     overlay.style.display =
         "block";
 
 
-    status.textContent =
-        "ACCEPTED";
+    /* -------------------------------------------------------
+       VIEWER
+    ------------------------------------------------------- */
+
+    viewerElement.textContent =
+        dare.viewer ||
+        "Anonymous";
 
 
-    status.style.background =
-        "#16a34a";
+    /* -------------------------------------------------------
+       DARE TEXT
+    ------------------------------------------------------- */
+
+    dareElement.textContent =
+        getDareText(
+            dare
+        );
 
 
-    /* -----------------------------------------------------
-       TIMER
-    ----------------------------------------------------- */
+    /* -------------------------------------------------------
+       REWARD
+    ------------------------------------------------------- */
+
+    const reward =
+        Number(
+            dare.reward || 0
+        );
+
+
+    rewardElement.textContent =
+        "₱" +
+        reward.toFixed(2);
+
+
+    /* -------------------------------------------------------
+       DURATION
+    ------------------------------------------------------- */
+
+    totalSeconds =
+        Math.max(
+            1,
+            Number(
+                dare.duration || 30
+            )
+        );
+
+
+    remainingSeconds =
+        totalSeconds;
+
+
+    durationElement.textContent =
+        totalSeconds +
+        "s";
+
 
     updateTimer();
 
-    startTimer();
 
-}
+    /* -------------------------------------------------------
+       RESET ANIMATION
+    ------------------------------------------------------- */
 
+    overlay.style.animation =
+        "none";
 
-/* =========================================================
-   START TIMER
-========================================================= */
+    void overlay.offsetWidth;
 
-function startTimer() {
-
-    clearInterval(
-        timerInterval
-    );
+    overlay.style.animation =
+        "slideIn 0.45s ease-out";
 
 
-    remainingTime =
-        totalDuration;
-
-
-    updateTimer();
-
+    /* -------------------------------------------------------
+       START TIMER
+    ------------------------------------------------------- */
 
     timerInterval =
         setInterval(
-            function() {
+            () => {
 
-                remainingTime--;
+                remainingSeconds--;
 
                 updateTimer();
 
 
                 if (
-                    remainingTime <= 0
+                    remainingSeconds <= 0
                 ) {
 
-                    clearInterval(
-                        timerInterval
-                    );
+                    stopTimer();
 
-
-                    status.textContent =
-                        "TIME'S UP";
-
-
-                    status.style.background =
-                        "#f59e0b";
+                    timerElement.textContent =
+                        "TIME!";
 
                 }
 
@@ -749,71 +1071,655 @@ function startTimer() {
 
 
 /* =========================================================
-   UPDATE TIMER
+   TIMER
 ========================================================= */
 
 function updateTimer() {
 
-    timer.textContent =
-        Math.max(
-            remainingTime,
-            0
+    timerElement.textContent =
+        formatTime(
+            remainingSeconds
         );
 
 
+    timerElement.classList.remove(
+        "warning",
+        "danger"
+    );
+
+
+    if (
+        remainingSeconds <= 5
+    ) {
+
+        timerElement.classList.add(
+            "danger"
+        );
+
+    } else if (
+        remainingSeconds <= 10
+    ) {
+
+        timerElement.classList.add(
+            "warning"
+        );
+
+    }
+
+
     const percentage =
-        (
-            remainingTime /
-            totalDuration
-        ) * 100;
-
-
-    progress.style.width =
         Math.max(
-            percentage,
-            0
-        ) + "%";
+            0,
+            Math.min(
+                100,
+                (
+                    remainingSeconds /
+                    totalSeconds
+                ) * 100
+            )
+        );
+
+
+    progressBar.style.width =
+        percentage +
+        "%";
+
+}
+
+
+function stopTimer() {
+
+    if (timerInterval) {
+
+        clearInterval(
+            timerInterval
+        );
+
+        timerInterval =
+            null;
+
+    }
 
 }
 
 
 /* =========================================================
-   RESULT
+   HIDE OVERLAY
 ========================================================= */
 
-function showResult(message) {
+function hideOverlay() {
 
-    clearInterval(
-        timerInterval
+    stopTimer();
+
+    currentDare =
+        null;
+
+    currentDareId =
+        null;
+
+
+    overlay.style.animation =
+        "slideOut 0.35s ease-in";
+
+
+    setTimeout(
+        () => {
+
+            overlay.style.display =
+                "none";
+
+        },
+        350
     );
 
+}
 
-    timerContainer.style.display =
+
+/* =========================================================
+   SHOW RESULT
+========================================================= */
+
+function showResult(
+    type,
+    dare
+) {
+
+    stopTimer();
+
+    overlay.style.display =
         "none";
 
 
-    result.textContent =
-        message;
+    if (
+        type ===
+        "completed"
+    ) {
+
+        resultIcon.textContent =
+            "✅";
+
+        resultTitle.textContent =
+            "DARE COMPLETED";
+
+        resultSubtitle.textContent =
+            "The dare was completed successfully.";
+
+    } else {
+
+        resultIcon.textContent =
+            "❌";
+
+        resultTitle.textContent =
+            "DARE FAILED";
+
+        resultSubtitle.textContent =
+            "The dare was marked as failed.";
+
+    }
 
 
     result.style.display =
         "block";
 
 
-    overlay.style.display =
-        "block";
+    result.style.animation =
+        "none";
+
+    void result.offsetWidth;
+
+    result.style.animation =
+        "slideIn 0.45s ease-out";
 
 
-    clearTimeout(
-        resultTimeout
+    /*
+       Automatically hide the result
+       after 3 seconds.
+    */
+
+    setTimeout(
+        () => {
+
+            result.style.animation =
+                "slideOut 0.35s ease-in";
+
+
+            setTimeout(
+                () => {
+
+                    result.style.display =
+                        "none";
+
+                },
+                350
+            );
+
+        },
+        3000
+    );
+
+}
+
+
+/* =========================================================
+   PROCESS INITIAL STATE
+========================================================= */
+
+function processInitialState(
+    message
+) {
+
+    console.log(
+        "[DARE OVERLAY] STATE:",
+        message
     );
 
 
-    resultTimeout =
-        setTimeout(
-            function() {
+    /*
+       Backend state format:
 
-                hideOverlay();
+       {
+           type: "STATE",
+           active: {
+               streamer: dare
+           },
+           queues: {}
+       }
+    */
+
+
+    const active =
+        message.active ||
+        {};
+
+
+    /*
+       We only need the active dare.
+
+       If there is an active dare,
+       display the first one.
+    */
+
+    const keys =
+        Object.keys(
+            active
+        );
+
+
+    if (!keys.length) {
+
+        hideOverlay();
+
+        return;
+
+    }
+
+
+    const dare =
+        active[
+            keys[0]
+        ];
+
+
+    if (!dare) {
+
+        hideOverlay();
+
+        return;
+
+    }
+
+
+    showDare(
+        dare
+    );
+
+}
+
+
+/* =========================================================
+   WEBSOCKET MESSAGE HANDLER
+========================================================= */
+
+function handleMessage(
+    message
+) {
+
+    console.log(
+        "[DARE OVERLAY] MESSAGE:",
+        message
+    );
+
+
+    /* =====================================================
+       INITIAL STATE
+    ===================================================== */
+
+    if (
+        message.type ===
+        "STATE"
+    ) {
+
+        processInitialState(
+            message
+        );
+
+        return;
+
+    }
+
+
+    /* =====================================================
+       NEW DARE CREATED
+    ===================================================== */
+
+    if (
+        message.type ===
+        "DARE_CREATED"
+    ) {
+
+        const dare =
+            message.dare;
+
+
+        if (!dare) {
+
+            return;
+
+        }
+
+
+        console.log(
+            "[DARE OVERLAY] DARE_CREATED:",
+            dare
+        );
+
+
+        /*
+           IMPORTANT:
+
+           If the backend creates the dare
+           as ACCEPTED, this message may
+           arrive before ACTIVE_DARE.
+
+           We only show it immediately if
+           it is already accepted/live.
+
+           If it is still pending, we wait
+           for ACTIVE_DARE.
+        */
+
+        if (
+            dare.status ===
+            "accepted"
+        ) {
+
+            showDare(
+                dare
+            );
+
+        }
+
+
+        return;
+
+    }
+
+
+    /* =====================================================
+       ACTIVE DARE
+    ===================================================== */
+
+    if (
+        message.type ===
+        "ACTIVE_DARE"
+    ) {
+
+        const dare =
+            message.dare;
+
+
+        if (!dare) {
+
+            return;
+
+        }
+
+
+        console.log(
+            "🔥 [DARE OVERLAY] ACTIVE DARE:",
+            dare
+        );
+
+
+        showDare(
+            dare
+        );
+
+
+        return;
+
+    }
+
+
+    /* =====================================================
+       DARE COMPLETED
+    ===================================================== */
+
+    if (
+        message.type ===
+        "DARE_COMPLETED"
+    ) {
+
+        console.log(
+            "✅ [DARE OVERLAY] COMPLETED"
+        );
+
+
+        showResult(
+            "completed",
+            message.dare
+        );
+
+
+        return;
+
+    }
+
+
+    /* =====================================================
+       DARE FAILED
+    ===================================================== */
+
+    if (
+        message.type ===
+        "DARE_FAILED"
+    ) {
+
+        console.log(
+            "❌ [DARE OVERLAY] FAILED"
+        );
+
+
+        showResult(
+            "failed",
+            message.dare
+        );
+
+
+        return;
+
+    }
+
+
+    /* =====================================================
+       ACTIVE DARE CLEARED
+    ===================================================== */
+
+    if (
+        message.type ===
+        "ACTIVE_DARE_CLEARED"
+    ) {
+
+        console.log(
+            "[DARE OVERLAY] ACTIVE CLEARED"
+        );
+
+
+        /*
+           Only hide if this event refers
+           to the currently displayed dare.
+        */
+
+        hideOverlay();
+
+        return;
+
+    }
+
+
+    /* =====================================================
+       REJECTED
+    ===================================================== */
+
+    if (
+        message.type ===
+        "DARE_REJECTED"
+    ) {
+
+        /*
+           Rejected dares should never
+           be displayed.
+        */
+
+        return;
+
+    }
+
+
+    /* =====================================================
+       RESET
+    ===================================================== */
+
+    if (
+        message.type ===
+        "RESET"
+    ) {
+
+        hideOverlay();
+
+        result.style.display =
+            "none";
+
+        return;
+
+    }
+
+}
+
+
+/* =========================================================
+   CONNECT WEBSOCKET
+========================================================= */
+
+function connectWebSocket() {
+
+    console.log(
+        "[DARE OVERLAY] Connecting..."
+    );
+
+
+    try {
+
+        ws =
+            new WebSocket(
+                WS_URL
+            );
+
+    } catch (error) {
+
+        console.error(
+            "[DARE OVERLAY] WebSocket creation error:",
+            error
+        );
+
+        scheduleReconnect();
+
+        return;
+
+    }
+
+
+    ws.onopen =
+        function() {
+
+            console.log(
+                "🟢 [DARE OVERLAY] WebSocket connected."
+            );
+
+
+            /*
+               Ask backend for the current state.
+
+               This is important if the overlay
+               loads AFTER a dare has already
+               become active.
+            */
+
+            try {
+
+                ws.send(
+                    JSON.stringify({
+                        type:
+                            "GET_STATE"
+                    })
+                );
+
+            } catch (error) {
+
+                console.error(
+                    "[DARE OVERLAY] GET_STATE error:",
+                    error
+                );
+
+            }
+
+        };
+
+
+    ws.onmessage =
+        function(event) {
+
+            try {
+
+                const message =
+                    JSON.parse(
+                        event.data
+                    );
+
+
+                handleMessage(
+                    message
+                );
+
+            } catch (error) {
+
+                console.error(
+                    "[DARE OVERLAY] Invalid WebSocket message:",
+                    error
+                );
+
+            }
+
+        };
+
+
+    ws.onerror =
+        function(error) {
+
+            console.error(
+                "[DARE OVERLAY] WebSocket error:",
+                error
+            );
+
+        };
+
+
+    ws.onclose =
+        function() {
+
+            console.warn(
+                "🔴 [DARE OVERLAY] WebSocket disconnected."
+            );
+
+
+            scheduleReconnect();
+
+        };
+
+}
+
+
+/* =========================================================
+   RECONNECT
+========================================================= */
+
+function scheduleReconnect() {
+
+    if (reconnectTimer) {
+
+        return;
+
+    }
+
+
+    reconnectTimer =
+        setTimeout(
+            () => {
+
+                reconnectTimer =
+                    null;
+
+                connectWebSocket();
 
             },
             3000
@@ -823,37 +1729,23 @@ function showResult(message) {
 
 
 /* =========================================================
-   HIDE
-========================================================= */
-
-function hideOverlay() {
-
-    clearInterval(
-        timerInterval
-    );
-
-    clearTimeout(
-        resultTimeout
-    );
-
-
-    overlay.style.display =
-        "none";
-
-
-    currentDare =
-        null;
-
-}
-
-
-/* =========================================================
    START
 ========================================================= */
 
-connect();
+console.log(
+    "🎯 DARE OVERLAY STARTING..."
+);
+
+console.log(
+    "WebSocket:",
+    WS_URL
+);
+
+
+connectWebSocket();
 
 </script>
 
 </body>
+
 </html>
