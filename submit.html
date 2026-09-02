@@ -1,18 +1,16 @@
 <!DOCTYPE html>
-
 <html lang="en">
 
 <head>
 
   <meta charset="UTF-8">
 
-<meta
-name="viewport"
-content="width=device-width, initial-scale=1.0"
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
 
->
-
-  <title>Send a Dare • Dare System</title>
+  <title>Send a Dare • Nerve</title>
 
   <style>
 
@@ -718,37 +716,33 @@ content="width=device-width, initial-scale=1.0"
 
 <nav>
 
-<a
-class="logo"
-href="index.html"
+  <a
+    class="logo"
+    href="index.html"
+  >
 
->
+    <div class="logo-icon">
+      🎯
+    </div>
 
-```
-<div class="logo-icon">
-  🎯
-</div>
-
-Dare System
-```
+    Nerve
 
   </a>
 
   <div class="nav-links">
 
-```
-<a href="index.html">
-  Home
-</a>
+    <a href="index.html">
+      Home
+    </a>
 
-<a href="controller.html">
-  Dashboard
-</a>
-```
+    <a href="controller.html">
+      Dashboard
+    </a>
 
   </div>
 
 </nav>
+
 
 <!-- =========================
      MAIN
@@ -758,22 +752,21 @@ Dare System
 
   <div class="header">
 
-```
-<div class="badge">
-  🎯 DARE A STREAMER
-</div>
+    <div class="badge">
+      🎯 DARE A STREAMER
+    </div>
 
-<h1>
-  Send a Dare
-</h1>
+    <h1>
+      Send a Dare
+    </h1>
 
-<p>
-  Choose a streamer, create your challenge,
-  and send it directly to their Dare System queue.
-</p>
-```
+    <p>
+      Choose a streamer, create your challenge,
+      and send it directly to their Dare System queue.
+    </p>
 
   </div>
+
 
   <!-- =========================
        FORM
@@ -781,249 +774,247 @@ Dare System
 
   <div class="card">
 
-```
-<form id="dareForm">
+    <form id="dareForm">
 
 
-  <!-- =====================
-       STREAMER
-  ===================== -->
+      <!-- =====================
+           STREAMER
+      ===================== -->
 
-  <div class="field">
+      <div class="field">
 
-    <label>
-      🎥 Target Streamer
-    </label>
+        <label>
+          🎥 Target Streamer
+        </label>
 
-    <div class="streamer-box">
-
-
-      <div class="streamer-choice">
-
-        <button
-          type="button"
-          class="choice-button active"
-          id="connectedChoice"
-        >
-          Connected Streamer
-        </button>
-
-        <button
-          type="button"
-          class="choice-button"
-          id="manualChoice"
-        >
-          Twitch Username
-        </button>
-
-      </div>
+        <div class="streamer-box">
 
 
-      <!-- CONNECTED STREAMERS -->
+          <div class="streamer-choice">
 
-      <div
-        id="connectedMethod"
-        class="streamer-method active"
-      >
+            <button
+              type="button"
+              class="choice-button active"
+              id="connectedChoice"
+            >
+              Connected Streamer
+            </button>
 
-        <select
-          id="streamerSelect"
-        >
+            <button
+              type="button"
+              class="choice-button"
+              id="manualChoice"
+            >
+              Twitch Username
+            </button>
 
-          <option value="">
-            Loading connected streamers...
-          </option>
-
-        </select>
+          </div>
 
 
-        <div
-          id="streamerStatus"
-          class="connected-status"
-        >
-          Checking connected streamers...
+          <!-- CONNECTED STREAMERS -->
+
+          <div
+            id="connectedMethod"
+            class="streamer-method active"
+          >
+
+            <select
+              id="streamerSelect"
+            >
+
+              <option value="">
+                Loading connected streamers...
+              </option>
+
+            </select>
+
+
+            <div
+              id="streamerStatus"
+              class="connected-status"
+            >
+              Checking connected streamers...
+            </div>
+
+          </div>
+
+
+          <!-- MANUAL TWITCH USERNAME -->
+
+          <div
+            id="manualMethod"
+            class="streamer-method"
+          >
+
+            <input
+              id="manualStreamer"
+              type="text"
+              maxlength="30"
+              placeholder="Example: Ninja"
+              autocomplete="off"
+            >
+
+            <div class="field-description">
+              Enter the streamer's Twitch username exactly as it appears on Twitch.
+            </div>
+
+          </div>
+
         </div>
 
       </div>
 
 
-      <!-- MANUAL TWITCH USERNAME -->
+      <!-- =====================
+           VIEWER
+      ===================== -->
 
-      <div
-        id="manualMethod"
-        class="streamer-method"
-      >
+      <div class="field">
+
+        <label for="viewer">
+          Your Viewer Name
+        </label>
 
         <input
-          id="manualStreamer"
+          id="viewer"
           type="text"
           maxlength="30"
-          placeholder="Example: Ninja"
+          placeholder="Example: Viewer123"
           autocomplete="off"
-        >
-
-        <div class="field-description">
-          Enter the streamer's Twitch username exactly as it appears on Twitch.
-        </div>
-
-      </div>
-
-    </div>
-
-  </div>
-
-
-  <!-- =====================
-       VIEWER
-  ===================== -->
-
-  <div class="field">
-
-    <label for="viewer">
-      Your Viewer Name
-    </label>
-
-    <input
-      id="viewer"
-      type="text"
-      maxlength="30"
-      placeholder="Example: Viewer123"
-      autocomplete="off"
-      required
-    >
-
-    <div class="field-description">
-      This will be shown to the streamer.
-      Account verification will be added later.
-    </div>
-
-  </div>
-
-
-  <!-- =====================
-       DARE
-  ===================== -->
-
-  <div class="field">
-
-    <label for="dare">
-      🎯 Your Dare
-    </label>
-
-    <textarea
-      id="dare"
-      maxlength="250"
-      placeholder="Write your dare here..."
-      required
-    ></textarea>
-
-    <div class="field-description">
-      Maximum 250 characters.
-    </div>
-
-  </div>
-
-
-  <!-- =====================
-       DURATION / REWARD
-  ===================== -->
-
-  <div class="two-columns">
-
-
-    <div class="field">
-
-      <label for="duration">
-        ⏱ Time Limit
-      </label>
-
-      <input
-        id="duration"
-        type="number"
-        min="5"
-        max="300"
-        value="30"
-        required
-      >
-
-      <div class="field-description">
-        5–300 seconds.
-      </div>
-
-    </div>
-
-
-    <div class="field">
-
-      <label for="reward">
-        💰 Reward
-      </label>
-
-      <div class="input-prefix">
-
-        <span>
-          ₱
-        </span>
-
-        <input
-          id="reward"
-          type="number"
-          min="0"
-          max="100000"
-          step="1"
-          value="0"
           required
         >
 
+        <div class="field-description">
+          This will be shown to the streamer.
+        </div>
+
       </div>
 
-      <div class="field-description">
-        Payment processing will be added later.
+
+      <!-- =====================
+           DARE
+      ===================== -->
+
+      <div class="field">
+
+        <label for="dare">
+          🎯 Your Dare
+        </label>
+
+        <textarea
+          id="dare"
+          maxlength="250"
+          placeholder="Write your dare here..."
+          required
+        ></textarea>
+
+        <div class="field-description">
+          Maximum 250 characters.
+        </div>
+
       </div>
+
+
+      <!-- =====================
+           DURATION / REWARD
+      ===================== -->
+
+      <div class="two-columns">
+
+
+        <div class="field">
+
+          <label for="duration">
+            ⏱ Time Limit
+          </label>
+
+          <input
+            id="duration"
+            type="number"
+            min="5"
+            max="300"
+            value="30"
+            required
+          >
+
+          <div class="field-description">
+            5–300 seconds.
+          </div>
+
+        </div>
+
+
+        <div class="field">
+
+          <label for="reward">
+            💰 Reward
+          </label>
+
+          <div class="input-prefix">
+
+            <span>
+              ₱
+            </span>
+
+            <input
+              id="reward"
+              type="number"
+              min="0"
+              max="100000"
+              step="1"
+              value="0"
+              required
+            >
+
+          </div>
+
+          <div class="field-description">
+            Payment processing will be added later.
+          </div>
+
+        </div>
+
+
+      </div>
+
+
+      <!-- =====================
+           SUBMIT
+      ===================== -->
+
+      <button
+        id="submitButton"
+        type="submit"
+      >
+        🎯 SEND DARE
+      </button>
+
+
+      <!-- =====================
+           STATUS
+      ===================== -->
+
+      <div
+        id="status"
+      ></div>
+
+
+    </form>
+
+
+    <div class="notice">
+
+      By submitting a dare, you understand that
+      the streamer can accept or reject it.
+
+      Keep dares appropriate and safe.
 
     </div>
-
-
-  </div>
-
-
-  <!-- =====================
-       SUBMIT
-  ===================== -->
-
-  <button
-    id="submitButton"
-    type="submit"
-  >
-    🎯 SEND DARE
-  </button>
-
-
-  <!-- =====================
-       STATUS
-  ===================== -->
-
-  <div
-    id="status"
-  ></div>
-
-
-</form>
-
-
-<div class="notice">
-
-  By submitting a dare, you understand that
-  the streamer can accept or reject it.
-
-  Keep dares appropriate and safe.
-
-</div>
-```
 
   </div>
 
 </main>
+
 
 <script>
 
@@ -1211,18 +1202,6 @@ async function loadStreamers() {
       await response.json();
 
 
-    /*
-    Accept either:
-
-      {
-        streamers: [...]
-      }
-
-    OR directly:
-
-      [...]
-    */
-
     const streamers =
       Array.isArray(data)
         ? data
@@ -1231,7 +1210,8 @@ async function loadStreamers() {
           : [];
 
 
-    streamerSelect.innerHTML = "";
+    streamerSelect.innerHTML =
+      "";
 
 
     if (
@@ -1243,7 +1223,8 @@ async function loadStreamers() {
           "option"
         );
 
-      option.value = "";
+      option.value =
+        "";
 
       option.textContent =
         "No connected streamers";
@@ -1270,7 +1251,8 @@ async function loadStreamers() {
         "option"
       );
 
-    defaultOption.value = "";
+    defaultOption.value =
+      "";
 
     defaultOption.textContent =
       "Select a connected streamer...";
@@ -1282,24 +1264,6 @@ async function loadStreamers() {
 
     streamers.forEach(
       function(streamer) {
-
-        /*
-        Support either:
-
-          "username"
-
-        or:
-
-          {
-            username: "username"
-          }
-
-        or:
-
-          {
-            twitchUsername: "username"
-          }
-        */
 
         const username =
           typeof streamer === "string"
@@ -1360,7 +1324,8 @@ async function loadStreamers() {
     );
 
 
-    streamerSelect.innerHTML = "";
+    streamerSelect.innerHTML =
+      "";
 
 
     const option =
@@ -1368,7 +1333,8 @@ async function loadStreamers() {
         "option"
       );
 
-    option.value = "";
+    option.value =
+      "";
 
     option.textContent =
       "Could not load connected streamers";
@@ -1408,11 +1374,6 @@ function isValidTwitchUsername(
   username
 ) {
 
-  /*
-  Twitch usernames are normally
-  letters, numbers and underscores.
-  */
-
   return /^[a-zA-Z0-9_]{1,30}$/.test(
     username
   );
@@ -1451,7 +1412,7 @@ function getTargetStreamer() {
         username,
 
       streamerSource:
-        "connected"
+        "twitch_username"
 
     };
 
@@ -1519,11 +1480,9 @@ form.addEventListener(
     hideStatus();
 
 
-    /*
-    =========================
-    STREAMER
-    =========================
-    */
+    /* =========================
+       STREAMER
+    ========================= */
 
     const target =
       getTargetStreamer();
@@ -1540,11 +1499,9 @@ form.addEventListener(
     }
 
 
-    /*
-    =========================
-    VIEWER
-    =========================
-    */
+    /* =========================
+       VIEWER
+    ========================= */
 
     const viewer =
       viewerInput.value.trim();
@@ -1561,17 +1518,15 @@ form.addEventListener(
     }
 
 
-    /*
-    =========================
-    DARE
-    =========================
-    */
+    /* =========================
+       DARE
+    ========================= */
 
-    const text =
+    const dareText =
       dareInput.value.trim();
 
 
-    if (!text) {
+    if (!dareText) {
 
       showError(
         "Please enter a dare."
@@ -1582,11 +1537,9 @@ form.addEventListener(
     }
 
 
-    /*
-    =========================
-    DURATION
-    =========================
-    */
+    /* =========================
+       DURATION
+    ========================= */
 
     const duration =
       Number(
@@ -1609,11 +1562,9 @@ form.addEventListener(
     }
 
 
-    /*
-    =========================
-    REWARD
-    =========================
-    */
+    /* =========================
+       REWARD
+    ========================= */
 
     const reward =
       Number(
@@ -1636,11 +1587,9 @@ form.addEventListener(
     }
 
 
-    /*
-    =========================
-    DISABLE
-    =========================
-    */
+    /* =========================
+       DISABLE
+    ========================= */
 
     button.disabled =
       true;
@@ -1651,12 +1600,9 @@ form.addEventListener(
 
     try {
 
-
-      /*
-      =========================
-      SEND TO RENDER
-      =========================
-      */
+      /* =========================
+         SEND TO RENDER
+      ========================= */
 
       const response =
         await fetch(
@@ -1674,26 +1620,36 @@ form.addEventListener(
 
             },
 
+            /*
+            IMPORTANT:
+
+            These names MUST match
+            the Render backend.
+
+            dare_text
+            streamer_source
+            */
+
             body:
               JSON.stringify({
+
+                streamer:
+                  target.streamer,
+
+                streamer_source:
+                  target.streamerSource,
 
                 viewer:
                   viewer,
 
-                text:
-                  text,
+                dare_text:
+                  dareText,
 
                 duration:
                   duration,
 
                 reward:
-                  reward,
-
-                streamer:
-                  target.streamer,
-
-                streamerSource:
-                  target.streamerSource
+                  reward
 
               })
 
@@ -1720,11 +1676,9 @@ form.addEventListener(
       }
 
 
-      /*
-      =========================
-      ERROR
-      =========================
-      */
+      /* =========================
+         ERROR
+      ========================= */
 
       if (!response.ok) {
 
@@ -1742,20 +1696,41 @@ form.addEventListener(
       }
 
 
-      /*
-      =========================
-      SUCCESS
-      =========================
-      */
+      /* =========================
+         SUCCESS
+      ========================= */
 
-      showSuccess(
+      if (
+        data &&
+        data.activeDare
+      ) {
 
-        "✅ Dare sent to @" +
-        target.streamer +
-        "! The streamer can now accept or reject it."
+        showSuccess(
 
-      );
+          "✅ Dare sent to @" +
+          target.streamer +
+          "! It is now LIVE."
 
+        );
+
+      }
+
+      else {
+
+        showSuccess(
+
+          "✅ Dare sent to @" +
+          target.streamer +
+          "! It has been added to their queue."
+
+        );
+
+      }
+
+
+      /* =========================
+         RESET FORM
+      ========================= */
 
       form.reset();
 
@@ -1767,11 +1742,9 @@ form.addEventListener(
         "0";
 
 
-      /*
-      Return to connected
-      streamer mode after
-      successful submission.
-      */
+      /* =========================
+         RETURN TO CONNECTED MODE
+      ========================= */
 
       streamerMode =
         "connected";
@@ -1791,6 +1764,7 @@ form.addEventListener(
       manualMethod.classList.remove(
         "active"
       );
+
 
       loadStreamers();
 
@@ -1869,9 +1843,11 @@ function showError(
 
 function hideStatus() {
 
-  status.className = "";
+  status.className =
+    "";
 
-  status.textContent = "";
+  status.textContent =
+    "";
 
 }
 
