@@ -1,857 +1,715 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-
 <meta charset="UTF-8">
-
-<meta
-    name="viewport"
-    content="width=device-width, initial-scale=1.0"
->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <title>Dare System Controller</title>
 
 <style>
-
-* {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-}
-
-body {
-    min-height: 100vh;
-    background: #08080d;
-    color: white;
-    font-family: Arial, Helvetica, sans-serif;
-    padding: 20px;
-}
-
-.container {
-    width: 100%;
-    max-width: 900px;
-    margin: auto;
-}
-
-
-/* ==========================================
-   HEADER
-========================================== */
-
-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 15px;
-    margin-bottom: 20px;
-}
-
-.logo {
-    font-size: 22px;
-    font-weight: 900;
-}
-
-.connection {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    font-size: 12px;
-    color: #aaa;
-}
-
-.dot {
-    width: 9px;
-    height: 9px;
-    border-radius: 50%;
-    background: #ef4444;
-}
-
-.dot.connected {
-    background: #22c55e;
-}
-
-
-/* ==========================================
-   STREAMER SELECTOR
-========================================== */
-
-.streamer-selector {
-    background: #111118;
-    border: 1px solid #252530;
-    border-radius: 18px;
-    padding: 18px;
-    margin-bottom: 18px;
-}
-
-.selector-label {
-    color: #777;
-    font-size: 11px;
-    font-weight: 900;
-    letter-spacing: 1px;
-    margin-bottom: 10px;
-}
-
-.streamer-row {
-    display: flex;
-    gap: 10px;
-}
-
-.streamer-select {
-    flex: 1;
-    width: 100%;
-    background: #1b1b24;
-    color: white;
-    border: 1px solid #30303a;
-    border-radius: 10px;
-    padding: 13px;
-    font-size: 14px;
-    font-weight: 700;
-    outline: none;
-}
-
-.streamer-select:focus {
-    border-color: #8b5cf6;
-}
-
-.streamer-status {
-    margin-top: 10px;
-    color: #777;
-    font-size: 12px;
-}
-
-
-/* ==========================================
-   CARDS
-========================================== */
-
-.card {
-    background: #111118;
-    border: 1px solid #252530;
-    border-radius: 18px;
-    padding: 22px;
-    margin-bottom: 18px;
-}
-
-.card-title {
-    color: #777;
-    font-size: 11px;
-    font-weight: 900;
-    letter-spacing: 1px;
-    margin-bottom: 18px;
-}
-
-
-/* ==========================================
-   EMPTY
-========================================== */
-
-.empty {
-    text-align: center;
-    color: #666;
-    padding: 40px 15px;
-}
-
-.empty-icon {
-    font-size: 38px;
-    margin-bottom: 10px;
-}
-
-
-/* ==========================================
-   CURRENT DARE
-========================================== */
-
-.status {
-    display: inline-block;
-    padding: 6px 10px;
-    border-radius: 7px;
-    background: #e53935;
-    font-size: 10px;
-    font-weight: 900;
-    margin-bottom: 12px;
-}
-
-.viewer {
-    color: #888;
-    font-size: 14px;
-    margin-bottom: 12px;
-}
-
-.viewer strong {
-    color: white;
-}
-
-.dare-text {
-    font-size: clamp(25px, 5vw, 40px);
-    line-height: 1.15;
-    font-weight: 900;
-    margin-bottom: 18px;
-    word-break: break-word;
-}
-
-.details {
-    display: flex;
-    gap: 10px;
-    flex-wrap: wrap;
-    margin-bottom: 18px;
-}
-
-.detail {
-    background: #1b1b24;
-    border-radius: 9px;
-    padding: 9px 12px;
-    color: #aaa;
-    font-size: 12px;
-    font-weight: 700;
-}
-
-.detail span {
-    color: white;
-}
-
-
-/* ==========================================
-   BUTTONS
-========================================== */
-
-.buttons {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 10px;
-}
-
-button {
-    border: none;
-    border-radius: 11px;
-    padding: 15px;
-    font-size: 14px;
-    font-weight: 900;
-    cursor: pointer;
-}
-
-button:disabled {
-    opacity: .35;
-    cursor: not-allowed;
-}
-
-.accept {
-    background: #22c55e;
-    color: #031008;
-}
-
-.reject {
-    background: #ef4444;
-    color: white;
-}
-
-.complete {
-    background: #3b82f6;
-    color: white;
-}
-
-.failed {
-    background: #9333ea;
-    color: white;
-}
-
-
-/* ==========================================
-   QUEUE
-========================================== */
-
-.queue-count {
-    color: white;
-    margin-left: 5px;
-}
-
-.queue-item {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-
-    padding: 14px;
-
-    border-bottom: 1px solid #24242c;
-
-    border-radius: 10px;
-
-    cursor: pointer;
-
-    transition:
-        background .15s,
-        transform .15s;
-}
-
-.queue-item:hover {
-    background: #1a1a24;
-    transform: translateX(2px);
-}
-
-.queue-item:last-child {
-    border-bottom: none;
-}
-
-.queue-number {
-    min-width: 30px;
-    color: #777;
-    font-weight: 900;
-}
-
-.queue-content {
-    flex: 1;
-    min-width: 0;
-}
-
-.queue-viewer {
-    color: #888;
-    font-size: 11px;
-    margin-bottom: 4px;
-}
-
-.queue-text {
-    font-size: 14px;
-    font-weight: 700;
-    word-break: break-word;
-}
-
-.queue-reward {
-    color: #aaa;
-    font-size: 12px;
-    white-space: nowrap;
-}
-
-
-/* ==========================================
-   QUEUE HINT
-========================================== */
-
-.queue-hint {
-    color: #555;
-    font-size: 11px;
-    text-align: center;
-    margin-top: 12px;
-}
-
-
-/* ==========================================
-   SECONDARY
-========================================== */
-
-.secondary {
-    display: flex;
-    gap: 10px;
-    margin-top: 15px;
-}
-
-.secondary button {
-    background: #1b1b24;
-    color: #aaa;
-    font-size: 11px;
-    padding: 10px 13px;
-}
-
-
-/* ==========================================
-   TOAST
-========================================== */
-
-#toast {
-    position: fixed;
-
-    left: 50%;
-    bottom: 25px;
-
-    transform:
-        translate(-50%, 20px);
-
-    opacity: 0;
-
-    background: #181820;
-
-    border:
-        1px solid
-        #30303a;
-
-    border-radius: 10px;
-
-    padding: 12px 16px;
-
-    font-size: 13px;
-
-    transition: .2s;
-
-    pointer-events: none;
-
-    z-index: 9999;
-}
-
-#toast.show {
-    opacity: 1;
-
-    transform:
-        translate(-50%, 0);
-}
-
-
-/* ==========================================
-   MOBILE
-========================================== */
-
-@media(max-width:600px) {
+    * {
+        box-sizing: border-box;
+    }
 
     body {
-        padding: 12px;
+        margin: 0;
+        background: #0b0b0f;
+        color: #ffffff;
+        font-family: Arial, Helvetica, sans-serif;
+        padding: 20px;
     }
 
-    header {
-        align-items: flex-start;
-        flex-direction: column;
+    .container {
+        max-width: 900px;
+        margin: auto;
     }
 
-    .connection {
-        align-self: flex-start;
+    h1 {
+        margin-top: 0;
+        font-size: 30px;
+    }
+
+    .status {
+        display: inline-block;
+        padding: 8px 14px;
+        border-radius: 20px;
+        background: #333;
+        font-weight: bold;
+        margin-bottom: 20px;
+    }
+
+    .connected {
+        background: #145c2a;
+        color: #6dff99;
+    }
+
+    .disconnected {
+        background: #5c1515;
+        color: #ff7777;
     }
 
     .card {
-        padding: 18px;
+        background: #15151c;
+        border: 1px solid #292934;
+        border-radius: 14px;
+        padding: 20px;
+        margin-bottom: 20px;
+    }
+
+    .card h2 {
+        margin-top: 0;
+        font-size: 20px;
+    }
+
+    label {
+        display: block;
+        margin-top: 14px;
+        margin-bottom: 6px;
+        color: #bbb;
+        font-size: 14px;
+    }
+
+    input,
+    textarea,
+    select {
+        width: 100%;
+        padding: 12px;
+        border-radius: 8px;
+        border: 1px solid #363642;
+        background: #0d0d12;
+        color: white;
+        font-size: 15px;
+        outline: none;
+    }
+
+    textarea {
+        min-height: 100px;
+        resize: vertical;
+    }
+
+    input:focus,
+    textarea:focus,
+    select:focus {
+        border-color: #7777ff;
+    }
+
+    button {
+        border: none;
+        border-radius: 9px;
+        padding: 12px 18px;
+        font-size: 15px;
+        font-weight: bold;
+        cursor: pointer;
+        margin-top: 15px;
+    }
+
+    .send {
+        background: #6c63ff;
+        color: white;
+        width: 100%;
+    }
+
+    .send:hover {
+        background: #8179ff;
+    }
+
+    .complete {
+        background: #1d8f4e;
+        color: white;
+    }
+
+    .fail {
+        background: #b52b2b;
+        color: white;
+    }
+
+    .reject {
+        background: #555;
+        color: white;
+    }
+
+    button:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+    }
+
+    .active-dare {
+        border: 2px solid #6c63ff;
+        background: #171625;
+    }
+
+    .dare-text {
+        font-size: 25px;
+        font-weight: bold;
+        margin: 15px 0;
+        line-height: 1.3;
+    }
+
+    .meta {
+        color: #aaa;
+        font-size: 14px;
+        margin-top: 7px;
+    }
+
+    .timer {
+        font-size: 42px;
+        font-weight: bold;
+        text-align: center;
+        margin: 20px 0;
+    }
+
+    .queue-item {
+        background: #0e0e14;
+        border: 1px solid #292934;
+        border-radius: 10px;
+        padding: 14px;
+        margin-bottom: 10px;
+        cursor: pointer;
+        transition: 0.15s;
+    }
+
+    .queue-item:hover {
+        border-color: #6c63ff;
+        background: #171721;
+    }
+
+    .queue-number {
+        color: #7777ff;
+        font-weight: bold;
+        margin-right: 8px;
+    }
+
+    .empty {
+        color: #777;
+        text-align: center;
+        padding: 20px;
     }
 
     .buttons {
-        grid-template-columns: 1fr;
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
     }
 
-    .secondary {
-        flex-direction: column;
+    .buttons button {
+        flex: 1;
+        min-width: 140px;
     }
 
-}
+    .toast {
+        position: fixed;
+        bottom: 20px;
+        left: 50%;
+        transform: translateX(-50%);
+        background: #22222c;
+        border: 1px solid #444;
+        padding: 12px 18px;
+        border-radius: 10px;
+        display: none;
+        z-index: 9999;
+    }
 
+    .streamer-info {
+        color: #aaa;
+        margin-bottom: 15px;
+    }
+
+    .streamer-info strong {
+        color: white;
+    }
+
+    @media (max-width: 600px) {
+        body {
+            padding: 12px;
+        }
+
+        h1 {
+            font-size: 25px;
+        }
+
+        .dare-text {
+            font-size: 21px;
+        }
+
+        .timer {
+            font-size: 35px;
+        }
+    }
 </style>
-
 </head>
-
 
 <body>
 
-
 <div class="container">
 
+    <h1>🎯 DARE SYSTEM</h1>
 
-<!-- ======================================
-     HEADER
-====================================== -->
-
-<header>
-
-    <div class="logo">
-        🎯 DARE SYSTEM
+    <div id="connectionStatus" class="status disconnected">
+        🔴 Connecting...
     </div>
 
-    <div class="connection">
+    <!-- STREAMER -->
 
-        <div
-            id="connectionDot"
-            class="dot">
+    <div class="card">
+
+        <h2>🎥 CONTROLLING STREAMER</h2>
+
+        <div class="streamer-info">
+            Streamer:
+            <strong id="streamerName">Loading...</strong>
         </div>
 
-        <span id="connectionText">
-            Connecting...
-        </span>
-
-    </div>
-
-</header>
-
-
-<!-- ======================================
-     STREAMER SELECTOR
-====================================== -->
-
-<div class="streamer-selector">
-
-    <div class="selector-label">
-        CONTROLLING STREAMER
-    </div>
-
-    <div class="streamer-row">
-
-        <select
-            id="streamerSelect"
-            class="streamer-select">
-
-            <option value="">
-                Loading streamers...
-            </option>
-
+        <select id="streamerSelect">
+            <option value="">Loading streamers...</option>
         </select>
 
     </div>
 
-    <div
-        id="streamerStatus"
-        class="streamer-status">
 
-        Loading connected streamers...
+    <!-- SEND DARE -->
 
-    </div>
+    <div class="card">
 
-</div>
+        <h2>➕ SEND TEST DARE</h2>
 
+        <label>Viewer Name</label>
 
-<!-- ======================================
-     CURRENT DARE
-====================================== -->
+        <input
+            id="viewerInput"
+            type="text"
+            placeholder="Viewer name"
+            value="TestViewer"
+        >
 
-<div class="card">
+        <label>Dare Text</label>
 
-    <div class="card-title">
-        CURRENT DARE
-    </div>
+        <textarea
+            id="dareInput"
+            placeholder="Enter the dare..."
+        ></textarea>
 
+        <label>Duration (seconds)</label>
 
-    <div
-        id="emptyState"
-        class="empty">
+        <input
+            id="durationInput"
+            type="number"
+            min="1"
+            value="30"
+        >
 
-        <div class="empty-icon">
-            🎯
-        </div>
+        <label>Reward</label>
 
-        No active dare
+        <input
+            id="rewardInput"
+            type="number"
+            min="0"
+            step="0.01"
+            value="0"
+        >
 
-    </div>
-
-
-    <div
-        id="currentDare"
-        style="display:none;">
-
-
-        <div
-            id="status"
-            class="status">
-
-            PENDING
-
-        </div>
-
-
-        <div class="viewer">
-
-            From:
-
-            <strong id="viewer">
-                @viewer
-            </strong>
-
-        </div>
-
-
-        <div
-            id="dareText"
-            class="dare-text">
-        </div>
-
-
-        <div class="details">
-
-            <div class="detail">
-
-                💰 ₱<span id="reward">
-                    0.00
-                </span>
-
-            </div>
-
-
-            <div class="detail">
-
-                ⏱️ <span id="duration">
-                    30
-                </span>s
-
-            </div>
-
-
-            <div class="detail">
-
-                🎥 <span id="targetStreamer">
-                    -
-                </span>
-
-            </div>
-
-        </div>
-
-
-        <!-- ==================================
-             ACCEPT / REJECT
-        ================================== -->
-
-        <div
-            id="decisionButtons"
-            class="buttons">
-
-            <button
-                id="acceptButton"
-                class="accept"
-                onclick="setDareStatus('accepted')">
-
-                ✅ ACCEPT
-
-            </button>
-
-
-            <button
-                id="rejectButton"
-                class="reject"
-                onclick="setDareStatus('rejected')">
-
-                ❌ REJECT
-
-            </button>
-
-        </div>
-
-
-        <!-- ==================================
-             COMPLETE / FAILED
-        ================================== -->
-
-        <div
-            id="finishButtons"
-            class="buttons"
-            style="display:none; margin-top:10px;">
-
-            <button
-                class="complete"
-                onclick="setDareStatus('completed')">
-
-                🏁 COMPLETED
-
-            </button>
-
-
-            <button
-                class="failed"
-                onclick="setDareStatus('failed')">
-
-                🚫 FAILED
-
-            </button>
-
-        </div>
-
-
-    </div>
-
-</div>
-
-
-<!-- ======================================
-     WAITING QUEUE
-====================================== -->
-
-<div class="card">
-
-    <div class="card-title">
-
-        WAITING QUEUE
-
-        <span
-            id="queueCount"
-            class="queue-count">
-
-            0
-
-        </span>
-
-    </div>
-
-
-    <div id="queueList">
-
-        <div class="empty">
-
-            No dares waiting
-
-        </div>
-
-    </div>
-
-
-    <div class="queue-hint">
-
-        💡 Click a dare to control it
-
-    </div>
-
-
-    <div class="secondary">
-
-        <button onclick="refreshState()">
-
-            🔄 Refresh
-
-        </button>
-
-
-        <button onclick="clearQueue()">
-
-            🗑️ Clear All
-
+        <button
+            class="send"
+            id="sendButton"
+        >
+            🚀 SEND DARE
         </button>
 
     </div>
 
+
+    <!-- ACTIVE DARE -->
+
+    <div class="card active-dare">
+
+        <h2>🔥 ACTIVE DARE</h2>
+
+        <div id="currentDare">
+
+            <div class="empty">
+                No active dare
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- WAITING QUEUE -->
+
+    <div class="card">
+
+        <h2>⏳ WAITING QUEUE</h2>
+
+        <div id="queue">
+
+            <div class="empty">
+                No waiting dares
+            </div>
+
+        </div>
+
+    </div>
+
 </div>
 
 
-</div>
-
-
-<div id="toast"></div>
+<div id="toast" class="toast"></div>
 
 
 <script>
 
-/* ==========================================
-   BACKEND
-========================================== */
+/* =========================================================
+   CONFIG
+========================================================= */
 
-const BACKEND_URL =
+const API_URL =
     "https://dare-backend-vx8w.onrender.com";
-
 
 const WS_URL =
     "wss://dare-backend-vx8w.onrender.com/ws";
 
 
-/* ==========================================
+/* =========================================================
    STATE
-========================================== */
+========================================================= */
 
-let currentDare = null;
-
-let dareQueue = [];
-
-let activeDares = [];
+let ws = null;
 
 let streamers = [];
 
-let selectedStreamer = "";
+let selectedStreamer = "IShowSloow_";
 
-let socket = null;
+let activeDares = [];
 
-let toastTimer = null;
+let queues = {};
 
+let currentDare = null;
 
-/*
- * Stores all queues by streamer.
- */
-
-window.latestQueues = {};
+let timerInterval = null;
 
 
-/* ==========================================
+/* =========================================================
    ELEMENTS
-========================================== */
+========================================================= */
 
-const connectionDot =
-    document.getElementById(
-        "connectionDot"
-    );
-
-const connectionText =
-    document.getElementById(
-        "connectionText"
-    );
+const connectionStatus =
+    document.getElementById("connectionStatus");
 
 const streamerSelect =
-    document.getElementById(
-        "streamerSelect"
-    );
+    document.getElementById("streamerSelect");
 
-const streamerStatus =
-    document.getElementById(
-        "streamerStatus"
-    );
-
-const emptyState =
-    document.getElementById(
-        "emptyState"
-    );
+const streamerName =
+    document.getElementById("streamerName");
 
 const currentDareElement =
-    document.getElementById(
-        "currentDare"
+    document.getElementById("currentDare");
+
+const queueElement =
+    document.getElementById("queue");
+
+const sendButton =
+    document.getElementById("sendButton");
+
+const dareInput =
+    document.getElementById("dareInput");
+
+const viewerInput =
+    document.getElementById("viewerInput");
+
+const durationInput =
+    document.getElementById("durationInput");
+
+const rewardInput =
+    document.getElementById("rewardInput");
+
+const toast =
+    document.getElementById("toast");
+
+
+/* =========================================================
+   TOAST
+========================================================= */
+
+function showToast(message) {
+
+    toast.textContent = message;
+
+    toast.style.display = "block";
+
+    setTimeout(() => {
+        toast.style.display = "none";
+    }, 2500);
+}
+
+
+/* =========================================================
+   WEBSOCKET
+========================================================= */
+
+function connectWebSocket() {
+
+    ws = new WebSocket(WS_URL);
+
+    ws.onopen = function() {
+
+        connectionStatus.textContent =
+            "🟢 Connected";
+
+        connectionStatus.className =
+            "status connected";
+
+        ws.send(
+            JSON.stringify({
+                type: "GET_STATE"
+            })
+        );
+    };
+
+
+    ws.onclose = function() {
+
+        connectionStatus.textContent =
+            "🔴 Disconnected";
+
+        connectionStatus.className =
+            "status disconnected";
+
+        setTimeout(connectWebSocket, 3000);
+    };
+
+
+    ws.onerror = function() {
+
+        connectionStatus.textContent =
+            "🔴 Connection Error";
+
+        connectionStatus.className =
+            "status disconnected";
+    };
+
+
+    ws.onmessage = function(event) {
+
+        try {
+
+            const message =
+                JSON.parse(event.data);
+
+            handleWebSocketMessage(message);
+
+        } catch (error) {
+
+            console.error(
+                "WebSocket message error:",
+                error
+            );
+        }
+    };
+}
+
+
+/* =========================================================
+   WEBSOCKET MESSAGES
+========================================================= */
+
+function handleWebSocketMessage(message) {
+
+    console.log(
+        "WebSocket:",
+        message
     );
 
-const statusElement =
-    document.getElementById(
-        "status"
-    );
 
-const viewerElement =
-    document.getElementById(
-        "viewer"
-    );
+    /* -----------------------------------------------------
+       INITIAL STATE
+    ----------------------------------------------------- */
 
-const dareTextElement =
-    document.getElementById(
-        "dareText"
-    );
+    if (message.type === "STATE") {
 
-const rewardElement =
-    document.getElementById(
-        "reward"
-    );
+        streamers =
+            message.streamers || [];
 
-const durationElement =
-    document.getElementById(
-        "duration"
-    );
+        activeDares =
+            message.activeDares || [];
 
-const targetStreamerElement =
-    document.getElementById(
-        "targetStreamer"
-    );
+        queues =
+            message.queues || {};
 
-const decisionButtons =
-    document.getElementById(
-        "decisionButtons"
-    );
+        renderStreamers();
 
-const finishButtons =
-    document.getElementById(
-        "finishButtons"
-    );
+        syncSelectedStreamer();
 
-const acceptButton =
-    document.getElementById(
-        "acceptButton"
-    );
+        renderCurrentDare();
 
-const rejectButton =
-    document.getElementById(
-        "rejectButton"
-    );
+        renderQueue();
 
-const queueList =
-    document.getElementById(
-        "queueList"
-    );
-
-const queueCount =
-    document.getElementById(
-        "queueCount"
-    );
+        return;
+    }
 
 
-/* ==========================================
-   LOAD STREAMERS
-========================================== */
+    /* -----------------------------------------------------
+       NEW DARE
+    ----------------------------------------------------- */
+
+    if (message.type === "DARE_CREATED") {
+
+        /*
+            It may still be pending if another dare
+            is currently active.
+
+            If no dare is active, the backend will also
+            send ACTIVE_DARE immediately.
+        */
+
+        const dare = message.dare;
+
+        if (dare) {
+
+            updateQueueFromDare(dare);
+
+        }
+
+        renderQueue();
+
+        return;
+    }
+
+
+    /* -----------------------------------------------------
+       ACTIVE DARE
+    ----------------------------------------------------- */
+
+    if (message.type === "ACTIVE_DARE") {
+
+        const dare = message.dare;
+
+        if (!dare) return;
+
+        updateActiveDare(dare);
+
+        showToast(
+            "🔥 New dare is now ACTIVE!"
+        );
+
+        return;
+    }
+
+
+    /* -----------------------------------------------------
+       QUEUE UPDATED
+    ----------------------------------------------------- */
+
+    if (message.type === "QUEUE_UPDATED") {
+
+        if (message.streamer) {
+
+            const key =
+                message.streamer.toLowerCase();
+
+            queues[key] =
+                message.queue || [];
+
+        }
+
+        renderQueue();
+
+        return;
+    }
+
+
+    /* -----------------------------------------------------
+       DARE COMPLETED
+    ----------------------------------------------------- */
+
+    if (message.type === "DARE_COMPLETED") {
+
+        removeActiveDare(
+            message.dare
+        );
+
+        renderCurrentDare();
+
+        return;
+    }
+
+
+    /* -----------------------------------------------------
+       DARE FAILED
+    ----------------------------------------------------- */
+
+    if (message.type === "DARE_FAILED") {
+
+        removeActiveDare(
+            message.dare
+        );
+
+        renderCurrentDare();
+
+        return;
+    }
+
+
+    /* -----------------------------------------------------
+       ACTIVE CLEARED
+    ----------------------------------------------------- */
+
+    if (message.type === "ACTIVE_DARE_CLEARED") {
+
+        removeActiveDare(
+            message.dare
+        );
+
+        renderCurrentDare();
+
+        return;
+    }
+
+
+    /* -----------------------------------------------------
+       REJECTED
+    ----------------------------------------------------- */
+
+    if (message.type === "DARE_REJECTED") {
+
+        if (message.dare) {
+
+            removeFromQueue(
+                message.dare.id
+            );
+        }
+
+        renderQueue();
+
+        return;
+    }
+
+
+    /* -----------------------------------------------------
+       RESET
+    ----------------------------------------------------- */
+
+    if (message.type === "RESET") {
+
+        activeDares = [];
+
+        queues = {};
+
+        currentDare = null;
+
+        stopTimer();
+
+        renderCurrentDare();
+
+        renderQueue();
+
+        return;
+    }
+}
+
+
+/* =========================================================
+   STREAMERS
+========================================================= */
 
 async function loadStreamers() {
 
@@ -859,163 +717,84 @@ async function loadStreamers() {
 
         const response =
             await fetch(
-                BACKEND_URL +
-                "/api/streamers"
+                API_URL + "/api/streamers"
             );
-
 
         if (!response.ok) {
-
             throw new Error(
-                "Could not load streamers."
+                "Failed to load streamers"
             );
-
         }
 
-
-        const data =
+        streamers =
             await response.json();
 
+        renderStreamers();
 
-        streamers =
-            data.streamers || [];
+    } catch (error) {
 
+        console.error(error);
 
-        populateStreamerSelector();
+        streamerName.textContent =
+            "IShowSloow_";
 
-
+        selectedStreamer =
+            "IShowSloow_";
     }
-
-    catch(error) {
-
-        console.error(
-            "Streamer loading error:",
-            error
-        );
-
-
-        streamerSelect.innerHTML =
-            `
-            <option value="">
-                No streamers available
-            </option>
-            `;
-
-
-        streamerStatus.textContent =
-            "Could not load connected streamers.";
-
-    }
-
 }
 
 
-/* ==========================================
-   POPULATE STREAMER SELECTOR
-========================================== */
-
-function populateStreamerSelector() {
-
-    const previousSelection =
-        selectedStreamer;
-
+function renderStreamers() {
 
     streamerSelect.innerHTML = "";
 
+    if (!streamers.length) {
 
-    if (
-        streamers.length === 0
-    ) {
+        const option =
+            document.createElement("option");
 
-        streamerSelect.innerHTML =
-            `
-            <option value="">
-                No connected streamers
-            </option>
-            `;
+        option.value =
+            "IShowSloow_";
 
+        option.textContent =
+            "IShowSloow_";
 
-        streamerStatus.textContent =
-            "No streamers are currently connected.";
-
-
-        selectedStreamer = "";
-
-        currentDare = null;
-
-        dareQueue = [];
-
-        render();
-
-        return;
-
-    }
-
-
-    streamers.forEach(
-        streamer => {
-
-            const option =
-                document.createElement(
-                    "option"
-                );
-
-
-            option.value =
-                streamer.username;
-
-
-            option.textContent =
-                streamer.displayName ||
-                streamer.username;
-
-
-            streamerSelect.appendChild(
-                option
-            );
-
-        }
-    );
-
-
-    const stillExists =
-        streamers.some(
-            streamer =>
-                streamer.username.toLowerCase() ===
-                previousSelection.toLowerCase()
+        streamerSelect.appendChild(
+            option
         );
 
+        streamerName.textContent =
+            "IShowSloow_";
 
-    if (stillExists) {
-
-        selectedStreamer =
-            previousSelection;
-
+        return;
     }
 
-    else {
 
-        selectedStreamer =
-            streamers[0].username;
+    streamers.forEach(streamer => {
 
-    }
+        const option =
+            document.createElement("option");
+
+        option.value =
+            streamer.username;
+
+        option.textContent =
+            streamer.displayName ||
+            streamer.username;
+
+        streamerSelect.appendChild(
+            option
+        );
+    });
 
 
     streamerSelect.value =
         selectedStreamer;
 
-
-    updateStreamerStatus();
-
-
-    syncSelectedStreamer();
-
+    streamerName.textContent =
+        selectedStreamer;
 }
 
-
-/* ==========================================
-   STREAMER CHANGED
-========================================== */
 
 streamerSelect.addEventListener(
     "change",
@@ -1024,47 +803,32 @@ streamerSelect.addEventListener(
         selectedStreamer =
             streamerSelect.value;
 
+        streamerName.textContent =
+            selectedStreamer;
 
         /*
-         * When switching streamer, clear the
-         * currently selected pending dare.
-         */
+            IMPORTANT:
 
-        currentDare = null;
+            If there is an active dare for this streamer,
+            show it.
 
+            Otherwise don't show another streamer's dare.
+        */
 
         syncSelectedStreamer();
 
+        renderCurrentDare();
+
+        renderQueue();
     }
 );
 
 
-/* ==========================================
+/* =========================================================
    SYNC SELECTED STREAMER
-========================================== */
+========================================================= */
 
 function syncSelectedStreamer() {
-
-    if (!selectedStreamer) {
-
-        currentDare = null;
-
-        dareQueue = [];
-
-        render();
-
-        return;
-
-    }
-
-
-    const key =
-        selectedStreamer.toLowerCase();
-
-
-    /*
-     * Find active dare for this streamer.
-     */
 
     const active =
         activeDares.find(
@@ -1072,1234 +836,606 @@ function syncSelectedStreamer() {
                 dare &&
                 dare.streamer &&
                 dare.streamer.toLowerCase() ===
-                key
+                selectedStreamer.toLowerCase()
         );
 
-
-    /*
-     * If an active dare exists, it always
-     * takes priority.
-     */
 
     if (active) {
 
         currentDare =
             active;
 
-    }
-
-    /*
-     * If currentDare is already a pending dare
-     * belonging to this streamer, keep it selected.
-     */
-
-    else if (
-        currentDare &&
-        currentDare.streamer &&
-        currentDare.streamer.toLowerCase() ===
-        key &&
-        currentDare.status === "pending"
-    ) {
+    } else {
 
         /*
-         * Keep selected pending dare.
-         */
+            There is no active dare for this streamer.
 
-    }
+            Do NOT invent one from the queue.
 
-    else {
+            The queue is only waiting dares.
+        */
 
         currentDare = null;
-
     }
+}
+
+
+/* =========================================================
+   ACTIVE DARE
+========================================================= */
+
+function updateActiveDare(dare) {
+
+    /*
+        Remove any old active dare belonging
+        to the same streamer.
+    */
+
+    activeDares =
+        activeDares.filter(
+            active =>
+                !(
+                    active.streamer &&
+                    dare.streamer &&
+                    active.streamer.toLowerCase() ===
+                    dare.streamer.toLowerCase()
+                )
+        );
+
+
+    activeDares.push(dare);
 
 
     /*
-     * Load this streamer's queue.
-     */
+        Remove the new active dare from queue.
+    */
 
-    if (
-        window.latestQueues &&
-        window.latestQueues[key]
-    ) {
-
-        dareQueue =
-            window.latestQueues[key];
-
-    }
-
-    else {
-
-        dareQueue = [];
-
-    }
-
-
-    updateStreamerStatus();
-
-    render();
-
-}
-
-
-/* ==========================================
-   STREAMER STATUS
-========================================== */
-
-function updateStreamerStatus() {
-
-    if (!selectedStreamer) {
-
-        streamerStatus.textContent =
-            "No streamer selected.";
-
-        return;
-
-    }
-
-
-    const streamer =
-        streamers.find(
-            item =>
-                item.username.toLowerCase() ===
-                selectedStreamer.toLowerCase()
-        );
-
-
-    if (!streamer) {
-
-        streamerStatus.textContent =
-            "Streamer unavailable.";
-
-        return;
-
-    }
-
-
-    streamerStatus.textContent =
-        "🟢 Connected as " +
-        streamer.displayName;
-
-}
-
-
-/* ==========================================
-   WEBSOCKET
-========================================== */
-
-function connectWebSocket() {
-
-    connectionText.textContent =
-        "Connecting...";
-
-
-    connectionDot.classList.remove(
-        "connected"
+    removeFromQueue(
+        dare.id
     );
-
-
-    socket =
-        new WebSocket(
-            WS_URL
-        );
-
-
-    socket.onopen =
-        function() {
-
-            console.log(
-                "Connected to Dare Server"
-            );
-
-
-            connectionText.textContent =
-                "Connected";
-
-
-            connectionDot.classList.add(
-                "connected"
-            );
-
-
-            socket.send(
-                JSON.stringify({
-                    type: "GET_STATE"
-                })
-            );
-
-        };
-
-
-    socket.onmessage =
-        function(event) {
-
-            try {
-
-                const message =
-                    JSON.parse(
-                        event.data
-                    );
-
-
-                console.log(
-                    "SERVER MESSAGE:",
-                    message
-                );
-
-
-                handleMessage(
-                    message
-                );
-
-            }
-
-            catch(error) {
-
-                console.error(
-                    "Message error:",
-                    error
-                );
-
-            }
-
-        };
-
-
-    socket.onclose =
-        function() {
-
-            connectionText.textContent =
-                "Disconnected";
-
-
-            connectionDot.classList.remove(
-                "connected"
-            );
-
-
-            setTimeout(
-                connectWebSocket,
-                2000
-            );
-
-        };
-
-
-    socket.onerror =
-        function(error) {
-
-            console.error(
-                "WebSocket error:",
-                error
-            );
-
-        };
-
-}
-
-
-/* ==========================================
-   HANDLE SERVER MESSAGES
-========================================== */
-
-function handleMessage(message) {
-
-    console.log(
-        "Server:",
-        message
-    );
-
-
-    /* ======================================
-       STATE
-    ====================================== */
-
-    if (
-        message.type === "STATE"
-    ) {
-
-        activeDares =
-            message.activeDares || [];
-
-
-        window.latestQueues =
-            message.queues || {};
-
-
-        if (
-            message.streamers &&
-            message.streamers.length
-        ) {
-
-            streamers =
-                message.streamers;
-
-        }
-
-
-        populateStreamerSelector();
-
-        return;
-
-    }
-
-
-    /* ======================================
-       DARE CREATED
-    ====================================== */
-
-    if (
-        message.type === "DARE_CREATED"
-    ) {
-
-        const dare =
-            message.dare;
-
-
-        if (
-            dare &&
-            dare.streamer
-        ) {
-
-            const key =
-                dare.streamer.toLowerCase();
-
-
-            window.latestQueues[key] =
-                message.queue || [];
-
-
-            if (
-                selectedStreamer.toLowerCase() ===
-                key
-            ) {
-
-                dareQueue =
-                    message.queue || [];
-
-
-                renderQueue();
-
-            }
-
-        }
-
-        return;
-
-    }
-
-
-    /* ======================================
-       QUEUE UPDATED
-    ====================================== */
-
-    if (
-        message.type === "QUEUE_UPDATED"
-    ) {
-
-        if (
-            message.streamer
-        ) {
-
-            const key =
-                message.streamer.toLowerCase();
-
-
-            window.latestQueues[key] =
-                message.queue || [];
-
-
-            if (
-                selectedStreamer.toLowerCase() ===
-                key
-            ) {
-
-                dareQueue =
-                    message.queue || [];
-
-
-                /*
-                 * If the selected pending dare was
-                 * removed from the queue, clear it.
-                 */
-
-                if (
-                    currentDare &&
-                    currentDare.status === "pending"
-                ) {
-
-                    const stillInQueue =
-                        dareQueue.some(
-                            dare =>
-                                Number(dare.id) ===
-                                Number(currentDare.id)
-                        );
-
-
-                    if (!stillInQueue) {
-
-                        currentDare = null;
-
-                    }
-
-                }
-
-
-                render();
-
-            }
-
-        }
-
-        return;
-
-    }
-
-
-    /* ======================================
-       ACTIVE DARE
-    ====================================== */
-
-    if (
-        message.type === "ACTIVE_DARE"
-    ) {
-
-        const dare =
-            message.dare;
-
-
-        if (
-            dare &&
-            dare.streamer
-        ) {
-
-            const key =
-                dare.streamer.toLowerCase();
-
-
-            const index =
-                activeDares.findIndex(
-                    item =>
-                        item &&
-                        item.streamer &&
-                        item.streamer.toLowerCase() ===
-                        key
-                );
-
-
-            if (index !== -1) {
-
-                activeDares[index] =
-                    dare;
-
-            }
-
-            else {
-
-                activeDares.push(
-                    dare
-                );
-
-            }
-
-
-            if (
-                message.queue
-            ) {
-
-                window.latestQueues[key] =
-                    message.queue;
-
-            }
-
-
-            /*
-             * Automatically select the streamer.
-             */
-
-            selectedStreamer =
-                dare.streamer;
-
-
-            streamerSelect.value =
-                selectedStreamer;
-
-
-            currentDare =
-                dare;
-
-
-            dareQueue =
-                window.latestQueues[key] ||
-                [];
-
-
-            render();
-
-
-            showToast(
-                "🎯 Dare accepted!"
-            );
-
-        }
-
-        return;
-
-    }
-
-
-    /* ======================================
-       DARE REJECTED
-    ====================================== */
-
-    if (
-        message.type === "DARE_REJECTED"
-    ) {
-
-        const dare =
-            message.dare;
-
-
-        if (
-            dare &&
-            dare.streamer
-        ) {
-
-            const key =
-                dare.streamer.toLowerCase();
-
-
-            window.latestQueues[key] =
-                message.queue || [];
-
-
-            if (
-                selectedStreamer.toLowerCase() ===
-                key
-            ) {
-
-                dareQueue =
-                    message.queue || [];
-
-
-                if (
-                    currentDare &&
-                    Number(currentDare.id) ===
-                    Number(dare.id)
-                ) {
-
-                    currentDare = null;
-
-                }
-
-
-                render();
-
-            }
-
-        }
-
-        return;
-
-    }
-
-
-    /* ======================================
-       ACTIVE CLEARED
-    ====================================== */
-
-    if (
-        message.type ===
-        "ACTIVE_DARE_CLEARED"
-    ) {
-
-        const streamer =
-            message.streamer;
-
-
-        if (streamer) {
-
-            const key =
-                streamer.toLowerCase();
-
-
-            activeDares =
-                activeDares.filter(
-                    dare =>
-                        !dare.streamer ||
-                        dare.streamer.toLowerCase() !==
-                        key
-                );
-
-
-            if (
-                selectedStreamer.toLowerCase() ===
-                key
-            ) {
-
-                currentDare = null;
-
-                render();
-
-            }
-
-        }
-
-        return;
-
-    }
-
-
-    /* ======================================
-       COMPLETED
-    ====================================== */
-
-    if (
-        message.type ===
-        "DARE_COMPLETED"
-    ) {
-
-        const dare =
-            message.dare;
-
-
-        if (
-            dare
-        ) {
-
-            activeDares =
-                activeDares.filter(
-                    item =>
-                        Number(item.id) !==
-                        Number(dare.id)
-                );
-
-
-            if (
-                currentDare &&
-                Number(currentDare.id) ===
-                Number(dare.id)
-            ) {
-
-                currentDare = null;
-
-            }
-
-
-            render();
-
-        }
-
-        return;
-
-    }
-
-
-    /* ======================================
-       FAILED
-    ====================================== */
-
-    if (
-        message.type ===
-        "DARE_FAILED"
-    ) {
-
-        const dare =
-            message.dare;
-
-
-        if (
-            dare
-        ) {
-
-            activeDares =
-                activeDares.filter(
-                    item =>
-                        Number(item.id) !==
-                        Number(dare.id)
-                );
-
-
-            if (
-                currentDare &&
-                Number(currentDare.id) ===
-                Number(dare.id)
-            ) {
-
-                currentDare = null;
-
-            }
-
-
-            render();
-
-        }
-
-        return;
-
-    }
-
-
-    /* ======================================
-       RESET
-    ====================================== */
-
-    if (
-        message.type === "RESET"
-    ) {
-
-        activeDares = [];
-
-        window.latestQueues = {};
-
-        currentDare = null;
-
-        dareQueue = [];
-
-        render();
-
-
-        showToast(
-            "🗑️ All dares cleared"
-        );
-
-
-        return;
-
-    }
-
-}
-
-
-/* ==========================================
-   RENDER
-========================================== */
-
-function render() {
-
-    renderCurrentDare();
-
-    renderQueue();
-
-}
-
-
-/* ==========================================
-   CURRENT DARE
-========================================== */
-
-function renderCurrentDare() {
-
-    if (!currentDare) {
-
-        emptyState.style.display =
-            "block";
-
-
-        currentDareElement.style.display =
-            "none";
-
-
-        return;
-
-    }
-
-
-    emptyState.style.display =
-        "none";
-
-
-    currentDareElement.style.display =
-        "block";
-
-
-    viewerElement.textContent =
-        "@" +
-        (
-            currentDare.viewer ||
-            "Anonymous"
-        );
-
-
-    dareTextElement.textContent =
-        currentDare.text ||
-        currentDare.dareText ||
-        currentDare.dare_text ||
-        "";
-
-
-    rewardElement.textContent =
-        Number(
-            currentDare.reward || 0
-        ).toFixed(2);
-
-
-    durationElement.textContent =
-        currentDare.duration ||
-        30;
-
-
-    targetStreamerElement.textContent =
-        "@" +
-        (
-            currentDare.streamer ||
-            selectedStreamer
-        );
-
-
-    const dareStatus =
-        currentDare.status ||
-        "pending";
-
-
-    statusElement.textContent =
-        dareStatus.toUpperCase();
-
-
-    updateStatusColor();
-
-
-    /* ======================================
-       BUTTON LOGIC
-    ====================================== */
-
-    if (
-        dareStatus === "pending"
-    ) {
-
-        decisionButtons.style.display =
-            "grid";
-
-
-        finishButtons.style.display =
-            "none";
-
-
-        acceptButton.disabled =
-            false;
-
-
-        rejectButton.disabled =
-            false;
-
-    }
-
-
-    else if (
-        dareStatus === "accepted"
-    ) {
-
-        decisionButtons.style.display =
-            "none";
-
-
-        finishButtons.style.display =
-            "grid";
-
-    }
-
-
-    else {
-
-        decisionButtons.style.display =
-            "none";
-
-
-        finishButtons.style.display =
-            "none";
-
-    }
-
-}
-
-
-/* ==========================================
-   STATUS COLOR
-========================================== */
-
-function updateStatusColor() {
-
-    const dareStatus =
-        currentDare.status ||
-        "pending";
-
-
-    if (
-        dareStatus === "accepted"
-    ) {
-
-        statusElement.style.background =
-            "#16a34a";
-
-    }
-
-    else if (
-        dareStatus === "rejected"
-    ) {
-
-        statusElement.style.background =
-            "#dc2626";
-
-    }
-
-    else if (
-        dareStatus === "completed"
-    ) {
-
-        statusElement.style.background =
-            "#2563eb";
-
-    }
-
-    else if (
-        dareStatus === "failed"
-    ) {
-
-        statusElement.style.background =
-            "#9333ea";
-
-    }
-
-    else {
-
-        statusElement.style.background =
-            "#e53935";
-
-    }
-
-}
-
-
-/* ==========================================
-   RENDER QUEUE
-========================================== */
-
-function renderQueue() {
-
-    queueCount.textContent =
-        dareQueue.length;
-
-
-    if (
-        dareQueue.length === 0
-    ) {
-
-        queueList.innerHTML =
-            `
-            <div class="empty">
-                No dares waiting
-            </div>
-            `;
-
-        return;
-
-    }
-
-
-    queueList.innerHTML =
-        "";
-
-
-    dareQueue.forEach(
-        function(dare, index) {
-
-            const item =
-                document.createElement(
-                    "div"
-                );
-
-
-            item.className =
-                "queue-item";
-
-
-            /*
-             * Number
-             */
-
-            const number =
-                document.createElement(
-                    "div"
-                );
-
-
-            number.className =
-                "queue-number";
-
-
-            number.textContent =
-                "#" +
-                (index + 1);
-
-
-            /*
-             * Content
-             */
-
-            const content =
-                document.createElement(
-                    "div"
-                );
-
-
-            content.className =
-                "queue-content";
-
-
-            const viewer =
-                document.createElement(
-                    "div"
-                );
-
-
-            viewer.className =
-                "queue-viewer";
-
-
-            viewer.textContent =
-                "@" +
-                (
-                    dare.viewer ||
-                    "Anonymous"
-                );
-
-
-            const text =
-                document.createElement(
-                    "div"
-                );
-
-
-            text.className =
-                "queue-text";
-
-
-            text.textContent =
-                dare.text ||
-                dare.dareText ||
-                dare.dare_text ||
-                "";
-
-
-            content.appendChild(
-                viewer
-            );
-
-
-            content.appendChild(
-                text
-            );
-
-
-            /*
-             * Reward
-             */
-
-            const reward =
-                document.createElement(
-                    "div"
-                );
-
-
-            reward.className =
-                "queue-reward";
-
-
-            reward.textContent =
-                "₱" +
-                Number(
-                    dare.reward || 0
-                ).toFixed(2);
-
-
-            /*
-             * Click queue item
-             */
-
-            item.addEventListener(
-                "click",
-                function() {
-
-                    /*
-                     * Don't allow selecting another
-                     * dare while one is active.
-                     */
-
-                    const activeForStreamer =
-                        activeDares.find(
-                            active =>
-                                active &&
-                                active.streamer &&
-                                active.streamer.toLowerCase() ===
-                                selectedStreamer.toLowerCase()
-                        );
-
-
-                    if (
-                        activeForStreamer
-                    ) {
-
-                        showToast(
-                            "⚠️ Finish the current dare first"
-                        );
-
-                        return;
-
-                    }
-
-
-                    /*
-                     * Select the pending dare.
-                     */
-
-                    currentDare =
-                        dare;
-
-
-                    /*
-                     * Make sure the streamer matches.
-                     */
-
-                    selectedStreamer =
-                        dare.streamer ||
-                        selectedStreamer;
-
-
-                    streamerSelect.value =
-                        selectedStreamer;
-
-
-                    renderCurrentDare();
-
-
-                    /*
-                     * Scroll to current dare.
-                     */
-
-                    currentDareElement.scrollIntoView({
-                        behavior: "smooth",
-                        block: "start"
-                    });
-
-
-                    showToast(
-                        "🎯 Dare selected"
-                    );
-
-                }
-            );
-
-
-            item.appendChild(
-                number
-            );
-
-
-            item.appendChild(
-                content
-            );
-
-
-            item.appendChild(
-                reward
-            );
-
-
-            queueList.appendChild(
-                item
-            );
-
-        }
-    );
-
-}
-
-
-/* ==========================================
-   SET DARE STATUS
-========================================== */
-
-async function setDareStatus(
-    newStatus
-) {
-
-    if (!currentDare) {
-
-        showToast(
-            "❌ No dare selected"
-        );
-
-        return;
-
-    }
 
 
     /*
-     * Make sure the dare belongs to the
-     * selected streamer.
-     */
+        If we're controlling this streamer,
+        show it immediately.
+    */
 
     if (
-        currentDare.streamer &&
-        selectedStreamer &&
-        currentDare.streamer.toLowerCase() !==
+        dare.streamer &&
+        dare.streamer.toLowerCase() ===
         selectedStreamer.toLowerCase()
     ) {
 
-        showToast(
-            "❌ Wrong streamer selected"
+        currentDare =
+            dare;
+
+        renderCurrentDare();
+
+        currentDareElement.scrollIntoView({
+            behavior: "smooth",
+            block: "start"
+        });
+    }
+
+
+    renderQueue();
+}
+
+
+/* =========================================================
+   REMOVE ACTIVE
+========================================================= */
+
+function removeActiveDare(dare) {
+
+    if (!dare) return;
+
+    activeDares =
+        activeDares.filter(
+            active =>
+                active.id !== dare.id
         );
 
-        return;
 
+    if (
+        currentDare &&
+        currentDare.id === dare.id
+    ) {
+
+        currentDare = null;
+
+        stopTimer();
+    }
+
+
+    renderCurrentDare();
+    renderQueue();
+}
+
+
+/* =========================================================
+   RENDER CURRENT DARE
+========================================================= */
+
+function renderCurrentDare() {
+
+    stopTimer();
+
+    if (!currentDare) {
+
+        currentDareElement.innerHTML = `
+            <div class="empty">
+                No active dare
+            </div>
+        `;
+
+        return;
+    }
+
+
+    const dare =
+        currentDare;
+
+
+    let buttons = "";
+
+
+    /*
+        ACCEPTED = currently running.
+    */
+
+    if (dare.status === "accepted") {
+
+        buttons = `
+            <div class="buttons">
+
+                <button
+                    class="complete"
+                    onclick="setDareStatus(${dare.id}, 'completed')"
+                >
+                    ✅ COMPLETED
+                </button>
+
+                <button
+                    class="fail"
+                    onclick="setDareStatus(${dare.id}, 'failed')"
+                >
+                    ❌ FAILED / GIVE UP
+                </button>
+
+            </div>
+        `;
+    }
+
+
+    currentDareElement.innerHTML = `
+
+        <div class="meta">
+            Viewer: <strong>${escapeHtml(
+                dare.viewer || "Anonymous"
+            )}</strong>
+        </div>
+
+        <div class="dare-text">
+            ${escapeHtml(
+                dare.dare_text
+            )}
+        </div>
+
+        <div class="meta">
+            Reward: ₱${Number(
+                dare.reward || 0
+            ).toFixed(2)}
+        </div>
+
+        <div class="meta">
+            Duration: ${dare.duration} seconds
+        </div>
+
+        <div
+            id="timer"
+            class="timer"
+        >
+            ${formatTime(dare.duration)}
+        </div>
+
+        ${buttons}
+
+    `;
+
+
+    /*
+        Only start timer for an active dare.
+    */
+
+    if (dare.status === "accepted") {
+
+        startTimer(
+            dare
+        );
+    }
+}
+
+
+/* =========================================================
+   TIMER
+========================================================= */
+
+function startTimer(dare) {
+
+    stopTimer();
+
+
+    let remaining =
+        Number(dare.duration);
+
+
+    const timerElement =
+        document.getElementById("timer");
+
+
+    if (!timerElement) return;
+
+
+    timerElement.textContent =
+        formatTime(remaining);
+
+
+    timerInterval =
+        setInterval(() => {
+
+            remaining--;
+
+            if (remaining < 0) {
+
+                stopTimer();
+
+                timerElement.textContent =
+                    "TIME!";
+
+                return;
+            }
+
+
+            timerElement.textContent =
+                formatTime(
+                    remaining
+                );
+
+        }, 1000);
+}
+
+
+function stopTimer() {
+
+    if (timerInterval) {
+
+        clearInterval(
+            timerInterval
+        );
+
+        timerInterval = null;
+    }
+}
+
+
+function formatTime(seconds) {
+
+    const minutes =
+        Math.floor(seconds / 60);
+
+    const secs =
+        seconds % 60;
+
+    return (
+        String(minutes).padStart(2, "0") +
+        ":" +
+        String(secs).padStart(2, "0")
+    );
+}
+
+
+/* =========================================================
+   RENDER QUEUE
+========================================================= */
+
+function renderQueue() {
+
+    const key =
+        selectedStreamer.toLowerCase();
+
+    const queue =
+        queues[key] || [];
+
+
+    if (!queue.length) {
+
+        queueElement.innerHTML = `
+            <div class="empty">
+                No waiting dares
+            </div>
+        `;
+
+        return;
+    }
+
+
+    queueElement.innerHTML = "";
+
+
+    queue.forEach((dare, index) => {
+
+        const item =
+            document.createElement("div");
+
+        item.className =
+            "queue-item";
+
+
+        item.innerHTML = `
+
+            <div>
+                <span class="queue-number">
+                    #${index + 1}
+                </span>
+
+                <strong>
+                    ${escapeHtml(
+                        dare.dare_text
+                    )}
+                </strong>
+            </div>
+
+            <div class="meta">
+                Viewer:
+                ${escapeHtml(
+                    dare.viewer || "Anonymous"
+                )}
+            </div>
+
+            <div class="meta">
+                Duration:
+                ${dare.duration}s
+                · Reward:
+                ₱${Number(
+                    dare.reward || 0
+                ).toFixed(2)}
+            </div>
+
+        `;
+
+
+        /*
+            Queue items are NOT accepted manually.
+
+            They are waiting for the automatic system.
+
+            Clicking one just previews/selects it.
+        */
+
+        item.addEventListener(
+            "click",
+            function() {
+
+                showToast(
+                    "⏳ This dare is waiting in the queue"
+                );
+            }
+        );
+
+
+        queueElement.appendChild(
+            item
+        );
+    });
+}
+
+
+/* =========================================================
+   QUEUE HELPERS
+========================================================= */
+
+function updateQueueFromDare(dare) {
+
+    if (!dare || !dare.streamer) {
+        return;
     }
 
 
     /*
-     * Prevent duplicate clicks.
-     */
+        Accepted dares belong in ACTIVE,
+        not WAITING QUEUE.
+    */
 
-    acceptButton.disabled =
+    if (dare.status === "accepted") {
+
+        removeFromQueue(
+            dare.id
+        );
+
+        return;
+    }
+
+
+    const key =
+        dare.streamer.toLowerCase();
+
+
+    if (!queues[key]) {
+
+        queues[key] = [];
+    }
+
+
+    /*
+        Don't duplicate.
+    */
+
+    const exists =
+        queues[key].some(
+            item =>
+                item.id === dare.id
+        );
+
+
+    if (!exists) {
+
+        queues[key].push(
+            dare
+        );
+    }
+
+
+    /*
+        Keep oldest first.
+    */
+
+    queues[key].sort(
+        (a, b) =>
+            new Date(a.created_at) -
+            new Date(b.created_at)
+    );
+}
+
+
+function removeFromQueue(id) {
+
+    Object.keys(queues)
+        .forEach(key => {
+
+            queues[key] =
+                (queues[key] || [])
+                .filter(
+                    dare =>
+                        dare.id !== id
+                );
+        });
+}
+
+
+/* =========================================================
+   SEND DARE
+========================================================= */
+
+sendButton.addEventListener(
+    "click",
+    sendDare
+);
+
+
+async function sendDare() {
+
+    const dareText =
+        dareInput.value.trim();
+
+    const viewer =
+        viewerInput.value.trim() ||
+        "TestViewer";
+
+    const duration =
+        Number(
+            durationInput.value
+        );
+
+    const reward =
+        Number(
+            rewardInput.value
+        );
+
+
+    /*
+        THIS IS IMPORTANT.
+
+        server.js expects:
+
+        dare_text
+
+        NOT:
+
+        text
+        dare
+        message
+    */
+
+    if (!dareText) {
+
+        showToast(
+            "⚠️ Enter a dare first"
+        );
+
+        dareInput.focus();
+
+        return;
+    }
+
+
+    if (
+        !Number.isFinite(duration) ||
+        duration <= 0
+    ) {
+
+        showToast(
+            "⚠️ Duration must be greater than 0"
+        );
+
+        return;
+    }
+
+
+    if (
+        !Number.isFinite(reward) ||
+        reward < 0
+    ) {
+
+        showToast(
+            "⚠️ Reward cannot be negative"
+        );
+
+        return;
+    }
+
+
+    sendButton.disabled =
         true;
 
-    rejectButton.disabled =
-        true;
+    sendButton.textContent =
+        "⏳ SENDING...";
 
 
     try {
 
         const response =
             await fetch(
-
-                BACKEND_URL +
-                "/api/dare/" +
-                encodeURIComponent(
-                    currentDare.id
-                ) +
-                "/status",
-
+                API_URL + "/api/dare",
                 {
-
-                    method:
-                        "POST",
+                    method: "POST",
 
                     headers: {
-
                         "Content-Type":
                             "application/json"
-
                     },
 
-                    body:
-                        JSON.stringify({
+                    body: JSON.stringify({
 
-                            status:
-                                newStatus
+                        streamer:
+                            selectedStreamer,
 
-                        })
+                        streamer_source:
+                            "twitch_username",
 
+                        viewer:
+                            viewer,
+
+                        dare_text:
+                            dareText,
+
+                        duration:
+                            duration,
+
+                        reward:
+                            reward
+                    })
                 }
-
             );
 
 
@@ -2311,400 +1447,195 @@ async function setDareStatus(
 
             throw new Error(
                 data.error ||
-                "Request failed"
+                "Failed to send dare"
             );
-
         }
 
 
         console.log(
-            "STATUS RESPONSE:",
+            "Dare created:",
             data
         );
 
 
         /*
-         * ACCEPTED
-         */
+            The backend automatically decides:
 
-        if (
-            newStatus === "accepted"
-        ) {
+            NO ACTIVE DARE
+                →
+            this dare becomes ACTIVE
 
-            const acceptedDare =
-                data.dare;
-
-
-            if (!acceptedDare) {
-
-                throw new Error(
-                    "Server did not return the accepted dare."
-                );
-
-            }
+            ACTIVE DARE EXISTS
+                →
+            this dare goes into QUEUE
+        */
 
 
-            const index =
-                activeDares.findIndex(
-                    dare =>
-                        Number(dare.id) ===
-                        Number(acceptedDare.id)
-                );
+        if (data.activeDare) {
 
-
-            if (
-                index !== -1
-            ) {
-
-                activeDares[index] =
-                    acceptedDare;
-
-            }
-
-            else {
-
-                activeDares.push(
-                    acceptedDare
-                );
-
-            }
-
-
-            currentDare =
-                acceptedDare;
-
-
-            dareQueue =
-                data.queue || [];
-
-
-            window.latestQueues[
-                selectedStreamer.toLowerCase()
-            ] =
-                dareQueue;
-
-
-            render();
-
-
-            showToast(
-                "✅ Dare accepted!"
+            updateActiveDare(
+                data.activeDare
             );
 
+            showToast(
+                "🔥 Dare is now LIVE!"
+            );
+
+        } else {
+
+            showToast(
+                "⏳ Dare added to queue!"
+            );
         }
 
 
         /*
-         * REJECTED / COMPLETED / FAILED
-         */
+            Clear input.
+        */
 
-        else {
-
-            const finishedId =
-                currentDare.id;
+        dareInput.value = "";
 
 
-            activeDares =
-                activeDares.filter(
-                    dare =>
-                        Number(dare.id) !==
-                        Number(finishedId)
-                );
+    } catch (error) {
+
+        console.error(
+            "Send dare error:",
+            error
+        );
+
+        showToast(
+            "❌ " + error.message
+        );
+
+    } finally {
+
+        sendButton.disabled =
+            false;
+
+        sendButton.textContent =
+            "🚀 SEND DARE";
+    }
+}
 
 
-            currentDare =
-                null;
+/* =========================================================
+   CHANGE STATUS
+========================================================= */
+
+async function setDareStatus(
+    id,
+    status
+) {
+
+    try {
+
+        const response =
+            await fetch(
+                API_URL +
+                "/api/dare/" +
+                id +
+                "/status",
+                {
+                    method: "POST",
+
+                    headers: {
+                        "Content-Type":
+                            "application/json"
+                    },
+
+                    body: JSON.stringify({
+                        status: status
+                    })
+                }
+            );
 
 
-            dareQueue =
-                data.queue || [];
+        const data =
+            await response.json();
 
 
-            window.latestQueues[
-                selectedStreamer.toLowerCase()
-            ] =
-                dareQueue;
+        if (!response.ok) {
 
-
-            render();
-
-
-            if (
-                newStatus === "rejected"
-            ) {
-
-                showToast(
-                    "❌ Dare rejected"
-                );
-
-            }
-
-            else if (
-                newStatus === "completed"
-            ) {
-
-                showToast(
-                    "🏁 Dare completed"
-                );
-
-            }
-
-            else if (
-                newStatus === "failed"
-            ) {
-
-                showToast(
-                    "🚫 Dare failed"
-                );
-
-            }
-
+            throw new Error(
+                data.error ||
+                "Failed to update dare"
+            );
         }
 
-    }
 
-    catch(error) {
+        console.log(
+            "Status updated:",
+            data
+        );
+
+
+        /*
+            The backend automatically activates
+            the next queued dare after completed/failed.
+        */
+
+        if (
+            status === "completed" ||
+            status === "failed"
+        ) {
+
+            showToast(
+                status === "completed"
+                    ? "✅ Dare completed!"
+                    : "❌ Dare failed!"
+            );
+        }
+
+
+    } catch (error) {
 
         console.error(
             "Status error:",
             error
         );
 
-
         showToast(
-            "❌ " +
-            error.message
+            "❌ " + error.message
         );
-
-
-        acceptButton.disabled =
-            false;
-
-
-        rejectButton.disabled =
-            false;
-
     }
+}
+
+
+/* =========================================================
+   ESCAPE HTML
+========================================================= */
+
+function escapeHtml(value) {
+
+    return String(value)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+}
+
+
+/* =========================================================
+   INITIALIZE
+========================================================= */
+
+async function initialize() {
+
+    await loadStreamers();
+
+    connectWebSocket();
 
 }
 
 
-/* ==========================================
-   REFRESH
-========================================== */
-
-async function refreshState() {
-
-    try {
-
-        const response =
-            await fetch(
-                BACKEND_URL +
-                "/api/dare"
-            );
-
-
-        if (!response.ok) {
-
-            throw new Error(
-                "Backend unavailable"
-            );
-
-        }
-
-
-        const data =
-            await response.json();
-
-
-        activeDares =
-            data.activeDares || [];
-
-
-        window.latestQueues =
-            data.queues || {};
-
-
-        if (
-            data.streamers
-        ) {
-
-            streamers =
-                data.streamers;
-
-        }
-
-
-        populateStreamerSelector();
-
-
-        showToast(
-            "🔄 Refreshed"
-        );
-
-    }
-
-    catch(error) {
-
-        console.error(
-            "Refresh error:",
-            error
-        );
-
-
-        showToast(
-            "❌ Backend unavailable"
-        );
-
-    }
-
-}
-
-
-/* ==========================================
-   CLEAR ALL
-========================================== */
-
-async function clearQueue() {
-
-    const confirmed =
-        confirm(
-            "Clear ALL dares for ALL streamers?"
-        );
-
-
-    if (!confirmed) {
-
-        return;
-
-    }
-
-
-    try {
-
-        const response =
-            await fetch(
-
-                BACKEND_URL +
-                "/api/dare/clear",
-
-                {
-
-                    method:
-                        "POST"
-
-                }
-
-            );
-
-
-        const data =
-            await response.json()
-            .catch(
-                () => ({})
-            );
-
-
-        if (!response.ok) {
-
-            throw new Error(
-                data.error ||
-                "Could not clear dares."
-            );
-
-        }
-
-
-        activeDares = [];
-
-        window.latestQueues = {};
-
-        currentDare = null;
-
-        dareQueue = [];
-
-
-        render();
-
-
-        showToast(
-            "🗑️ All dares cleared"
-        );
-
-    }
-
-    catch(error) {
-
-        console.error(
-            "Clear error:",
-            error
-        );
-
-
-        showToast(
-            "❌ Could not clear"
-        );
-
-    }
-
-}
-
-
-/* ==========================================
-   TOAST
-========================================== */
-
-function showToast(message) {
-
-    const toast =
-        document.getElementById(
-            "toast"
-        );
-
-
-    toast.textContent =
-        message;
-
-
-    toast.classList.add(
-        "show"
-    );
-
-
-    clearTimeout(
-        toastTimer
-    );
-
-
-    toastTimer =
-        setTimeout(
-            function() {
-
-                toast.classList.remove(
-                    "show"
-                );
-
-            },
-            2500
-        );
-
-}
-
-
-/* ==========================================
+/* =========================================================
    START
-========================================== */
+========================================================= */
 
-render();
-
-loadStreamers();
-
-connectWebSocket();
-
-refreshState();
+initialize();
 
 </script>
 
 </body>
-
 </html>
