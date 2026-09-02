@@ -12,7 +12,6 @@
 
 <title>Dare Stream Overlay</title>
 
-
 <style>
 
 /* ==========================================
@@ -527,8 +526,12 @@ body {
 <script>
 
 /* ==========================================
-   BACKEND
+   DARE SYSTEM BACKEND
 ========================================== */
+
+const BACKEND_URL =
+    "https://dare-backend-vx8w.onrender.com";
+
 
 const WS_URL =
     "wss://dare-backend-vx8w.onrender.com/ws";
@@ -542,6 +545,9 @@ let currentDare =
     null;
 
 let timerInterval =
+    null;
+
+let resultTimeout =
     null;
 
 let remainingTime =
@@ -607,7 +613,7 @@ const result =
 
 
 /* ==========================================
-   CONNECT
+   WEBSOCKET
 ========================================== */
 
 let socket;
@@ -632,6 +638,31 @@ function connect() {
             console.log(
                 "Dare overlay connected"
             );
+
+
+            /*
+             * Ask the backend for the
+             * latest state immediately.
+             */
+
+            try {
+
+                socket.send(
+                    JSON.stringify({
+                        type: "GET_STATE"
+                    })
+                );
+
+            }
+
+            catch(error) {
+
+                console.error(
+                    "Could not request state:",
+                    error
+                );
+
+            }
 
         };
 
@@ -662,7 +693,7 @@ function connect() {
             catch(error) {
 
                 console.error(
-                    "Invalid message:",
+                    "Invalid WebSocket message:",
                     error
                 );
 
@@ -678,6 +709,10 @@ function connect() {
                 "Overlay disconnected"
             );
 
+
+            /*
+             * Automatically reconnect.
+             */
 
             setTimeout(
                 connect,
@@ -701,22 +736,33 @@ function connect() {
 
 
 /* ==========================================
-   SERVER MESSAGES
+   SERVER MESSAGE HANDLER
 ========================================== */
 
 function handleMessage(
     message
 ) {
 
+    if (!message) {
 
-    /* ==============================
+        return;
+
+    }
+
+
+    /* ======================================
        INITIAL STATE
-    ============================== */
+    ====================================== */
 
     if (
         message.type ===
         "STATE"
     ) {
+
+        /*
+         * The backend sends the currently
+         * active dare here.
+         */
 
         if (
             message.currentDare
@@ -739,16 +785,26 @@ function handleMessage(
     }
 
 
-    /* ==============================
-       NEW DARE
-    ============================== */
+    /* ======================================
+       NEW DARE CREATED
+    ====================================== */
 
     if (
         message.type ===
-        "NEW_DARE"
+        "DARE_CREATED"
     ) {
 
-        showDare(
+        /*
+         * A newly submitted dare is pending.
+         *
+         * We do NOT show it on stream yet.
+         *
+         * It appears in the controller's
+         * waiting queue.
+         */
+
+        console.log(
+            "New dare created:",
             message.dare
         );
 
@@ -757,20 +813,26 @@ function handleMessage(
     }
 
 
-    /* ==============================
-       STATUS
-    ============================== */
+    /* ======================================
+       ACTIVE DARE
+    ====================================== */
 
     if (
         message.type ===
-        "DARE_STATUS"
+        "ACTIVE_DARE"
     ) {
+
+        /*
+         * Controller accepted the dare.
+         *
+         * Now show it on Streamlabs.
+         */
 
         if (
             message.dare
         ) {
 
-            updateStatus(
+            showDare(
                 message.dare
             );
 
@@ -781,13 +843,155 @@ function handleMessage(
     }
 
 
-    /* ==============================
-       CLEARED
-    ============================== */
+    /* ======================================
+       DARE REJECTED
+    ====================================== */
 
     if (
         message.type ===
-        "DARE_CLEARED"
+        "DARE_REJECTED"
+    ) {
+
+        if (
+            message.dare
+        ) {
+
+            /*
+             * Only show the rejection if this
+             * is the dare currently displayed.
+             */
+
+            if (
+                currentDare &&
+                Number(currentDare.id) ===
+                Number(message.dare.id)
+            ) {
+
+                updateStatus(
+                    message.dare
+                );
+
+            }
+
+        }
+
+        return;
+
+    }
+
+
+    /* ======================================
+       DARE COMPLETED
+    ====================================== */
+
+    if (
+        message.type ===
+        "DARE_COMPLETED"
+    ) {
+
+        if (
+            message.dare
+        ) {
+
+            if (
+                currentDare &&
+                Number(currentDare.id) ===
+                Number(message.dare.id)
+            ) {
+
+                updateStatus(
+                    message.dare
+                );
+
+            }
+
+        }
+
+        return;
+
+    }
+
+
+    /* ======================================
+       DARE FAILED
+    ====================================== */
+
+    if (
+        message.type ===
+        "DARE_FAILED"
+    ) {
+
+        if (
+            message.dare
+        ) {
+
+            if (
+                currentDare &&
+                Number(currentDare.id) ===
+                Number(message.dare.id)
+            ) {
+
+                updateStatus(
+                    message.dare
+                );
+
+            }
+
+        }
+
+        return;
+
+    }
+
+
+    /* ======================================
+       ACTIVE DARE CLEARED
+    ====================================== */
+
+    if (
+        message.type ===
+        "ACTIVE_DARE_CLEARED"
+    ) {
+
+        /*
+         * The currently active dare is no
+         * longer active.
+         */
+
+        if (
+            message.dare
+        ) {
+
+            if (
+                currentDare &&
+                Number(currentDare.id) ===
+                Number(message.dare.id)
+            ) {
+
+                hideOverlay();
+
+            }
+
+        }
+
+        else {
+
+            hideOverlay();
+
+        }
+
+        return;
+
+    }
+
+
+    /* ======================================
+       RESET
+    ====================================== */
+
+    if (
+        message.type ===
+        "RESET"
     ) {
 
         hideOverlay();
@@ -797,16 +1001,23 @@ function handleMessage(
     }
 
 
-    /* ==============================
-       RESET
-    ============================== */
+    /* ======================================
+       QUEUE UPDATED
+    ====================================== */
 
     if (
         message.type ===
-        "RESET"
+        "QUEUE_UPDATED"
     ) {
 
-        hideOverlay();
+        /*
+         * Queue changes don't directly affect
+         * the visible Streamlabs overlay.
+         */
+
+        console.log(
+            "Dare queue updated"
+        );
 
         return;
 
@@ -828,6 +1039,16 @@ function showDare(
         return;
 
     }
+
+
+    clearTimeout(
+        resultTimeout
+    );
+
+
+    clearInterval(
+        timerInterval
+    );
 
 
     currentDare =
@@ -853,53 +1074,81 @@ function showDare(
 
 
     dareText.textContent =
+        dare.dareText ||
         dare.text ||
         "";
 
 
     reward.textContent =
-        dare.reward ||
-        0;
+        Number(
+            dare.reward
+        || 0
+        ).toFixed(2);
 
 
     duration.textContent =
         totalDuration;
 
 
-    result.style.display =
-        "none";
-
-
     timerContainer.style.display =
         "block";
+
+
+    result.style.display =
+        "none";
 
 
     overlay.style.display =
         "block";
 
 
+    /*
+     * Set status based on the current
+     * database status.
+     */
+
     updateStatus(
         dare
     );
 
 
-    updateTimer();
+    /*
+     * Only start the timer if the dare
+     * is already accepted.
+     */
 
+    if (
+        dare.status ===
+        "accepted"
+    ) {
 
-    clearInterval(
-        timerInterval
-    );
+        startTimer();
+
+    }
+
+    else {
+
+        updateTimer();
+
+    }
 
 }
 
 
 /* ==========================================
-   STATUS UPDATE
+   STATUS
 ========================================== */
 
 function updateStatus(
     dare
 ) {
+
+    if (!dare) {
+
+        return;
+
+    }
+
 
     currentDare =
         dare;
@@ -914,6 +1163,40 @@ function updateStatus(
         dareStatus.toUpperCase();
 
 
+    /* ======================================
+       PENDING
+    ====================================== */
+
+    if (
+        dareStatus ===
+        "pending"
+    ) {
+
+        status.style.background =
+            "#e53935";
+
+
+        clearInterval(
+            timerInterval
+        );
+
+
+        timerContainer.style.display =
+            "block";
+
+
+        updateTimer();
+
+
+        return;
+
+    }
+
+
+    /* ======================================
+       ACCEPTED
+    ====================================== */
+
     if (
         dareStatus ===
         "accepted"
@@ -923,12 +1206,23 @@ function updateStatus(
             "#16a34a";
 
 
+        timerContainer.style.display =
+            "block";
+
+
         startTimer();
+
+
+        return;
 
     }
 
 
-    else if (
+    /* ======================================
+       REJECTED
+    ====================================== */
+
+    if (
         dareStatus ===
         "rejected"
     ) {
@@ -941,10 +1235,17 @@ function updateStatus(
             "❌ DARE REJECTED"
         );
 
+
+        return;
+
     }
 
 
-    else if (
+    /* ======================================
+       COMPLETED
+    ====================================== */
+
+    if (
         dareStatus ===
         "completed"
     ) {
@@ -957,10 +1258,17 @@ function updateStatus(
             "✅ DARE COMPLETED"
         );
 
+
+        return;
+
     }
 
 
-    else if (
+    /* ======================================
+       FAILED
+    ====================================== */
+
+    if (
         dareStatus ===
         "failed"
     ) {
@@ -973,18 +1281,8 @@ function updateStatus(
             "🚫 DARE FAILED"
         );
 
-    }
 
-
-    else {
-
-        status.style.background =
-            "#e53935";
-
-
-        clearInterval(
-            timerInterval
-        );
+        return;
 
     }
 
@@ -1100,22 +1398,38 @@ function showResult(
         "block";
 
 
-    setTimeout(
-        hideOverlay,
-        3000
+    /*
+     * Keep result visible for 3 seconds,
+     * then hide the overlay.
+     */
+
+    clearTimeout(
+        resultTimeout
     );
+
+
+    resultTimeout =
+        setTimeout(
+            hideOverlay,
+            3000
+        );
 
 }
 
 
 /* ==========================================
-   HIDE
+   HIDE OVERLAY
 ========================================== */
 
 function hideOverlay() {
 
     clearInterval(
         timerInterval
+    );
+
+
+    clearTimeout(
+        resultTimeout
     );
 
 
@@ -1140,4 +1454,3 @@ connect();
 </body>
 
 </html>
-
