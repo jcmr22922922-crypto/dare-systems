@@ -1,156 +1,363 @@
-// ================================
-// DARE SYSTEM - AUTHENTICATION
-// ================================
-
 const API_URL = "https://dare-backend-vx8w.onrender.com";
 
-// -------------------------------
-// REGISTER
-// -------------------------------
-async function register(username, email, password) {
+/* =========================================================
+   API REQUEST
+========================================================= */
+
+async function apiFetch(path, options = {}) {
+    const config = {
+        credentials: "include",
+        ...options,
+        headers: {
+            ...(options.headers || {})
+        }
+    };
+
+    if (
+        config.body &&
+        typeof config.body !== "string"
+    ) {
+        config.headers["Content-Type"] =
+            "application/json";
+
+        config.body =
+            JSON.stringify(config.body);
+    }
+
+    const response =
+        await fetch(
+            `${API_URL}${path}`,
+            config
+        );
+
+    let data = null;
+
     try {
-        const response = await fetch(`${API_URL}/api/register`, {
+        data = await response.json();
+    } catch (_) {
+        data = null;
+    }
+
+    if (!response.ok) {
+        const message =
+            data?.error?.message ||
+            data?.error ||
+            `Request failed (${response.status})`;
+
+        const error =
+            new Error(message);
+
+        error.status =
+            response.status;
+
+        error.code =
+            data?.error?.code;
+
+        throw error;
+    }
+
+    return data;
+}
+
+
+/* =========================================================
+   REGISTER
+========================================================= */
+
+async function register(
+    username,
+    email,
+    password
+) {
+    return await apiFetch(
+        "/api/auth/register",
+        {
             method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({
+            body: {
                 username,
                 email,
                 password
-            })
-        });
-
-        const data = await response.json();
-
-        if (!response.ok) {
-            throw new Error(data.error || "Registration failed.");
+            }
         }
-
-        return data;
-
-    } catch (error) {
-        console.error("Register error:", error);
-        throw error;
-    }
+    );
 }
 
 
-// -------------------------------
-// LOGIN
-// -------------------------------
-async function login(email, password) {
-    try {
-        const response = await fetch(`${API_URL}/api/login`, {
+/* =========================================================
+   LOGIN
+========================================================= */
+
+async function login(
+    email,
+    password
+) {
+    return await apiFetch(
+        "/api/auth/login",
+        {
             method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({
+            body: {
                 email,
                 password
-            })
-        });
-
-        const data = await response.json();
-
-        if (!response.ok) {
-            throw new Error(data.error || "Login failed.");
+            }
         }
-
-        // Save login information
-        localStorage.setItem("token", data.token);
-        localStorage.setItem("user", JSON.stringify(data.user));
-
-        return data;
-
-    } catch (error) {
-        console.error("Login error:", error);
-        throw error;
-    }
+    );
 }
 
 
-// -------------------------------
-// LOGOUT
-// -------------------------------
-function logout() {
+/* =========================================================
+   LOGOUT
+========================================================= */
+
+async function logout(
+    redirect = true
+) {
+    try {
+        await apiFetch(
+            "/api/auth/logout",
+            {
+                method: "POST"
+            }
+        );
+    } catch (error) {
+        console.warn(
+            "Logout request failed:",
+            error
+        );
+    }
+
+    /*
+     * Old localStorage authentication data
+     * from the previous system is no longer trusted.
+     */
     localStorage.removeItem("token");
     localStorage.removeItem("user");
 
-    window.location.href = "login.html";
+    if (redirect) {
+        window.location.href =
+            "login.html";
+    }
 }
 
 
-// -------------------------------
-// GET CURRENT USER
-// -------------------------------
-function getCurrentUser() {
-    const user = localStorage.getItem("user");
+/* =========================================================
+   CURRENT USER
+========================================================= */
 
-    if (!user) {
+let currentUserCache =
+    undefined;
+
+
+/*
+ * Returns the authenticated user.
+ *
+ * null = not authenticated
+ * object = authenticated
+ */
+async function getCurrentUserAsync() {
+
+    if (
+        currentUserCache !==
+        undefined
+    ) {
+        return currentUserCache;
+    }
+
+    try {
+
+        const result =
+            await apiFetch(
+                "/api/auth/me"
+            );
+
+        currentUserCache =
+            result?.data?.user ||
+            null;
+
+        return currentUserCache;
+
+    } catch (error) {
+
+        if (
+            error.status === 401
+        ) {
+            currentUserCache =
+                null;
+
+            return null;
+        }
+
+        throw error;
+    }
+}
+
+
+/*
+ * Synchronous compatibility helper.
+ *
+ * New code should prefer
+ * getCurrentUserAsync().
+ */
+function getCurrentUser() {
+
+    const cached =
+        localStorage.getItem(
+            "user"
+        );
+
+    if (!cached) {
         return null;
     }
 
     try {
-        return JSON.parse(user);
-    } catch {
+        return JSON.parse(cached);
+    } catch (_) {
         return null;
     }
 }
 
 
-// -------------------------------
-// GET TOKEN
-// -------------------------------
-function getToken() {
-    return localStorage.getItem("token");
+/* =========================================================
+   LOGIN CHECK
+========================================================= */
+
+async function isLoggedInAsync() {
+
+    const user =
+        await getCurrentUserAsync();
+
+    return !!user;
 }
 
 
-// -------------------------------
-// CHECK IF LOGGED IN
-// -------------------------------
 function isLoggedIn() {
-    return !!getToken();
+
+    /*
+     * Compatibility only.
+     *
+     * Cookie sessions cannot be checked
+     * synchronously from JavaScript.
+     */
+    return false;
 }
 
 
-// -------------------------------
-// PROTECT PAGE
-// -------------------------------
-function requireLogin() {
-    if (!isLoggedIn()) {
-        window.location.href = "login.html";
+/* =========================================================
+   PROTECT PAGE
+========================================================= */
+
+async function requireLogin() {
+
+    try {
+
+        const user =
+            await getCurrentUserAsync();
+
+        if (!user) {
+
+            window.location.href =
+                "login.html";
+
+            return null;
+        }
+
+        return user;
+
+    } catch (error) {
+
+        console.error(
+            "Authentication check failed:",
+            error
+        );
+
+        window.location.href =
+            "login.html";
+
+        return null;
     }
 }
 
 
-// -------------------------------
-// AUTHENTICATED REQUEST
-// -------------------------------
-async function authenticatedFetch(url, options = {}) {
+/* =========================================================
+   AUTHENTICATED FETCH
+========================================================= */
 
-    const token = getToken();
+async function authenticatedFetch(
+    path,
+    options = {}
+) {
 
-    if (!token) {
-        window.location.href = "login.html";
-        return;
+    try {
+
+        const user =
+            await getCurrentUserAsync();
+
+        if (!user) {
+
+            window.location.href =
+                "login.html";
+
+            return null;
+        }
+
+        return await apiFetch(
+            path,
+            options
+        );
+
+    } catch (error) {
+
+        if (
+            error.status === 401
+        ) {
+
+            currentUserCache =
+                null;
+
+            localStorage.removeItem(
+                "user"
+            );
+
+            window.location.href =
+                "login.html";
+
+            return null;
+        }
+
+        throw error;
     }
+}
 
-    options.headers = {
-        ...(options.headers || {}),
-        "Authorization": `Bearer ${token}`,
-        "Content-Type": "application/json"
-    };
 
-    const response = await fetch(url, options);
+/* =========================================================
+   AUTHENTICATED API RESPONSE
+========================================================= */
 
-    // Token expired / invalid
-    if (response.status === 401) {
-        logout();
-        return;
-    }
+async function authenticatedJson(
+    path,
+    options = {}
+) {
 
-    return response;
+    return await authenticatedFetch(
+        path,
+        options
+    );
+}
+
+
+/* =========================================================
+   CACHE MANAGEMENT
+========================================================= */
+
+function clearAuthCache() {
+
+    currentUserCache =
+        undefined;
+
+    localStorage.removeItem(
+        "user"
+    );
+
+    localStorage.removeItem(
+        "token"
+    );
 }
