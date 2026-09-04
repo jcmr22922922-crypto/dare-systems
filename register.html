@@ -2,31 +2,45 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Create Account - Dare System</title>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Create Account - DARE</title>
 
     <style>
 
         * {
             box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: Arial, Helvetica, sans-serif;
         }
 
         body {
+            margin: 0;
             min-height: 100vh;
 
             display: flex;
-            justify-content: center;
             align-items: center;
+            justify-content: center;
+
+            padding: 20px;
 
             background:
-                radial-gradient(circle at top, #292929, #0b0b0b 60%);
+                radial-gradient(
+                    circle at top,
+                    #301010,
+                    #0b0b0d 55%
+                );
 
             color: white;
+
+            font-family:
+                Arial,
+                Helvetica,
+                sans-serif;
         }
 
         .container {
@@ -35,14 +49,17 @@
 
             padding: 40px;
 
-            background: rgba(25, 25, 25, 0.95);
+            background:
+                rgba(20, 20, 23, .96);
 
-            border: 1px solid #333;
+            border:
+                1px solid #303036;
 
             border-radius: 18px;
 
             box-shadow:
-                0 20px 60px rgba(0, 0, 0, 0.6);
+                0 25px 80px
+                rgba(0, 0, 0, .65);
         }
 
         .logo {
@@ -51,35 +68,34 @@
         }
 
         .logo h1 {
-            font-size: 34px;
-            font-weight: 800;
+            margin: 0;
 
-            background: linear-gradient(
-                90deg,
-                #ff3b3b,
-                #ff7b00
-            );
+            font-size: 36px;
+            font-weight: 900;
 
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+            color: #ff3b3b;
         }
 
         .logo p {
             margin-top: 8px;
-            color: #999;
+
+            color: #888;
             font-size: 14px;
         }
 
         .form-group {
-            margin-bottom: 18px;
+            margin-bottom: 17px;
         }
 
         label {
             display: block;
+
             margin-bottom: 8px;
 
-            font-size: 14px;
             color: #ccc;
+
+            font-size: 14px;
+            font-weight: 600;
         }
 
         input {
@@ -87,450 +103,433 @@
 
             padding: 14px 15px;
 
+            border:
+                1px solid #38383f;
+
             border-radius: 10px;
 
-            border: 1px solid #3b3b3b;
-
-            background: #111;
-
+            background: #0e0e11;
             color: white;
 
             font-size: 15px;
 
             outline: none;
-
-            transition: 0.2s;
         }
 
         input:focus {
             border-color: #ff3b3b;
 
             box-shadow:
-                0 0 0 2px rgba(255, 59, 59, 0.15);
+                0 0 0 3px
+                rgba(255, 59, 59, .12);
+        }
+
+        .hint {
+            margin-top: 6px;
+
+            color: #666;
+
+            font-size: 12px;
         }
 
         button {
             width: 100%;
 
-            padding: 14px;
-
             margin-top: 8px;
 
-            border: none;
+            padding: 14px;
 
+            border: 0;
             border-radius: 10px;
 
             background:
                 linear-gradient(
                     90deg,
                     #ff3030,
-                    #ff6a00
+                    #d91515
                 );
 
             color: white;
 
-            font-size: 16px;
-
-            font-weight: bold;
+            font-size: 15px;
+            font-weight: 800;
 
             cursor: pointer;
-
-            transition: 0.2s;
         }
 
         button:hover {
-            transform: translateY(-1px);
-
             box-shadow:
-                0 8px 25px rgba(255, 60, 0, 0.3);
+                0 10px 30px
+                rgba(255, 40, 40, .25);
         }
 
         button:disabled {
-            opacity: 0.6;
+            opacity: .55;
             cursor: not-allowed;
-            transform: none;
         }
 
         .message {
+            display: none;
+
             margin-top: 18px;
 
             padding: 12px;
 
-            border-radius: 8px;
-
-            display: none;
-
-            text-align: center;
+            border-radius: 9px;
 
             font-size: 14px;
+
+            text-align: center;
         }
 
-        .error {
+        .message.error {
             display: block;
 
-            background: rgba(255, 50, 50, 0.12);
+            color: #ff7777;
 
-            border: 1px solid rgba(255, 50, 50, 0.3);
+            background:
+                rgba(255, 50, 50, .1);
 
-            color: #ff6b6b;
+            border:
+                1px solid
+                rgba(255, 50, 50, .25);
         }
 
-        .success {
+        .message.success {
             display: block;
 
-            background: rgba(50, 255, 120, 0.1);
+            color: #70ff9a;
 
-            border: 1px solid rgba(50, 255, 120, 0.25);
+            background:
+                rgba(50, 255, 120, .08);
 
-            color: #5cff91;
+            border:
+                1px solid
+                rgba(50, 255, 120, .2);
         }
 
         .login-link {
-            text-align: center;
-
             margin-top: 22px;
+
+            color: #888;
 
             font-size: 14px;
 
-            color: #888;
+            text-align: center;
         }
 
         .login-link a {
-            color: #ff5b35;
+            color: #ff5555;
+
+            font-weight: 700;
 
             text-decoration: none;
-
-            font-weight: bold;
-        }
-
-        .login-link a:hover {
-            text-decoration: underline;
-        }
-
-        .password-info {
-            margin-top: 6px;
-
-            font-size: 12px;
-
-            color: #666;
         }
 
     </style>
-</head>
 
+</head>
 
 <body>
 
-    <div class="container">
+<div class="container">
 
-        <div class="logo">
+    <div class="logo">
 
-            <h1>DARE SYSTEM</h1>
+        <h1>DARE</h1>
 
-            <p>Create your streamer account</p>
-
-        </div>
-
-
-        <form id="registerForm">
-
-            <!-- USERNAME -->
-
-            <div class="form-group">
-
-                <label for="username">
-                    Username
-                </label>
-
-                <input
-                    type="text"
-                    id="username"
-                    placeholder="Enter username"
-                    minlength="3"
-                    maxlength="30"
-                    required
-                >
-
-            </div>
-
-
-            <!-- EMAIL -->
-
-            <div class="form-group">
-
-                <label for="email">
-                    Email
-                </label>
-
-                <input
-                    type="email"
-                    id="email"
-                    placeholder="Enter email"
-                    required
-                >
-
-            </div>
-
-
-            <!-- PASSWORD -->
-
-            <div class="form-group">
-
-                <label for="password">
-                    Password
-                </label>
-
-                <input
-                    type="password"
-                    id="password"
-                    placeholder="Create password"
-                    minlength="8"
-                    required
-                >
-
-                <div class="password-info">
-                    Password must be at least 8 characters.
-                </div>
-
-            </div>
-
-
-            <!-- CONFIRM PASSWORD -->
-
-            <div class="form-group">
-
-                <label for="confirmPassword">
-                    Confirm Password
-                </label>
-
-                <input
-                    type="password"
-                    id="confirmPassword"
-                    placeholder="Confirm password"
-                    minlength="8"
-                    required
-                >
-
-            </div>
-
-
-            <!-- SUBMIT -->
-
-            <button
-                type="submit"
-                id="registerButton"
-            >
-                CREATE ACCOUNT
-            </button>
-
-
-            <!-- MESSAGE -->
-
-            <div
-                id="message"
-                class="message"
-            ></div>
-
-        </form>
-
-
-        <div class="login-link">
-
-            Already have an account?
-
-            <a href="login.html">
-                Login
-            </a>
-
-        </div>
+        <p>
+            Create your account
+        </p>
 
     </div>
 
 
-    <!-- AUTH SCRIPT -->
+    <form id="registerForm">
 
-    <script src="auth.js"></script>
+        <div class="form-group">
 
+            <label for="username">
+                Username
+            </label>
 
-    <script>
+            <input
+                id="username"
+                type="text"
+                minlength="3"
+                maxlength="50"
+                autocomplete="username"
+                pattern="[A-Za-z0-9_]+"
+                placeholder="Your username"
+                required
+            >
 
-        const form =
-            document.getElementById("registerForm");
+            <div class="hint">
+                3–50 characters. Letters, numbers and underscores.
+            </div>
 
-        const button =
-            document.getElementById("registerButton");
-
-        const message =
-            document.getElementById("message");
-
-
-        form.addEventListener(
-            "submit",
-            async function(event) {
-
-                event.preventDefault();
-
-
-                const username =
-                    document.getElementById("username")
-                    .value
-                    .trim();
+        </div>
 
 
-                const email =
-                    document.getElementById("email")
-                    .value
-                    .trim();
+        <div class="form-group">
+
+            <label for="email">
+                Email
+            </label>
+
+            <input
+                id="email"
+                type="email"
+                maxlength="320"
+                autocomplete="email"
+                placeholder="you@example.com"
+                required
+            >
+
+        </div>
 
 
-                const password =
-                    document.getElementById("password")
-                    .value;
+        <div class="form-group">
+
+            <label for="password">
+                Password
+            </label>
+
+            <input
+                id="password"
+                type="password"
+                minlength="8"
+                maxlength="128"
+                autocomplete="new-password"
+                placeholder="Create a password"
+                required
+            >
+
+            <div class="hint">
+                8–128 characters.
+            </div>
+
+        </div>
 
 
-                const confirmPassword =
-                    document.getElementById("confirmPassword")
-                    .value;
+        <div class="form-group">
+
+            <label for="confirmPassword">
+                Confirm Password
+            </label>
+
+            <input
+                id="confirmPassword"
+                type="password"
+                minlength="8"
+                maxlength="128"
+                autocomplete="new-password"
+                placeholder="Enter it again"
+                required
+            >
+
+        </div>
 
 
-                // -------------------------
-                // VALIDATION
-                // -------------------------
-
-                if (username.length < 3) {
-
-                    showMessage(
-                        "Username must be at least 3 characters.",
-                        "error"
-                    );
-
-                    return;
-                }
+        <button
+            id="registerButton"
+            type="submit"
+        >
+            CREATE ACCOUNT
+        </button>
 
 
-                if (password.length < 8) {
+        <div
+            id="message"
+            class="message"
+        ></div>
 
-                    showMessage(
-                        "Password must be at least 8 characters.",
-                        "error"
-                    );
-
-                    return;
-                }
+    </form>
 
 
-                if (password !== confirmPassword) {
+    <div class="login-link">
 
-                    showMessage(
-                        "Passwords do not match.",
-                        "error"
-                    );
+        Already have an account?
 
-                    return;
-                }
+        <a href="login.html">
+            Log in
+        </a>
 
+    </div>
 
-                // -------------------------
-                // DISABLE BUTTON
-                // -------------------------
-
-                button.disabled = true;
-
-                button.textContent =
-                    "CREATING ACCOUNT...";
+</div>
 
 
-                hideMessage();
+<script src="auth.js"></script>
+
+<script>
+
+const form =
+    document.getElementById(
+        "registerForm"
+    );
+
+const button =
+    document.getElementById(
+        "registerButton"
+    );
+
+const message =
+    document.getElementById(
+        "message"
+    );
 
 
-                try {
+function showMessage(
+    text,
+    type
+) {
 
-                    // Call auth.js
-                    const result =
-                        await register(
-                            username,
-                            email,
-                            password
-                        );
+    message.textContent =
+        text;
 
-
-                    // -------------------------
-                    // SUCCESS
-                    // -------------------------
-
-                    showMessage(
-                        "Account created successfully! Redirecting...",
-                        "success"
-                    );
+    message.className =
+        `message ${type}`;
+}
 
 
-                    console.log(
-                        "Registration result:",
-                        result
-                    );
+form.addEventListener(
+    "submit",
+    async event => {
+
+        event.preventDefault();
+
+        const username =
+            document
+                .getElementById(
+                    "username"
+                )
+                .value
+                .trim();
+
+        const email =
+            document
+                .getElementById(
+                    "email"
+                )
+                .value
+                .trim()
+                .toLowerCase();
+
+        const password =
+            document
+                .getElementById(
+                    "password"
+                )
+                .value;
+
+        const confirmPassword =
+            document
+                .getElementById(
+                    "confirmPassword"
+                )
+                .value;
 
 
-                    // Redirect to login
-                    setTimeout(
-                        function() {
+        if (
+            !/^[A-Za-z0-9_]{3,50}$/
+                .test(username)
+        ) {
 
-                            window.location.href =
-                                "login.html";
+            showMessage(
+                "Username must be 3–50 characters using letters, numbers, and underscores.",
+                "error"
+            );
 
-                        },
-                        1500
-                    );
-
-
-                } catch (error) {
-
-                    console.error(error);
-
-
-                    showMessage(
-                        error.message ||
-                        "Unable to create account.",
-                        "error"
-                    );
-
-
-                    button.disabled = false;
-
-                    button.textContent =
-                        "CREATE ACCOUNT";
-                }
-
-            }
-        );
-
-
-        // -------------------------
-        // SHOW MESSAGE
-        // -------------------------
-
-        function showMessage(text, type) {
-
-            message.textContent = text;
-
-            message.className =
-                "message " + type;
+            return;
         }
 
 
-        // -------------------------
-        // HIDE MESSAGE
-        // -------------------------
+        if (
+            password.length < 8 ||
+            password.length > 128
+        ) {
 
-        function hideMessage() {
+            showMessage(
+                "Password must be 8–128 characters.",
+                "error"
+            );
 
-            message.textContent = "";
-
-            message.className =
-                "message";
+            return;
         }
 
-    </script>
+
+        if (
+            password !==
+            confirmPassword
+        ) {
+
+            showMessage(
+                "Passwords do not match.",
+                "error"
+            );
+
+            return;
+        }
+
+
+        button.disabled =
+            true;
+
+        button.textContent =
+            "CREATING ACCOUNT...";
+
+        message.className =
+            "message";
+
+
+        try {
+
+            await register(
+                username,
+                email,
+                password
+            );
+
+            showMessage(
+                "Account created. Redirecting to login...",
+                "success"
+            );
+
+            setTimeout(
+                () => {
+
+                    window.location.href =
+                        "login.html";
+
+                },
+                900
+            );
+
+        } catch (error) {
+
+            console.error(
+                "Registration failed:",
+                error
+            );
+
+            showMessage(
+                error.message ||
+                "Unable to create account.",
+                "error"
+            );
+
+            button.disabled =
+                false;
+
+            button.textContent =
+                "CREATE ACCOUNT";
+        }
+
+    }
+);
+
+</script>
 
 </body>
-
 </html>
