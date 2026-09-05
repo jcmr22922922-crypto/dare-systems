@@ -1967,6 +1967,12 @@
       }
 
 
+      /*
+       * KEEP nav-actions visible.
+       * This allows Login / Username / Logout
+       * to remain accessible on mobile.
+       */
+
       .nav-actions {
 
         display:
@@ -2262,12 +2268,24 @@
     </div>
 
 
+    <!--
+      AUTH.JS CONTROLS THIS AREA.
+
+      Logged out:
+        Login
+
+      Logged in:
+        👤 username
+        Logout
+    -->
+
     <div class="nav-actions">
 
       <a
         href="login.html"
         class="login-btn"
         id="authNavButton"
+        data-auth-login
       >
         Login
       </a>
@@ -2277,6 +2295,7 @@
         type="button"
         class="logout-btn"
         id="logoutBtn"
+        data-auth-logout
         style="display: none;"
       >
         Logout
@@ -3072,19 +3091,17 @@
 <script src="auth.js?v=1004"></script>
 
 
+<!-- =========================================================
+     STREAMER DASHBOARD CTA
+     
+     IMPORTANT:
+     Authentication itself is handled by auth.js.
+     This script ONLY changes the streamer CTA.
+========================================================= -->
+
 <script>
 
-/* =========================================
-   AUTH NAVIGATION
-========================================= */
-
-async function updateAuthNavigation() {
-
-  const authButton =
-    document.getElementById(
-      "authNavButton"
-    );
-
+async function updateStreamerDashboardButton() {
 
   const dashboardButton =
     document.getElementById(
@@ -3092,13 +3109,7 @@ async function updateAuthNavigation() {
     );
 
 
-  const logoutButton =
-    document.getElementById(
-      "logoutBtn"
-    );
-
-
-  if (!authButton) {
+  if (!dashboardButton) {
 
     return;
 
@@ -3113,94 +3124,15 @@ async function updateAuthNavigation() {
 
     if (user) {
 
-      const username =
-        user.username ||
-        user.displayName ||
-        user.name ||
-        "Account";
-
-
-      /*
-      Logged-in navbar
-      */
-
-      authButton.textContent =
-        "👤 " + username;
-
-
-      authButton.href =
+      dashboardButton.href =
         "controller.html";
 
-
-      authButton.className =
-        "login-btn";
-
-
-      authButton.title =
-        "Open your Nerve dashboard";
-
-
-      /*
-      Show logout button
-      */
-
-      if (logoutButton) {
-
-        logoutButton.style.display =
-          "inline-flex";
-
-      }
-
-
-      /*
-      Streamer CTA
-      */
-
-      if (dashboardButton) {
-
-        dashboardButton.href =
-          "controller.html";
-
-        dashboardButton.textContent =
-          "🎥 Open Streamer Dashboard";
-
-      }
-
-
-      return;
+      dashboardButton.textContent =
+        "🎥 Open Streamer Dashboard";
 
     }
 
-
-    /*
-    Not logged in
-    */
-
-    authButton.textContent =
-      "Login";
-
-
-    authButton.href =
-      "login.html";
-
-
-    authButton.className =
-      "login-btn";
-
-
-    authButton.title =
-      "Log in to Nerve";
-
-
-    if (logoutButton) {
-
-      logoutButton.style.display =
-        "none";
-
-    }
-
-
-    if (dashboardButton) {
+    else {
 
       dashboardButton.href =
         "login.html";
@@ -3215,15 +3147,16 @@ async function updateAuthNavigation() {
   catch (error) {
 
     console.warn(
-      "Could not check authentication:",
+      "Could not update streamer dashboard button:",
       error
     );
 
 
     /*
-    Do NOT clear the token if
-    Render is temporarily unavailable.
-    */
+     * If the backend is temporarily
+     * unavailable, don't destroy the
+     * existing login/dashboard state.
+     */
 
     try {
 
@@ -3233,54 +3166,8 @@ async function updateAuthNavigation() {
 
       if (cachedUser) {
 
-        const username =
-          cachedUser.username ||
-          cachedUser.displayName ||
-          cachedUser.name ||
-          "Account";
-
-
-        authButton.textContent =
-          "👤 " + username;
-
-
-        authButton.href =
+        dashboardButton.href =
           "controller.html";
-
-
-        authButton.className =
-          "login-btn";
-
-
-        authButton.title =
-          "Open your Nerve dashboard";
-
-
-        if (logoutButton) {
-
-          logoutButton.style.display =
-            "inline-flex";
-
-        }
-
-
-        if (dashboardButton) {
-
-          dashboardButton.href =
-            "controller.html";
-
-        }
-
-      }
-
-      else {
-
-        if (logoutButton) {
-
-          logoutButton.style.display =
-            "none";
-
-        }
 
       }
 
@@ -3289,7 +3176,7 @@ async function updateAuthNavigation() {
     catch (fallbackError) {
 
       console.warn(
-        "Could not read cached account:",
+        "Could not read cached user:",
         fallbackError
       );
 
@@ -3300,103 +3187,18 @@ async function updateAuthNavigation() {
 }
 
 
-/* =========================================
-   LOGOUT
-========================================= */
-
-const logoutButton =
-  document.getElementById(
-    "logoutBtn"
-  );
-
-
-if (logoutButton) {
-
-  logoutButton.addEventListener(
-    "click",
-    async function() {
-
-      const confirmed =
-        confirm(
-          "Are you sure you want to log out?"
-        );
-
-
-      if (!confirmed) {
-
-        return;
-
-      }
-
-
-      logoutButton.disabled =
-        true;
-
-
-      logoutButton.textContent =
-        "Logging out...";
-
-
-      try {
-
-        /*
-        Call the backend logout
-        through auth.js.
-        */
-
-        await logout();
-
-      }
-
-      catch (error) {
-
-        console.warn(
-          "Logout request failed:",
-          error
-        );
-
-      }
-
-
-      /*
-      Always remove the local
-      authentication token.
-      */
-
-      localStorage.removeItem(
-        "token"
-      );
-
-
-      /*
-      Return to the homepage.
-      */
-
-      window.location.href =
-        "index.html";
-
-    }
-  );
-
-}
-
-
-/* =========================================
-   RUN AUTH CHECK
-========================================= */
-
-updateAuthNavigation();
+updateStreamerDashboardButton();
 
 
 window.addEventListener(
   "pageshow",
-  updateAuthNavigation
+  updateStreamerDashboardButton
 );
 
 
 window.addEventListener(
   "focus",
-  updateAuthNavigation
+  updateStreamerDashboardButton
 );
 
 </script>
