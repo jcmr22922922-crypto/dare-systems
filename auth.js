@@ -1,4 +1,3 @@
-```js
 const DARE_API_URL = "https://dare-backend-vx8w.onrender.com";
 
 let currentUserCache = undefined;
@@ -278,4 +277,4 @@ function clearAuthCache() {
     localStorage.removeItem("user");
     localStorage.removeItem("token");
 }
-```
+
