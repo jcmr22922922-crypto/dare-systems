@@ -1,0 +1,319 @@
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Login — DARE</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            min-height: 100vh;
+            font-family: Inter, Arial, sans-serif;
+            background:
+                radial-gradient(circle at top, rgba(255, 40, 70, 0.12), transparent 40%),
+                #08080b;
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 24px;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 430px;
+        }
+
+        .logo {
+            text-align: center;
+            margin-bottom: 28px;
+        }
+
+        .logo h1 {
+            font-size: 42px;
+            font-weight: 900;
+            letter-spacing: -2px;
+            color: #ff304f;
+        }
+
+        .logo p {
+            margin-top: 6px;
+            color: #85858f;
+            font-size: 14px;
+        }
+
+        .card {
+            background: rgba(18, 18, 23, 0.94);
+            border: 1px solid #292930;
+            border-radius: 18px;
+            padding: 32px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.45);
+        }
+
+        .card h2 {
+            font-size: 25px;
+            margin-bottom: 8px;
+        }
+
+        .subtitle {
+            color: #888892;
+            font-size: 14px;
+            margin-bottom: 26px;
+        }
+
+        .field {
+            margin-bottom: 18px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 13px;
+            font-weight: 600;
+            color: #d7d7dc;
+        }
+
+        input {
+            width: 100%;
+            padding: 13px 14px;
+            background: #0d0d11;
+            border: 1px solid #303038;
+            border-radius: 10px;
+            color: white;
+            font-size: 14px;
+            outline: none;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+
+        input:focus {
+            border-color: #ff304f;
+            box-shadow: 0 0 0 3px rgba(255, 48, 79, 0.1);
+        }
+
+        input::placeholder {
+            color: #5f5f68;
+        }
+
+        .login-btn {
+            width: 100%;
+            border: none;
+            border-radius: 10px;
+            padding: 14px;
+            margin-top: 6px;
+            background: #ff304f;
+            color: white;
+            font-size: 15px;
+            font-weight: 800;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .login-btn:hover {
+            background: #ff4662;
+            transform: translateY(-1px);
+        }
+
+        .login-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .message {
+            display: none;
+            margin-bottom: 18px;
+            padding: 11px 13px;
+            border-radius: 9px;
+            font-size: 13px;
+            line-height: 1.4;
+        }
+
+        .message.error {
+            display: block;
+            background: rgba(255, 48, 79, 0.1);
+            border: 1px solid rgba(255, 48, 79, 0.3);
+            color: #ff8295;
+        }
+
+        .message.success {
+            display: block;
+            background: rgba(50, 200, 120, 0.1);
+            border: 1px solid rgba(50, 200, 120, 0.3);
+            color: #75e0aa;
+        }
+
+        .bottom {
+            text-align: center;
+            margin-top: 22px;
+            color: #777780;
+            font-size: 13px;
+        }
+
+        .bottom a {
+            color: #ff304f;
+            text-decoration: none;
+            font-weight: 700;
+        }
+
+        .bottom a:hover {
+            text-decoration: underline;
+        }
+
+        .back {
+            display: block;
+            text-align: center;
+            margin-top: 18px;
+            color: #686870;
+            text-decoration: none;
+            font-size: 12px;
+        }
+
+        .back:hover {
+            color: #aaaab2;
+        }
+
+        @media (max-width: 480px) {
+            .card {
+                padding: 24px;
+            }
+
+            .logo h1 {
+                font-size: 36px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <div class="logo">
+        <h1>DARE</h1>
+        <p>Turn your stream into a challenge.</p>
+    </div>
+
+    <div class="card">
+
+        <h2>Welcome back</h2>
+        <p class="subtitle">Log in to access your streamer dashboard.</p>
+
+        <div id="message" class="message"></div>
+
+        <form id="loginForm">
+
+            <div class="field">
+                <label for="email">Email</label>
+                <input
+                    type="email"
+                    id="email"
+                    name="email"
+                    placeholder="you@example.com"
+                    autocomplete="email"
+                    required
+                >
+            </div>
+
+            <div class="field">
+                <label for="password">Password</label>
+                <input
+                    type="password"
+                    id="password"
+                    name="password"
+                    placeholder="Enter your password"
+                    autocomplete="current-password"
+                    required
+                >
+            </div>
+
+            <button type="submit" class="login-btn" id="loginButton">
+                Log In
+            </button>
+
+        </form>
+
+        <div class="bottom">
+            Don't have an account?
+            <a href="register.html">Create one</a>
+        </div>
+
+        <a class="back" href="index.html">
+            ← Back to DARE
+        </a>
+
+    </div>
+
+</div>
+
+<script src="auth.js"></script>
+
+<script>
+    const form = document.getElementById("loginForm");
+    const button = document.getElementById("loginButton");
+    const message = document.getElementById("message");
+
+    function showMessage(text, type) {
+        message.textContent = text;
+        message.className = `message ${type}`;
+    }
+
+    form.addEventListener("submit", async (event) => {
+        event.preventDefault();
+
+        const email = document.getElementById("email").value.trim();
+        const password = document.getElementById("password").value;
+
+        if (!email || !password) {
+            showMessage("Please enter your email and password.", "error");
+            return;
+        }
+
+        button.disabled = true;
+        button.textContent = "Logging in...";
+        message.className = "message";
+        message.textContent = "";
+
+        try {
+            const result = await login(email, password);
+
+            if (result?.data?.user) {
+                localStorage.setItem(
+                    "user",
+                    JSON.stringify(result.data.user)
+                );
+            }
+
+            showMessage("Login successful. Redirecting...", "success");
+
+            setTimeout(() => {
+                window.location.href = "controller.html";
+            }, 500);
+
+        } catch (error) {
+            console.error("Login error:", error);
+
+            let errorMessage = error.message || "Unable to log in.";
+
+            if (error.status === 401) {
+                errorMessage = "Invalid email or password.";
+            }
+
+            showMessage(errorMessage, "error");
+
+            button.disabled = false;
+            button.textContent = "Log In";
+        }
+    });
+</script>
+
+</body>
+</html>
+```
