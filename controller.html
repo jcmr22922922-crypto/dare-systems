@@ -1,11 +1,19 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
+
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+>
+
 <title>DARE Controller</title>
 
 <style>
+
 * {
     box-sizing: border-box;
 }
@@ -24,6 +32,7 @@
 
 body {
     margin: 0;
+
     background:
         radial-gradient(
             circle at top right,
@@ -31,9 +40,16 @@ body {
             transparent 35%
         ),
         var(--bg);
+
     color: var(--text);
-    font-family: Arial, Helvetica, sans-serif;
+
+    font-family:
+        Arial,
+        Helvetica,
+        sans-serif;
+
     min-height: 100vh;
+
     padding: 24px;
 }
 
@@ -43,6 +59,7 @@ body {
     margin: 0 auto;
 }
 
+
 /* =========================
    HEADER
 ========================= */
@@ -51,31 +68,39 @@ body {
     display: flex;
     align-items: center;
     justify-content: space-between;
+
     gap: 20px;
+
     margin-bottom: 24px;
 }
 
 .brand {
     display: flex;
     align-items: center;
+
     gap: 12px;
 }
 
 .brand-logo {
     width: 44px;
     height: 44px;
+
     border-radius: 12px;
+
     background:
         linear-gradient(
             135deg,
             var(--red),
             #8e1010
         );
+
     display: flex;
     align-items: center;
     justify-content: center;
+
     font-size: 21px;
     font-weight: 900;
+
     box-shadow:
         0 0 25px
         rgba(255, 43, 43, 0.2);
@@ -83,46 +108,18 @@ body {
 
 .brand h1 {
     margin: 0;
+
     font-size: 25px;
 }
 
 .brand p {
     margin: 3px 0 0;
+
     color: var(--muted);
+
     font-size: 13px;
 }
 
-/* =========================
-   HEADER ACTIONS
-========================= */
-
-.header-actions {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}
-
-.home-btn {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: 7px;
-    padding: 10px 15px;
-    border-radius: 10px;
-    background: #16181e;
-    border: 1px solid var(--border);
-    color: white;
-    text-decoration: none;
-    font-size: 13px;
-    font-weight: 800;
-    transition: 0.15s ease;
-}
-
-.home-btn:hover {
-    background: #22252d;
-    border-color: #3a3e48;
-    transform: translateY(-1px);
-}
 
 /* =========================
    CONNECTION STATUS
@@ -131,17 +128,24 @@ body {
 .status {
     display: inline-flex;
     align-items: center;
+
     gap: 8px;
+
     padding: 8px 13px;
+
     border-radius: 999px;
+
     font-size: 13px;
+
     font-weight: 700;
 }
 
 .connected {
     background:
         rgba(32, 199, 106, 0.12);
+
     color: #55e994;
+
     border:
         1px solid
         rgba(32, 199, 106, 0.25);
@@ -150,7 +154,9 @@ body {
 .disconnected {
     background:
         rgba(255, 43, 43, 0.12);
+
     color: #ff7070;
+
     border:
         1px solid
         rgba(255, 43, 43, 0.25);
@@ -159,11 +165,14 @@ body {
 .authenticating {
     background:
         rgba(245, 197, 66, 0.12);
+
     color: #f5d56d;
+
     border:
         1px solid
         rgba(245, 197, 66, 0.25);
 }
+
 
 /* =========================
    CARDS
@@ -172,12 +181,17 @@ body {
 .card {
     background:
         rgba(17, 19, 24, 0.96);
+
     border:
         1px solid
         var(--border);
+
     border-radius: 16px;
+
     padding: 22px;
+
     margin-bottom: 18px;
+
     box-shadow:
         0 10px 35px
         rgba(0, 0, 0, 0.18);
@@ -187,14 +201,18 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
+
     gap: 15px;
+
     margin-bottom: 18px;
 }
 
 .card-title h2 {
     margin: 0;
+
     font-size: 17px;
 }
+
 
 /* =========================
    STREAMER
@@ -202,14 +220,21 @@ body {
 
 .streamer-profile {
     display: flex;
+
     align-items: center;
+
     justify-content: space-between;
+
     gap: 20px;
+
     padding: 18px;
+
     background: #0c0e12;
+
     border:
         1px solid
         var(--border);
+
     border-radius: 12px;
 }
 
@@ -219,35 +244,49 @@ body {
 
 .streamer-name {
     font-size: 21px;
+
     font-weight: 900;
+
     word-break: break-word;
 }
 
 .streamer-platform {
     color: var(--muted);
+
     font-size: 13px;
+
     margin-top: 6px;
 }
 
 .streamer-id {
     color: #707582;
+
     font-size: 11px;
+
     margin-top: 5px;
 }
 
 .online-badge {
     flex-shrink: 0;
+
     padding: 7px 11px;
+
     border-radius: 999px;
+
     background:
         rgba(32, 199, 106, 0.12);
+
     border:
         1px solid
         rgba(32, 199, 106, 0.25);
+
     color: #55e994;
+
     font-size: 11px;
+
     font-weight: 900;
 }
+
 
 /* =========================
    ACTIVE DARE
@@ -256,6 +295,7 @@ body {
 .active-dare {
     border-color:
         rgba(255, 43, 43, 0.45);
+
     background:
         radial-gradient(
             circle at top right,
@@ -268,35 +308,47 @@ body {
 .live-label,
 .pending-label {
     display: inline-block;
+
     padding: 5px 9px;
+
     border-radius: 7px;
+
     font-size: 10px;
+
     font-weight: 900;
 }
 
 .live-label {
     background:
         rgba(255, 43, 43, 0.13);
+
     color: #ff6262;
 }
 
 .pending-label {
     background:
         rgba(245, 197, 66, 0.12);
+
     color: var(--yellow);
 }
 
 .dare-text {
     font-size: 27px;
+
     font-weight: 900;
+
     line-height: 1.3;
+
     margin: 18px 0;
+
     word-break: break-word;
 }
 
 .meta {
     color: var(--muted);
+
     font-size: 13px;
+
     margin-top: 8px;
 }
 
@@ -306,13 +358,17 @@ body {
 
 .timer {
     font-size: 50px;
+
     font-weight: 900;
+
     text-align: center;
+
     margin: 24px 0;
 }
 
 .buttons {
     display: flex;
+
     gap: 10px;
 }
 
@@ -320,17 +376,24 @@ body {
     flex: 1;
 }
 
+
 /* =========================
    BUTTONS
 ========================= */
 
 button {
     border: none;
+
     border-radius: 10px;
+
     padding: 12px 17px;
+
     font-size: 14px;
+
     font-weight: 800;
+
     cursor: pointer;
+
     transition: 0.15s;
 }
 
@@ -340,21 +403,26 @@ button:hover {
 
 button:disabled {
     opacity: 0.5;
+
     cursor: not-allowed;
+
     transform: none;
 }
 
 .accept,
 .complete {
     background: #178d4c;
+
     color: white;
 }
 
 .reject,
 .fail {
     background: #a91f25;
+
     color: white;
 }
+
 
 /* =========================
    QUEUE
@@ -362,30 +430,41 @@ button:disabled {
 
 .queue-item {
     background: #0c0e12;
+
     border:
         1px solid
         var(--border);
+
     border-radius: 12px;
+
     padding: 17px;
+
     margin-bottom: 10px;
 }
 
 .queue-number {
     color: #ff5555;
+
     font-weight: 900;
+
     margin-right: 7px;
 }
 
 .queue-dare {
     margin-top: 11px;
+
     font-size: 16px;
+
     line-height: 1.4;
+
     font-weight: 700;
 }
 
 .queue-buttons {
     display: flex;
+
     gap: 10px;
+
     margin-top: 13px;
 }
 
@@ -395,13 +474,18 @@ button:disabled {
 
 .empty {
     color: #707582;
+
     text-align: center;
+
     padding: 25px 15px;
+
     border:
         1px dashed
         #2b2e36;
+
     border-radius: 10px;
 }
+
 
 /* =========================
    TOAST
@@ -409,25 +493,36 @@ button:disabled {
 
 .toast {
     position: fixed;
+
     bottom: 24px;
+
     left: 50%;
+
     transform:
         translateX(-50%)
         translateY(15px);
+
     background: #17191f;
+
     border:
         1px solid
         #363944;
+
     padding: 12px 17px;
+
     border-radius: 10px;
+
     display: none;
+
     z-index: 9999;
+
     font-size: 14px;
 }
 
 .toast.show {
     display: block;
 }
+
 
 /* =========================
    MOBILE
@@ -441,17 +536,13 @@ button:disabled {
 
     .header {
         align-items: flex-start;
-        flex-direction: column;
-    }
 
-    .header-actions {
-        width: 100%;
-        justify-content: space-between;
-        flex-wrap: wrap;
+        flex-direction: column;
     }
 
     .streamer-profile {
         align-items: flex-start;
+
         flex-direction: column;
     }
 
@@ -468,22 +559,17 @@ button:disabled {
         flex-direction: column;
     }
 
-    .home-btn {
-        flex: 1;
-    }
-
-    .status {
-        flex: 1;
-        justify-content: center;
-    }
 }
 
 </style>
+
 </head>
+
 
 <body>
 
 <div class="container">
+
 
     <!-- =====================
          HEADER
@@ -498,31 +584,25 @@ button:disabled {
             </div>
 
             <div>
-                <h1>DARE Controller</h1>
+
+                <h1>
+                    DARE Controller
+                </h1>
 
                 <p>
                     Manage your live dare queue
                 </p>
+
             </div>
 
         </div>
 
-        <div class="header-actions">
 
-            <a
-                href="index.html"
-                class="home-btn"
-            >
-                🏠 Home
-            </a>
-
-            <div
-                id="connectionStatus"
-                class="status disconnected"
-            >
-                🔴 Connecting...
-            </div>
-
+        <div
+            id="connectionStatus"
+            class="status disconnected"
+        >
+            🔴 Connecting...
         </div>
 
     </div>
@@ -541,6 +621,7 @@ button:disabled {
             </h2>
 
         </div>
+
 
         <div
             id="streamerProfile"
@@ -570,6 +651,7 @@ button:disabled {
 
         </div>
 
+
         <div id="currentDare">
 
             <div class="empty">
@@ -583,7 +665,7 @@ button:disabled {
 
     <!-- =====================
          WAITING QUEUE
-    ====================== -->
+    ===================== -->
 
     <div class="card">
 
@@ -594,6 +676,7 @@ button:disabled {
             </h2>
 
         </div>
+
 
         <div id="queue">
 
@@ -624,6 +707,7 @@ button:disabled {
 
 <script src="auth.js?v=1003"></script>
 
+
 <script>
 
 /* ============================================================
@@ -639,15 +723,25 @@ const WS_URL =
 ============================================================ */
 
 let ws = null;
+
 let myStreamer = null;
+
 let selectedStreamerId = null;
+
 let activeDares = {};
+
 let queues = {};
+
 let currentDare = null;
+
 let timerInterval = null;
+
 let reconnectTimer = null;
+
 let toastTimer = null;
+
 let authenticatedSocket = false;
+
 let reconnectAttempt = 0;
 
 
@@ -692,10 +786,13 @@ function streamerKey(id) {
         id === undefined ||
         id === ""
     ) {
+
         return "";
+
     }
 
     return String(id);
+
 }
 
 
@@ -714,10 +811,13 @@ function getDareId(dare) {
         value === null ||
         value === undefined
     ) {
+
         return null;
+
     }
 
     return Number(value);
+
 }
 
 
@@ -732,6 +832,7 @@ function getDareStreamerId(dare) {
         dare.streamer_id ??
         null
     );
+
 }
 
 
@@ -743,6 +844,7 @@ function dareText(dare) {
         dare?.text ||
         ""
     );
+
 }
 
 
@@ -753,46 +855,80 @@ function createdAt(dare) {
         dare?.created_at ||
         0
     );
+
 }
 
 
 function showToast(message) {
 
-    toast.textContent = message;
+    toast.textContent =
+        message;
 
-    toast.classList.add("show");
+    toast.classList.add(
+        "show"
+    );
 
-    clearTimeout(toastTimer);
+    clearTimeout(
+        toastTimer
+    );
 
     toastTimer =
         setTimeout(
             () => {
-                toast.classList.remove("show");
+
+                toast.classList.remove(
+                    "show"
+                );
+
             },
             2800
         );
+
 }
 
 
 function escapeHtml(value) {
 
-    return String(value ?? "")
-        .replace(/&/g, "&amp;")
-        .replace(/</g, "&lt;")
-        .replace(/>/g, "&gt;")
-        .replace(/"/g, "&quot;")
-        .replace(/'/g, "&#039;");
+    return String(
+        value ?? ""
+    )
+    .replace(
+        /&/g,
+        "&amp;"
+    )
+    .replace(
+        /</g,
+        "&lt;"
+    )
+    .replace(
+        />/g,
+        "&gt;"
+    )
+    .replace(
+        /"/g,
+        "&quot;"
+    )
+    .replace(
+        /'/g,
+        "&#039;"
+    );
+
 }
 
 
 function formatReward(value) {
 
     const amount =
-        Number(value || 0);
+        Number(
+            value || 0
+        );
 
-    return Number.isFinite(amount)
+    return Number.isFinite(
+        amount
+    )
         ? amount.toFixed(2)
         : "0.00";
+
 }
 
 
@@ -808,6 +944,7 @@ function getStreamerDisplayName(streamer) {
         streamer.username ||
         "Streamer"
     );
+
 }
 
 
@@ -818,7 +955,8 @@ function getStreamerPlatform(streamer) {
     }
 
     const platform =
-        streamer.platform || "";
+        streamer.platform ||
+        "";
 
     const platformUsername =
         streamer.platformUsername ||
@@ -829,18 +967,23 @@ function getStreamerPlatform(streamer) {
         platform &&
         platformUsername
     ) {
+
         return (
             platform.toUpperCase() +
             " • " +
             platformUsername
         );
+
     }
 
     if (platform) {
+
         return platform.toUpperCase();
+
     }
 
     return "Streaming platform not connected";
+
 }
 
 
@@ -853,14 +996,20 @@ function renderStreamerProfile() {
     if (!myStreamer) {
 
         streamerProfileElement.innerHTML = `
+
             <div class="empty">
+
                 No streamer profile was found
                 for this Nerve account.
+
             </div>
+
         `;
 
         return;
+
     }
+
 
     const id =
         myStreamer.id;
@@ -875,30 +1024,49 @@ function renderStreamerProfile() {
             myStreamer
         );
 
+
     streamerProfileElement.innerHTML = `
 
         <div class="streamer-main">
 
             <div class="streamer-name">
-                ${escapeHtml(displayName)}
+
+                ${escapeHtml(
+                    displayName
+                )}
+
             </div>
+
 
             <div class="streamer-platform">
-                ${escapeHtml(platform)}
+
+                ${escapeHtml(
+                    platform
+                )}
+
             </div>
 
+
             <div class="streamer-id">
+
                 Nerve Streamer ID:
-                ${escapeHtml(id)}
+                ${escapeHtml(
+                    id
+                )}
+
             </div>
 
         </div>
 
+
         <div class="online-badge">
+
             ● CONTROLLER READY
+
         </div>
 
     `;
+
 }
 
 
@@ -911,21 +1079,28 @@ function findDareInQueue(id) {
     const targetId =
         Number(id);
 
+
     const key =
         streamerKey(
             selectedStreamerId
         );
 
+
     const queue =
-        queues[key] || [];
+        queues[key] ||
+        [];
+
 
     return (
         queue.find(
             dare =>
-                getDareId(dare) === targetId
+                getDareId(
+                    dare
+                ) === targetId
         ) ||
         null
     );
+
 }
 
 
@@ -935,9 +1110,14 @@ function findDareInQueue(id) {
 
 function sortQueue(queue) {
 
-    if (!Array.isArray(queue)) {
+    if (
+        !Array.isArray(queue)
+    ) {
+
         return;
+
     }
+
 
     queue.sort(
         (a, b) => {
@@ -947,14 +1127,21 @@ function sortQueue(queue) {
                     createdAt(a)
                 );
 
+
             const bDate =
                 new Date(
                     createdAt(b)
                 );
 
-            return aDate - bDate;
+
+            return (
+                aDate -
+                bDate
+            );
+
         }
     );
+
 }
 
 
@@ -967,15 +1154,22 @@ function connectWebSocket() {
     if (
         ws &&
         (
-            ws.readyState === WebSocket.OPEN ||
-            ws.readyState === WebSocket.CONNECTING
+            ws.readyState ===
+                WebSocket.OPEN ||
+
+            ws.readyState ===
+                WebSocket.CONNECTING
         )
     ) {
+
         return;
+
     }
+
 
     const token =
         getAuthToken();
+
 
     if (!token) {
 
@@ -986,7 +1180,9 @@ function connectWebSocket() {
             "status disconnected";
 
         return;
+
     }
+
 
     connectionStatus.textContent =
         "🟡 Connecting...";
@@ -994,7 +1190,10 @@ function connectWebSocket() {
     connectionStatus.className =
         "status authenticating";
 
-    authenticatedSocket = false;
+
+    authenticatedSocket =
+        false;
+
 
     try {
 
@@ -1021,7 +1220,9 @@ function connectWebSocket() {
         scheduleReconnect();
 
         return;
+
     }
+
 
     ws.onopen =
         function() {
@@ -1030,13 +1231,26 @@ function connectWebSocket() {
                 "✅ WebSocket connected"
             );
 
+
             connectionStatus.textContent =
                 "🟡 Authenticating...";
 
             connectionStatus.className =
                 "status authenticating";
 
+
             reconnectAttempt = 0;
+
+
+            /*
+             * IMPORTANT:
+             *
+             * Browser WebSockets cannot easily
+             * send an Authorization header.
+             *
+             * Therefore authentication happens
+             * as the first WebSocket message.
+             */
 
             try {
 
@@ -1058,6 +1272,7 @@ function connectWebSocket() {
                 );
 
             }
+
         };
 
 
@@ -1070,7 +1285,10 @@ function connectWebSocket() {
                 event.reason
             );
 
-            authenticatedSocket = false;
+
+            authenticatedSocket =
+                false;
+
 
             connectionStatus.textContent =
                 "🔴 Disconnected";
@@ -1078,7 +1296,9 @@ function connectWebSocket() {
             connectionStatus.className =
                 "status disconnected";
 
+
             scheduleReconnect();
+
         };
 
 
@@ -1090,11 +1310,13 @@ function connectWebSocket() {
                 error
             );
 
+
             connectionStatus.textContent =
                 "🔴 Connection Error";
 
             connectionStatus.className =
                 "status disconnected";
+
         };
 
 
@@ -1107,6 +1329,7 @@ function connectWebSocket() {
                     JSON.parse(
                         event.data
                     );
+
 
                 handleWebSocketMessage(
                     message
@@ -1121,8 +1344,11 @@ function connectWebSocket() {
                     error,
                     event.data
                 );
+
             }
+
         };
+
 }
 
 
@@ -1136,7 +1362,9 @@ function scheduleReconnect() {
         reconnectTimer
     );
 
+
     reconnectAttempt++;
+
 
     const delay =
         Math.min(
@@ -1148,11 +1376,13 @@ function scheduleReconnect() {
             )
         );
 
+
     reconnectTimer =
         setTimeout(
             connectWebSocket,
             delay
         );
+
 }
 
 
@@ -1160,7 +1390,9 @@ function scheduleReconnect() {
    WEBSOCKET MESSAGE HANDLER
 ============================================================ */
 
-function handleWebSocketMessage(message) {
+function handleWebSocketMessage(
+    message
+) {
 
     console.log(
         "📨 WebSocket:",
@@ -1168,12 +1400,18 @@ function handleWebSocketMessage(message) {
     );
 
 
+    /* ========================================================
+       AUTH SUCCESS
+    ======================================================== */
+
     if (
         message.type ===
         "AUTH_OK"
     ) {
 
-        authenticatedSocket = true;
+        authenticatedSocket =
+            true;
+
 
         connectionStatus.textContent =
             "🟢 Connected";
@@ -1181,9 +1419,15 @@ function handleWebSocketMessage(message) {
         connectionStatus.className =
             "status connected";
 
+
         console.log(
             "🔐 WebSocket authenticated"
         );
+
+
+        /*
+         * Ask for latest state after authentication.
+         */
 
         try {
 
@@ -1202,20 +1446,30 @@ function handleWebSocketMessage(message) {
                 "GET_STATE error:",
                 error
             );
+
         }
 
+
         return;
+
     }
 
+
+    /* ========================================================
+       AUTH FAILURE
+    ======================================================== */
 
     if (
         message.type ===
             "AUTH_ERROR" ||
+
         message.type ===
             "AUTH_FAILED"
     ) {
 
-        authenticatedSocket = false;
+        authenticatedSocket =
+            false;
+
 
         connectionStatus.textContent =
             "🔴 Authentication Failed";
@@ -1223,9 +1477,11 @@ function handleWebSocketMessage(message) {
         connectionStatus.className =
             "status disconnected";
 
+
         showToast(
             "🔐 Session expired. Please log in again."
         );
+
 
         setTimeout(
             () => {
@@ -1239,9 +1495,15 @@ function handleWebSocketMessage(message) {
             1200
         );
 
+
         return;
+
     }
 
+
+    /* ========================================================
+       STATE
+    ======================================================== */
 
     if (
         message.type ===
@@ -1249,7 +1511,13 @@ function handleWebSocketMessage(message) {
     ) {
 
         activeDares = {};
+
         queues = {};
+
+
+        /*
+         * ACTIVE DARES
+         */
 
         const incomingActive =
             message.active ??
@@ -1257,6 +1525,7 @@ function handleWebSocketMessage(message) {
             message.data?.active ??
             message.data?.activeDares ??
             {};
+
 
         if (
             Array.isArray(
@@ -1272,18 +1541,23 @@ function handleWebSocketMessage(message) {
                             dare
                         );
 
+
                     if (
                         streamerId ===
                         null
                     ) {
+
                         return;
+
                     }
+
 
                     activeDares[
                         streamerKey(
                             streamerId
                         )
                     ] = dare;
+
                 }
             );
 
@@ -1304,21 +1578,29 @@ function handleWebSocketMessage(message) {
                         return;
                     }
 
+
                     const streamerId =
                         getDareStreamerId(
                             dare
                         ) ??
                         key;
 
+
                     activeDares[
                         streamerKey(
                             streamerId
                         )
                     ] = dare;
+
                 }
             );
+
         }
 
+
+        /*
+         * QUEUES
+         */
 
         const incomingQueues =
             message.queues ??
@@ -1327,6 +1609,10 @@ function handleWebSocketMessage(message) {
             message.data?.queue ??
             {};
 
+
+        /*
+         * FLAT ARRAY
+         */
 
         if (
             Array.isArray(
@@ -1342,31 +1628,46 @@ function handleWebSocketMessage(message) {
                             dare
                         );
 
+
                     if (
                         streamerId ===
                         null
                     ) {
+
                         return;
+
                     }
+
 
                     const key =
                         streamerKey(
                             streamerId
                         );
 
+
                     if (
                         !queues[key]
                     ) {
-                        queues[key] = [];
+
+                        queues[key] =
+                            [];
+
                     }
+
 
                     queues[key].push(
                         dare
                     );
+
                 }
             );
 
         }
+
+
+        /*
+         * OBJECT
+         */
 
         else if (
             incomingQueues &&
@@ -1384,8 +1685,11 @@ function handleWebSocketMessage(message) {
                             queue
                         )
                     ) {
+
                         return;
+
                     }
+
 
                     queues[
                         streamerKey(
@@ -1394,8 +1698,10 @@ function handleWebSocketMessage(message) {
                     ] = [
                         ...queue
                     ];
+
                 }
             );
+
         }
 
 
@@ -1407,17 +1713,26 @@ function handleWebSocketMessage(message) {
                 sortQueue(
                     queues[key]
                 );
+
             }
         );
 
 
         syncSelectedStreamer();
+
         renderCurrentDare();
+
         renderQueue();
 
+
         return;
+
     }
 
+
+    /* ========================================================
+       DARE CREATED
+    ======================================================== */
 
     if (
         message.type ===
@@ -1427,21 +1742,32 @@ function handleWebSocketMessage(message) {
         const dare =
             message.dare;
 
+
         if (!dare) {
             return;
         }
+
 
         updateLocalDare(
             dare
         );
 
+
         syncSelectedStreamer();
+
         renderCurrentDare();
+
         renderQueue();
 
+
         return;
+
     }
 
+
+    /* ========================================================
+       ACTIVE DARE
+    ======================================================== */
 
     if (
         message.type ===
@@ -1451,21 +1777,27 @@ function handleWebSocketMessage(message) {
         const dare =
             message.dare;
 
+
         if (!dare) {
             return;
         }
+
 
         const streamerId =
             getDareStreamerId(
                 dare
             );
 
+
         if (
             streamerId ===
             null
         ) {
+
             return;
+
         }
+
 
         activeDares[
             streamerKey(
@@ -1473,15 +1805,20 @@ function handleWebSocketMessage(message) {
             )
         ] = dare;
 
+
         removeFromQueue(
             getDareId(
                 dare
             )
         );
 
+
         syncSelectedStreamer();
+
         renderCurrentDare();
+
         renderQueue();
+
 
         if (
             streamerKey(
@@ -1495,11 +1832,18 @@ function handleWebSocketMessage(message) {
             showToast(
                 "🔥 Dare is now LIVE!"
             );
+
         }
 
+
         return;
+
     }
 
+
+    /* ========================================================
+       QUEUE UPDATED
+    ======================================================== */
 
     if (
         message.type ===
@@ -1512,17 +1856,22 @@ function handleWebSocketMessage(message) {
             message.streamer ??
             null;
 
+
         if (
             streamerId ===
             null
         ) {
+
             return;
+
         }
+
 
         const key =
             streamerKey(
                 streamerId
             );
+
 
         queues[key] =
             Array.isArray(
@@ -1533,15 +1882,23 @@ function handleWebSocketMessage(message) {
                 ]
                 : [];
 
+
         sortQueue(
             queues[key]
         );
 
+
         renderQueue();
 
+
         return;
+
     }
 
+
+    /* ========================================================
+       DARE COMPLETED
+    ======================================================== */
 
     if (
         message.type ===
@@ -1555,15 +1912,23 @@ function handleWebSocketMessage(message) {
             removeActiveDare(
                 message.dare
             );
+
         }
+
 
         showToast(
             "✅ Dare completed!"
         );
 
+
         return;
+
     }
 
+
+    /* ========================================================
+       DARE FAILED
+    ======================================================== */
 
     if (
         message.type ===
@@ -1577,15 +1942,23 @@ function handleWebSocketMessage(message) {
             removeActiveDare(
                 message.dare
             );
+
         }
+
 
         showToast(
             "❌ Dare failed."
         );
 
+
         return;
+
     }
 
+
+    /* ========================================================
+       ACTIVE DARE CLEARED
+    ======================================================== */
 
     if (
         message.type ===
@@ -1597,9 +1970,12 @@ function handleWebSocketMessage(message) {
             message.streamer_id ??
             message.streamer;
 
+
         if (
-            streamerId !== null &&
-            streamerId !== undefined
+            streamerId !==
+            null &&
+            streamerId !==
+            undefined
         ) {
 
             delete activeDares[
@@ -1607,15 +1983,25 @@ function handleWebSocketMessage(message) {
                     streamerId
                 )
             ];
+
         }
 
+
         syncSelectedStreamer();
+
         renderCurrentDare();
+
         renderQueue();
 
+
         return;
+
     }
 
+
+    /* ========================================================
+       DARE REJECTED
+    ======================================================== */
 
     if (
         message.type ===
@@ -1631,18 +2017,28 @@ function handleWebSocketMessage(message) {
                     message.dare
                 )
             );
+
         }
 
+
         syncSelectedStreamer();
+
         renderQueue();
+
 
         showToast(
             "❌ Dare rejected."
         );
 
+
         return;
+
     }
 
+
+    /* ========================================================
+       RESET
+    ======================================================== */
 
     if (
         message.type ===
@@ -1650,15 +2046,22 @@ function handleWebSocketMessage(message) {
     ) {
 
         activeDares = {};
+
         queues = {};
+
         currentDare = null;
+
 
         stopTimer();
 
+
         renderCurrentDare();
+
         renderQueue();
 
+
         return;
+
     }
 
 
@@ -1666,6 +2069,7 @@ function handleWebSocketMessage(message) {
         "⚠️ Unknown WebSocket message:",
         message.type
     );
+
 }
 
 
@@ -1673,34 +2077,46 @@ function handleWebSocketMessage(message) {
    UPDATE LOCAL DARE
 ============================================================ */
 
-function updateLocalDare(dare) {
+function updateLocalDare(
+    dare
+) {
 
     if (!dare) {
         return;
     }
+
 
     const streamerId =
         getDareStreamerId(
             dare
         );
 
+
     if (
         streamerId ===
         null
     ) {
+
         return;
+
     }
+
 
     const key =
         streamerKey(
             streamerId
         );
 
+
     const status =
         String(
             dare.status || ""
         ).toLowerCase();
 
+
+    /*
+     * ACCEPTED
+     */
 
     if (
         status ===
@@ -1710,15 +2126,22 @@ function updateLocalDare(dare) {
         activeDares[key] =
             dare;
 
+
         removeFromQueue(
             getDareId(
                 dare
             )
         );
 
+
         return;
+
     }
 
+
+    /*
+     * PENDING
+     */
 
     if (
         status ===
@@ -1728,13 +2151,18 @@ function updateLocalDare(dare) {
         if (
             !queues[key]
         ) {
-            queues[key] = [];
+
+            queues[key] =
+                [];
+
         }
+
 
         const id =
             getDareId(
                 dare
             );
+
 
         const exists =
             queues[key].some(
@@ -1745,17 +2173,22 @@ function updateLocalDare(dare) {
                     id
             );
 
+
         if (!exists) {
 
             queues[key].push(
                 dare
             );
+
         }
+
 
         sortQueue(
             queues[key]
         );
+
     }
+
 }
 
 
@@ -1772,12 +2205,15 @@ async function loadMyStreamer() {
                 "/api/my-streamers"
             );
 
+
         console.log(
             "📡 My streamers response:",
             result
         );
 
+
         let streamers = [];
+
 
         if (
             Array.isArray(
@@ -1809,47 +2245,68 @@ async function loadMyStreamer() {
 
             streamers =
                 result.data;
+
         }
 
+
+        /*
+         * Every Nerve account should have
+         * one streamer profile.
+         */
 
         if (
             !streamers.length
         ) {
 
-            myStreamer = null;
-            selectedStreamerId = null;
+            myStreamer =
+                null;
+
+            selectedStreamerId =
+                null;
 
             renderStreamerProfile();
+
             renderCurrentDare();
+
             renderQueue();
+
 
             showToast(
                 "⚠️ No streamer profile found."
             );
 
+
             return;
+
         }
 
 
         myStreamer =
             streamers[0];
 
+
         selectedStreamerId =
             myStreamer.id;
+
 
         console.log(
             "🎥 My streamer:",
             myStreamer
         );
 
+
         console.log(
             "🆔 Streamer ID:",
             selectedStreamerId
         );
 
+
         renderStreamerProfile();
+
         syncSelectedStreamer();
+
         renderCurrentDare();
+
         renderQueue();
 
     }
@@ -1860,6 +2317,7 @@ async function loadMyStreamer() {
             "❌ Failed to load streamer:",
             error
         );
+
 
         if (
             error.status ===
@@ -1872,12 +2330,16 @@ async function loadMyStreamer() {
                 "login.html";
 
             return;
+
         }
+
 
         showToast(
             "❌ Could not load your streamer profile."
         );
+
     }
+
 }
 
 
@@ -1888,38 +2350,49 @@ async function loadMyStreamer() {
 function syncSelectedStreamer() {
 
     if (
-        selectedStreamerId === null ||
-        selectedStreamerId === undefined
+        selectedStreamerId ===
+        null ||
+        selectedStreamerId ===
+        undefined
     ) {
 
-        currentDare = null;
+        currentDare =
+            null;
 
         return;
+
     }
+
 
     const key =
         streamerKey(
             selectedStreamerId
         );
 
+
     currentDare =
         activeDares[key] ||
         null;
+
 
     console.log(
         "🔄 Streamer ID:",
         selectedStreamerId
     );
 
+
     console.log(
         "🔥 Active dare:",
         currentDare
     );
 
+
     console.log(
         "⏳ Queue:",
-        queues[key] || []
+        queues[key] ||
+        []
     );
+
 }
 
 
@@ -1927,21 +2400,26 @@ function syncSelectedStreamer() {
    REMOVE ACTIVE DARE
 ============================================================ */
 
-function removeActiveDare(dare) {
+function removeActiveDare(
+    dare
+) {
 
     if (!dare) {
         return;
     }
+
 
     const streamerId =
         getDareStreamerId(
             dare
         );
 
+
     const id =
         getDareId(
             dare
         );
+
 
     if (
         streamerId !==
@@ -1953,6 +2431,7 @@ function removeActiveDare(dare) {
                 streamerId
             );
 
+
         if (
             activeDares[key] &&
             getDareId(
@@ -1961,7 +2440,9 @@ function removeActiveDare(dare) {
         ) {
 
             delete activeDares[key];
+
         }
+
     }
 
 
@@ -1972,14 +2453,21 @@ function removeActiveDare(dare) {
         ) === id
     ) {
 
-        currentDare = null;
+        currentDare =
+            null;
+
 
         stopTimer();
+
     }
 
+
     syncSelectedStreamer();
+
     renderCurrentDare();
+
     renderQueue();
+
 }
 
 
@@ -1991,78 +2479,110 @@ function renderCurrentDare() {
 
     stopTimer();
 
+
     if (
         !currentDare
     ) {
 
         currentDareElement.innerHTML = `
+
             <div class="empty">
+
                 No active dare
+
             </div>
+
         `;
 
+
         return;
+
     }
+
 
     const dare =
         currentDare;
+
 
     const id =
         getDareId(
             dare
         );
 
+
     currentDareElement.innerHTML = `
 
         <div class="live-label">
+
             🔴 LIVE
+
         </div>
 
+
         <div class="meta">
+
             Viewer:
+
             <strong>
                 ${escapeHtml(
                     dare.viewer ||
                     "Anonymous"
                 )}
             </strong>
+
         </div>
 
+
         <div class="dare-text">
+
             ${escapeHtml(
                 dareText(
                     dare
                 )
             )}
+
         </div>
 
+
         <div class="meta">
+
             Reward:
+
             $${formatReward(
                 dare.reward
             )}
+
         </div>
 
+
         <div class="meta">
+
             Duration:
+
             ${Number(
                 dare.duration ||
                 0
             )}
+
             seconds
+
         </div>
+
 
         <div
             id="timer"
             class="timer"
         >
+
             ${formatTime(
                 Number(
                     dare.duration ||
                     0
                 )
             )}
+
         </div>
+
 
         <div class="buttons">
 
@@ -2075,8 +2595,11 @@ function renderCurrentDare() {
                     )
                 "
             >
+
                 ✅ COMPLETED
+
             </button>
+
 
             <button
                 class="fail"
@@ -2087,15 +2610,20 @@ function renderCurrentDare() {
                     )
                 "
             >
+
                 ❌ FAILED
+
             </button>
 
         </div>
+
     `;
+
 
     startTimer(
         dare
     );
+
 }
 
 
@@ -2103,9 +2631,12 @@ function renderCurrentDare() {
    TIMER
 ============================================================ */
 
-function startTimer(dare) {
+function startTimer(
+    dare
+) {
 
     stopTimer();
+
 
     let remaining =
         Number(
@@ -2113,14 +2644,17 @@ function startTimer(dare) {
             0
         );
 
+
     const timerElement =
         document.getElementById(
             "timer"
         );
 
+
     if (!timerElement) {
         return;
     }
+
 
     timerInterval =
         setInterval(
@@ -2128,17 +2662,22 @@ function startTimer(dare) {
 
                 remaining--;
 
+
                 if (
                     remaining <= 0
                 ) {
 
                     stopTimer();
 
+
                     timerElement.textContent =
                         "TIME!";
 
+
                     return;
+
                 }
+
 
                 timerElement.textContent =
                     formatTime(
@@ -2148,6 +2687,7 @@ function startTimer(dare) {
             },
             1000
         );
+
 }
 
 
@@ -2161,13 +2701,18 @@ function stopTimer() {
             timerInterval
         );
 
+
         timerInterval =
             null;
+
     }
+
 }
 
 
-function formatTime(seconds) {
+function formatTime(
+    seconds
+) {
 
     seconds =
         Math.max(
@@ -2177,33 +2722,43 @@ function formatTime(seconds) {
             ) || 0
         );
 
+
     const minutes =
         Math.floor(
             seconds / 60
         );
+
 
     const secs =
         Math.floor(
             seconds % 60
         );
 
+
     return (
+
         String(
             minutes
         ).padStart(
             2,
             "0"
         )
+
         +
+
         ":"
+
         +
+
         String(
             secs
         ).padStart(
             2,
             "0"
         )
+
     );
+
 }
 
 
@@ -2218,29 +2773,40 @@ function renderQueue() {
             selectedStreamerId
         );
 
+
     const queue =
         queues[key] ||
         [];
+
 
     if (
         !queue.length
     ) {
 
         queueElement.innerHTML = `
+
             <div class="empty">
+
                 No waiting dares
+
             </div>
+
         `;
 
+
         return;
+
     }
+
 
     sortQueue(
         queue
     );
 
+
     queueElement.innerHTML =
         "";
+
 
     queue.forEach(
         (dare, index) => {
@@ -2250,27 +2816,36 @@ function renderQueue() {
                     "div"
                 );
 
+
             item.className =
                 "queue-item";
+
 
             const id =
                 getDareId(
                     dare
                 );
 
+
             item.innerHTML = `
 
                 <div class="pending-label">
+
                     🟡 PENDING
+
                 </div>
+
 
                 <div class="queue-dare">
 
                     <span
                         class="queue-number"
                     >
+
                         #${index + 1}
+
                     </span>
+
 
                     ${escapeHtml(
                         dareText(
@@ -2279,6 +2854,7 @@ function renderQueue() {
                     )}
 
                 </div>
+
 
                 <div class="meta">
 
@@ -2290,6 +2866,7 @@ function renderQueue() {
                     )}
 
                 </div>
+
 
                 <div class="meta">
 
@@ -2310,6 +2887,7 @@ function renderQueue() {
 
                 </div>
 
+
                 <div class="queue-buttons">
 
                     <button
@@ -2320,8 +2898,11 @@ function renderQueue() {
                             )
                         "
                     >
+
                         ✅ ACCEPT
+
                     </button>
+
 
                     <button
                         class="reject"
@@ -2331,18 +2912,23 @@ function renderQueue() {
                             )
                         "
                     >
+
                         ❌ REJECT
+
                     </button>
 
                 </div>
 
             `;
 
+
             queueElement.appendChild(
                 item
             );
+
         }
     );
+
 }
 
 
@@ -2350,17 +2936,23 @@ function renderQueue() {
    REMOVE FROM QUEUE
 ============================================================ */
 
-function removeFromQueue(id) {
+function removeFromQueue(
+    id
+) {
 
     if (
         id === null ||
         id === undefined
     ) {
+
         return;
+
     }
+
 
     const targetId =
         Number(id);
+
 
     Object.keys(
         queues
@@ -2378,8 +2970,10 @@ function removeFromQueue(id) {
                         ) !==
                         targetId
                 );
+
         }
     );
+
 }
 
 
@@ -2387,12 +2981,15 @@ function removeFromQueue(id) {
    ACCEPT DARE
 ============================================================ */
 
-async function acceptDare(id) {
+async function acceptDare(
+    id
+) {
 
     const dare =
         findDareInQueue(
             id
         );
+
 
     if (!dare) {
 
@@ -2400,8 +2997,11 @@ async function acceptDare(id) {
             "❌ Dare is no longer pending."
         );
 
+
         return;
+
     }
+
 
     if (
         currentDare
@@ -2411,13 +3011,17 @@ async function acceptDare(id) {
             "⚠️ Finish the active dare first."
         );
 
+
         return;
+
     }
+
 
     await setDareStatus(
         id,
         "accepted"
     );
+
 }
 
 
@@ -2425,12 +3029,15 @@ async function acceptDare(id) {
    REJECT DARE
 ============================================================ */
 
-async function rejectDare(id) {
+async function rejectDare(
+    id
+) {
 
     await setDareStatus(
         id,
         "rejected"
     );
+
 }
 
 
@@ -2450,6 +3057,7 @@ async function setDareStatus(
         "failed"
     ];
 
+
     if (
         !validStatuses.includes(
             status
@@ -2460,20 +3068,28 @@ async function setDareStatus(
             "❌ Invalid dare status."
         );
 
+
         return;
+
     }
 
+
     if (
-        selectedStreamerId === null ||
-        selectedStreamerId === undefined
+        selectedStreamerId ===
+        null ||
+        selectedStreamerId ===
+        undefined
     ) {
 
         showToast(
             "❌ No streamer profile loaded."
         );
 
+
         return;
+
     }
+
 
     try {
 
@@ -2483,19 +3099,25 @@ async function setDareStatus(
                     id
                 )}/status`,
                 {
+
                     method:
                         "POST",
 
                     body: {
+
                         status:
                             status
+
                     }
+
                 }
             );
+
 
         if (!result) {
             return;
         }
+
 
         console.log(
             "📡 Status response:",
@@ -2520,7 +3142,7 @@ async function setDareStatus(
         ) {
 
             showToast(
-                "❌ Dare rejected!"
+                "❌ Dare rejected."
             );
 
         }
@@ -2541,6 +3163,7 @@ async function setDareStatus(
             showToast(
                 "❌ Dare marked as failed."
             );
+
         }
 
     }
@@ -2562,7 +3185,9 @@ async function setDareStatus(
                 "🔐 Please log in again."
             );
 
+
             clearAuthCache();
+
 
             setTimeout(
                 () => {
@@ -2574,7 +3199,9 @@ async function setDareStatus(
                 800
             );
 
+
             return;
+
         }
 
 
@@ -2587,7 +3214,9 @@ async function setDareStatus(
                 "❌ You do not control this streamer."
             );
 
+
             return;
+
         }
 
 
@@ -2600,7 +3229,9 @@ async function setDareStatus(
                 "❌ Dare not found."
             );
 
+
             return;
+
         }
 
 
@@ -2613,7 +3244,9 @@ async function setDareStatus(
                 "⚠️ That dare can no longer be changed."
             );
 
+
             return;
+
         }
 
 
@@ -2624,7 +3257,9 @@ async function setDareStatus(
                 "Failed to update dare."
             )
         );
+
     }
+
 }
 
 
@@ -2639,9 +3274,11 @@ async function initialize() {
         const user =
             await requireLogin();
 
+
         if (!user) {
             return;
         }
+
 
         console.log(
             "👤 Nerve account:",
@@ -2649,15 +3286,27 @@ async function initialize() {
         );
 
 
+        /*
+         * Load the streamer profile belonging
+         * to this Nerve account.
+         */
+
         await loadMyStreamer();
 
 
         if (
             !myStreamer
         ) {
+
             return;
+
         }
 
+
+        /*
+         * Now connect and authenticate
+         * the WebSocket.
+         */
 
         connectWebSocket();
 
@@ -2670,10 +3319,13 @@ async function initialize() {
             error
         );
 
+
         showToast(
             "❌ Could not initialize controller."
         );
+
     }
+
 }
 
 
@@ -2682,4 +3334,5 @@ initialize();
 </script>
 
 </body>
+
 </html>
