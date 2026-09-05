@@ -25,29 +25,19 @@
     :root {
 
       --bg: #08080c;
-
       --surface: #111116;
-
       --surface-2: #17171e;
-
-      --border:
-        rgba(255,255,255,0.09);
-
+      --border: rgba(255,255,255,0.09);
       --text: #ffffff;
-
       --muted: #9999a6;
-
       --accent: #8b5cf6;
-
       --accent-2: #a78bfa;
 
     }
 
 
     html {
-
       scroll-behavior: smooth;
-
     }
 
 
@@ -73,18 +63,13 @@
 
 
     a {
-
       color: inherit;
-
       text-decoration: none;
-
     }
 
 
     button {
-
       font: inherit;
-
     }
 
 
@@ -121,7 +106,7 @@
 
       margin: auto;
 
-      height: 72px;
+      min-height: 72px;
 
       padding:
         0 24px;
@@ -209,10 +194,7 @@
 
 
     .nav-links a:hover {
-
-      color:
-        white;
-
+      color: white;
     }
 
 
@@ -222,7 +204,7 @@
 
       align-items: center;
 
-      gap: 10px;
+      gap: 8px;
 
     }
 
@@ -258,6 +240,63 @@
 
       background:
         var(--surface-2);
+
+    }
+
+
+    /* =========================
+       LOGOUT BUTTON
+    ========================= */
+
+    .logout-btn {
+
+      display: inline-flex;
+
+      align-items: center;
+
+      justify-content: center;
+
+      padding:
+        10px 16px;
+
+      border:
+        1px solid
+        rgba(239,68,68,0.25);
+
+      border-radius:
+        10px;
+
+      background:
+        rgba(239,68,68,0.08);
+
+      color:
+        #fca5a5;
+
+      font-size:
+        14px;
+
+      font-weight:
+        700;
+
+      cursor:
+        pointer;
+
+      transition:
+        0.2s;
+
+    }
+
+
+    .logout-btn:hover {
+
+      background:
+        rgba(239,68,68,0.16);
+
+      border-color:
+        rgba(239,68,68,0.4);
+
+      color:
+        white;
 
     }
 
@@ -630,10 +669,7 @@
 
 
     .live-heading-left {
-
-      max-width:
-        700px;
-
+      max-width: 700px;
     }
 
 
@@ -971,10 +1007,7 @@
 
 
     .live-card.expanded:hover {
-
-      transform:
-        none;
-
+      transform: none;
     }
 
 
@@ -1256,10 +1289,7 @@
 
 
     .expanded .dare-description {
-
-      -webkit-line-clamp:
-        unset;
-
+      -webkit-line-clamp: unset;
     }
 
 
@@ -1338,10 +1368,7 @@
 
 
     .expanded .expand-hint {
-
-      color:
-        #a78bfa;
-
+      color: #a78bfa;
     }
 
 
@@ -1754,18 +1781,12 @@
 
 
     .faq-item.open .faq-answer {
-
-      display:
-        block;
-
+      display: block;
     }
 
 
     .faq-item.open .plus {
-
-      transform:
-        rotate(45deg);
-
+      transform: rotate(45deg);
     }
 
 
@@ -1876,10 +1897,7 @@
 
 
     .footer-column a:hover {
-
-      color:
-        white;
-
+      color: white;
     }
 
 
@@ -1941,11 +1959,27 @@
 
     @media (max-width: 800px) {
 
-      .nav-links,
-      .nav-actions {
+      .nav-links {
 
         display:
           none;
+
+      }
+
+
+      .nav-actions {
+
+        display:
+          flex;
+
+      }
+
+
+      .nav-actions .login-btn,
+      .nav-actions .logout-btn {
+
+        display:
+          inline-flex;
 
       }
 
@@ -1961,6 +1995,9 @@
       .nav-inner {
 
         height:
+          64px;
+
+        min-height:
           64px;
 
       }
@@ -2012,6 +2049,64 @@
 
 
     @media (max-width: 600px) {
+
+      .nav-inner {
+
+        padding:
+          0 14px;
+
+      }
+
+
+      .logo {
+
+        font-size:
+          18px;
+
+      }
+
+
+      .logo-icon {
+
+        width:
+          34px;
+
+        height:
+          34px;
+
+      }
+
+
+      .nav-actions {
+
+        gap:
+          5px;
+
+      }
+
+
+      .login-btn,
+      .logout-btn {
+
+        padding:
+          8px 10px;
+
+        font-size:
+          12px;
+
+      }
+
+
+      .menu-btn {
+
+        width:
+          38px;
+
+        height:
+          38px;
+
+      }
+
 
       .hero {
 
@@ -2174,10 +2269,18 @@
         class="login-btn"
         id="authNavButton"
       >
-
         Login
-
       </a>
+
+
+      <button
+        type="button"
+        class="logout-btn"
+        id="logoutBtn"
+        style="display: none;"
+      >
+        Logout
+      </button>
 
     </div>
 
@@ -2329,26 +2432,18 @@
   </div>
 
 
-  <!-- =========================
-       EMPTY STATE
-  ========================= -->
-
   <div
     class="live-empty"
     id="liveEmpty"
   >
 
     <div class="live-empty-icon">
-
       📺
-
     </div>
 
 
     <h3>
-
       No Live Dares Right Now
-
     </h3>
 
 
@@ -2361,10 +2456,6 @@
 
   </div>
 
-
-  <!-- =========================
-       LIVE GRID
-  ========================= -->
 
   <div
     class="live-grid"
@@ -2389,16 +2480,12 @@
 
 
     <div class="eyebrow">
-
       How it works
-
     </div>
 
 
     <h2>
-
       From dare to stream in seconds.
-
     </h2>
 
 
@@ -2522,8 +2609,10 @@
 
 
     <p>
+
       Streamers stay in control while viewers
       get a more interactive experience.
+
     </p>
 
 
@@ -2978,10 +3067,6 @@
 
 <!-- =========================================================
      NERVE AUTHENTICATION
-     
-     IMPORTANT:
-     auth.js must be in the same GitHub Pages folder
-     as index.html.
 ========================================================= -->
 
 <script src="auth.js?v=1004"></script>
@@ -3007,6 +3092,12 @@ async function updateAuthNavigation() {
     );
 
 
+  const logoutButton =
+    document.getElementById(
+      "logoutBtn"
+    );
+
+
   if (!authButton) {
 
     return;
@@ -3015,13 +3106,6 @@ async function updateAuthNavigation() {
 
 
   try {
-
-    /*
-    Ask the backend for the current
-    authenticated Nerve account.
-
-    auth.js handles the saved token.
-    */
 
     const user =
       await getCurrentUserAsync();
@@ -3037,7 +3121,7 @@ async function updateAuthNavigation() {
 
 
       /*
-      Navbar
+      Logged-in navbar
       */
 
       authButton.textContent =
@@ -3054,6 +3138,18 @@ async function updateAuthNavigation() {
 
       authButton.title =
         "Open your Nerve dashboard";
+
+
+      /*
+      Show logout button
+      */
+
+      if (logoutButton) {
+
+        logoutButton.style.display =
+          "inline-flex";
+
+      }
 
 
       /*
@@ -3077,7 +3173,7 @@ async function updateAuthNavigation() {
 
 
     /*
-    Not logged in.
+    Not logged in
     */
 
     authButton.textContent =
@@ -3094,6 +3190,14 @@ async function updateAuthNavigation() {
 
     authButton.title =
       "Log in to Nerve";
+
+
+    if (logoutButton) {
+
+      logoutButton.style.display =
+        "none";
+
+    }
 
 
     if (dashboardButton) {
@@ -3117,13 +3221,8 @@ async function updateAuthNavigation() {
 
 
     /*
-    IMPORTANT:
-
-    Do NOT clear localStorage here.
-
-    If Render is sleeping or temporarily
-    unavailable, the user should still
-    appear logged in locally.
+    Do NOT clear the token if
+    Render is temporarily unavailable.
     */
 
     try {
@@ -3157,10 +3256,29 @@ async function updateAuthNavigation() {
           "Open your Nerve dashboard";
 
 
+        if (logoutButton) {
+
+          logoutButton.style.display =
+            "inline-flex";
+
+        }
+
+
         if (dashboardButton) {
 
           dashboardButton.href =
             "controller.html";
+
+        }
+
+      }
+
+      else {
+
+        if (logoutButton) {
+
+          logoutButton.style.display =
+            "none";
 
         }
 
@@ -3182,37 +3300,99 @@ async function updateAuthNavigation() {
 }
 
 
-/*
-Run immediately.
-*/
+/* =========================================
+   LOGOUT
+========================================= */
+
+const logoutButton =
+  document.getElementById(
+    "logoutBtn"
+  );
+
+
+if (logoutButton) {
+
+  logoutButton.addEventListener(
+    "click",
+    async function() {
+
+      const confirmed =
+        confirm(
+          "Are you sure you want to log out?"
+        );
+
+
+      if (!confirmed) {
+
+        return;
+
+      }
+
+
+      logoutButton.disabled =
+        true;
+
+
+      logoutButton.textContent =
+        "Logging out...";
+
+
+      try {
+
+        /*
+        Call the backend logout
+        through auth.js.
+        */
+
+        await logout();
+
+      }
+
+      catch (error) {
+
+        console.warn(
+          "Logout request failed:",
+          error
+        );
+
+      }
+
+
+      /*
+      Always remove the local
+      authentication token.
+      */
+
+      localStorage.removeItem(
+        "token"
+      );
+
+
+      /*
+      Return to the homepage.
+      */
+
+      window.location.href =
+        "index.html";
+
+    }
+  );
+
+}
+
+
+/* =========================================
+   RUN AUTH CHECK
+========================================= */
 
 updateAuthNavigation();
 
-
-/*
-Run again whenever the page
-becomes visible.
-
-This is useful when:
-
-1. User logs in.
-2. Goes to controller.html.
-3. Presses Back.
-4. Returns to index.html.
-
-The navbar refreshes.
-*/
 
 window.addEventListener(
   "pageshow",
   updateAuthNavigation
 );
 
-
-/*
-Also refresh when the browser
-window receives focus.
-*/
 
 window.addEventListener(
   "focus",
@@ -3223,7 +3403,6 @@ window.addEventListener(
 
 
 <script>
-
 
 /* =========================================
    BACKEND
@@ -3268,10 +3447,6 @@ const liveCount =
 
 /* =========================================
    ACTIVE DARES
-=========================================
-
-   Stored by dare ID.
-
 ========================================= */
 
 const activeDares =
@@ -3337,19 +3512,6 @@ function connectWebSocket() {
         "Connected to Dare WebSocket."
       );
 
-
-      /*
-      Ask the backend for
-      the latest active state.
-
-      If your backend supports
-      GET_STATE, this request
-      will be handled.
-
-      The normal STATE message
-      is also sent automatically
-      when the socket connects.
-      */
 
       try {
 
@@ -3476,9 +3638,7 @@ function handleWebSocketMessage(rawData) {
 
 
   if (!message) {
-
     return;
-
   }
 
 
@@ -3487,10 +3647,6 @@ function handleWebSocketMessage(rawData) {
     message
   );
 
-
-  /* =========================
-     CURRENT STATE
-  ========================= */
 
   if (
     message.type === "STATE"
@@ -3518,10 +3674,6 @@ function handleWebSocketMessage(rawData) {
   }
 
 
-  /* =========================
-     ACTIVE DARE
-  ========================= */
-
   if (
     message.type === "ACTIVE_DARE"
   ) {
@@ -3544,10 +3696,6 @@ function handleWebSocketMessage(rawData) {
   }
 
 
-  /* =========================
-     STATUS
-  ========================= */
-
   if (
     message.type === "DARE_STATUS"
   ) {
@@ -3568,10 +3716,6 @@ function handleWebSocketMessage(rawData) {
 
   }
 
-
-  /* =========================
-     FINISHED EVENTS
-  ========================= */
 
   if (
     message.type === "DARE_COMPLETED"
@@ -3629,12 +3773,6 @@ function handleWebSocketMessage(rawData) {
     message.type === "DARE_CLEARED"
   ) {
 
-    /*
-    If the backend does not
-    provide the ID, rebuild
-    from its active state.
-    */
-
     if (
       message.dare &&
       message.dare.id
@@ -3646,26 +3784,15 @@ function handleWebSocketMessage(rawData) {
 
     }
 
-    else {
+    else if (
+      Array.isArray(
+        message.activeDares
+      )
+    ) {
 
-      /*
-      Don't wipe every stream
-      unless the backend explicitly
-      tells us there are no active
-      dares.
-      */
-
-      if (
-        Array.isArray(
-          message.activeDares
-        )
-      ) {
-
-        replaceActiveDares(
-          message.activeDares
-        );
-
-      }
+      replaceActiveDares(
+        message.activeDares
+      );
 
     }
 
@@ -3673,10 +3800,6 @@ function handleWebSocketMessage(rawData) {
 
   }
 
-
-  /* =========================
-     RESET
-  ========================= */
 
   if (
     message.type === "RESET"
@@ -3694,22 +3817,9 @@ function handleWebSocketMessage(rawData) {
   }
 
 
-  /* =========================
-     QUEUE UPDATE
-  ========================= */
-
   if (
     message.type === "QUEUE_UPDATED"
   ) {
-
-    /*
-    Queue updates do not
-    automatically create a
-    live dare.
-
-    Only ACTIVE_DARE or an
-    accepted status does that.
-    */
 
     return;
 
@@ -3726,11 +3836,6 @@ function handleStateMessage(
   message
 ) {
 
-  /*
-  New multi-streamer backend:
-  activeDares: [...]
-  */
-
   if (
     Array.isArray(
       message.activeDares
@@ -3745,11 +3850,6 @@ function handleStateMessage(
 
   }
 
-
-  /*
-  Some backend versions may
-  return currentDare.
-  */
 
   if (
     message.currentDare
@@ -3775,10 +3875,6 @@ function handleStateMessage(
 
   }
 
-
-  /*
-  No active dares.
-  */
 
   activeDares.clear();
 
@@ -3943,11 +4039,6 @@ function handleStatusUpdate(
 
   }
 
-
-  /*
-  Completed, failed,
-  rejected, expired etc.
-  */
 
   if (
     isFinishedStatus(
@@ -4247,14 +4338,6 @@ function createLiveCard(
     "live-card";
 
 
-  /*
-  Store the dare ID on the
-  actual card element.
-
-  This allows the existing
-  scroll-to-card logic to find it.
-  */
-
   card.dataset.dareId =
     String(dare.id);
 
@@ -4350,6 +4433,7 @@ function createLiveCard(
         <div class="meta-item">
 
           💰
+
           <strong>
             ${reward}
           </strong>
@@ -4360,6 +4444,7 @@ function createLiveCard(
         <div class="meta-item">
 
           ⏱
+
           <strong
             class="timer-value"
             data-timer-id="${escapeHtml(dare.id)}"
@@ -4380,7 +4465,6 @@ function createLiveCard(
           String(selectedDareId) === String(dare.id)
             ? "Click the card again to close"
             : "Click to watch stream"
-
         }
 
       </div>
@@ -4401,12 +4485,6 @@ function createLiveCard(
     }
   );
 
-
-  /*
-  Only create the Twitch
-  iframe after the user
-  opens this card.
-  */
 
   if (
     String(selectedDareId) ===
@@ -4459,11 +4537,6 @@ function toggleLiveCard(
 
   renderLiveDares();
 
-
-  /*
-  Scroll the selected
-  stream into view.
-  */
 
   if (
     selectedDareId === id
@@ -4532,10 +4605,6 @@ function loadTwitchPlayer(
   }
 
 
-  /*
-  Remove placeholder.
-  */
-
   wrapper.innerHTML = `
 
     <div class="stream-live-badge">
@@ -4558,15 +4627,6 @@ function loadTwitchPlayer(
   iframe.className =
     "twitch-frame";
 
-
-  /*
-  Official Twitch player.
-
-  The parent domain is taken
-  from the actual website,
-  so this works with your
-  GitHub Pages domain.
-  */
 
   const parent =
     window.location.hostname;
@@ -4624,15 +4684,6 @@ function calculateRemainingTime(
       dare.duration || 30
     );
 
-
-  /*
-  Prefer acceptedAt.
-
-  If the backend doesn't
-  provide acceptedAt yet,
-  use updatedAt/createdAt
-  through the normalized value.
-  */
 
   const start =
     dare.acceptedAt ||
@@ -4713,16 +4764,6 @@ setInterval(
 
         }
 
-
-        /*
-        If the timer reaches
-        zero, don't immediately
-        remove the card.
-
-        The backend should still
-        send the official expired/
-        completed event.
-        */
 
         if (
           remaining <= 0
@@ -4925,13 +4966,6 @@ menuBtn.addEventListener(
   "click",
   function() {
 
-    /*
-    Simple Phase 1 menu.
-
-    We can replace this with
-    a proper mobile drawer later.
-    */
-
     alert(
       "Mobile navigation will be expanded in the next Phase 1 step."
     );
@@ -4947,14 +4981,9 @@ menuBtn.addEventListener(
 connectWebSocket();
 
 
-/*
-Also perform a normal HTTP
-state check.
-
-This provides another
-recovery path if the WebSocket
-takes a moment to connect.
-*/
+/* =========================================
+   HTTP STATE RECOVERY
+========================================= */
 
 async function recoverState() {
 
@@ -4984,10 +5013,6 @@ async function recoverState() {
       await response.json();
 
 
-    /*
-    Multi-streamer backend.
-    */
-
     if (
       Array.isArray(
         data.activeDares
@@ -5002,11 +5027,6 @@ async function recoverState() {
 
     }
 
-
-    /*
-    Backward-compatible
-    single current dare.
-    */
 
     if (
       data.currentDare &&
@@ -5023,7 +5043,6 @@ async function recoverState() {
 
     }
 
-
   }
 
   catch (error) {
@@ -5039,7 +5058,6 @@ async function recoverState() {
 
 
 recoverState();
-
 
 </script>
 
