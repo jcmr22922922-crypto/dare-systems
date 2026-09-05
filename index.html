@@ -2172,6 +2172,7 @@
       <a
         href="login.html"
         class="login-btn"
+        id="authNavButton"
       >
 
         Login
@@ -2677,6 +2678,7 @@
     <a
       href="login.html"
       class="primary-btn"
+      id="streamerDashboardButton"
     >
 
       🎥 Open Streamer Dashboard
@@ -2972,6 +2974,252 @@
 
 
 </footer>
+
+
+<!-- =========================================================
+     NERVE AUTHENTICATION
+     
+     IMPORTANT:
+     auth.js must be in the same GitHub Pages folder
+     as index.html.
+========================================================= -->
+
+<script src="auth.js?v=1004"></script>
+
+
+<script>
+
+/* =========================================
+   AUTH NAVIGATION
+========================================= */
+
+async function updateAuthNavigation() {
+
+  const authButton =
+    document.getElementById(
+      "authNavButton"
+    );
+
+
+  const dashboardButton =
+    document.getElementById(
+      "streamerDashboardButton"
+    );
+
+
+  if (!authButton) {
+
+    return;
+
+  }
+
+
+  try {
+
+    /*
+    Ask the backend for the current
+    authenticated Nerve account.
+
+    auth.js handles the saved token.
+    */
+
+    const user =
+      await getCurrentUserAsync();
+
+
+    if (user) {
+
+      const username =
+        user.username ||
+        user.displayName ||
+        user.name ||
+        "Account";
+
+
+      /*
+      Navbar
+      */
+
+      authButton.textContent =
+        "👤 " + username;
+
+
+      authButton.href =
+        "controller.html";
+
+
+      authButton.className =
+        "login-btn";
+
+
+      authButton.title =
+        "Open your Nerve dashboard";
+
+
+      /*
+      Streamer CTA
+      */
+
+      if (dashboardButton) {
+
+        dashboardButton.href =
+          "controller.html";
+
+        dashboardButton.textContent =
+          "🎥 Open Streamer Dashboard";
+
+      }
+
+
+      return;
+
+    }
+
+
+    /*
+    Not logged in.
+    */
+
+    authButton.textContent =
+      "Login";
+
+
+    authButton.href =
+      "login.html";
+
+
+    authButton.className =
+      "login-btn";
+
+
+    authButton.title =
+      "Log in to Nerve";
+
+
+    if (dashboardButton) {
+
+      dashboardButton.href =
+        "login.html";
+
+      dashboardButton.textContent =
+        "🎥 Open Streamer Dashboard";
+
+    }
+
+  }
+
+  catch (error) {
+
+    console.warn(
+      "Could not check authentication:",
+      error
+    );
+
+
+    /*
+    IMPORTANT:
+
+    Do NOT clear localStorage here.
+
+    If Render is sleeping or temporarily
+    unavailable, the user should still
+    appear logged in locally.
+    */
+
+    try {
+
+      const cachedUser =
+        getCurrentUser();
+
+
+      if (cachedUser) {
+
+        const username =
+          cachedUser.username ||
+          cachedUser.displayName ||
+          cachedUser.name ||
+          "Account";
+
+
+        authButton.textContent =
+          "👤 " + username;
+
+
+        authButton.href =
+          "controller.html";
+
+
+        authButton.className =
+          "login-btn";
+
+
+        authButton.title =
+          "Open your Nerve dashboard";
+
+
+        if (dashboardButton) {
+
+          dashboardButton.href =
+            "controller.html";
+
+        }
+
+      }
+
+    }
+
+    catch (fallbackError) {
+
+      console.warn(
+        "Could not read cached account:",
+        fallbackError
+      );
+
+    }
+
+  }
+
+}
+
+
+/*
+Run immediately.
+*/
+
+updateAuthNavigation();
+
+
+/*
+Run again whenever the page
+becomes visible.
+
+This is useful when:
+
+1. User logs in.
+2. Goes to controller.html.
+3. Presses Back.
+4. Returns to index.html.
+
+The navbar refreshes.
+*/
+
+window.addEventListener(
+  "pageshow",
+  updateAuthNavigation
+);
+
+
+/*
+Also refresh when the browser
+window receives focus.
+*/
+
+window.addEventListener(
+  "focus",
+  updateAuthNavigation
+);
+
+</script>
 
 
 <script>
@@ -3773,6 +4021,26 @@ function normalizeDare(
       dare.streamer ||
       dare.streamerUsername ||
       dare.twitchUsername ||
+      dare.platformUsername ||
+      "",
+
+    streamerId:
+      dare.streamerId ||
+      dare.streamer_id ||
+      null,
+
+    streamerDisplayName:
+      dare.streamerDisplayName ||
+      dare.displayName ||
+      "",
+
+    platform:
+      dare.platform ||
+      "",
+
+    platformUsername:
+      dare.platformUsername ||
+      dare.twitchUsername ||
       "",
 
     viewer:
@@ -3781,6 +4049,7 @@ function normalizeDare(
 
     text:
       dare.text ||
+      dare.dareText ||
       "Dare",
 
     reward:
@@ -3978,6 +4247,18 @@ function createLiveCard(
     "live-card";
 
 
+  /*
+  Store the dare ID on the
+  actual card element.
+
+  This allows the existing
+  scroll-to-card logic to find it.
+  */
+
+  card.dataset.dareId =
+    String(dare.id);
+
+
   if (
     String(selectedDareId) ===
     String(dare.id)
@@ -3993,6 +4274,8 @@ function createLiveCard(
   const streamer =
     escapeHtml(
       dare.streamer ||
+      dare.platformUsername ||
+      dare.streamerDisplayName ||
       "Unknown Streamer"
     );
 
@@ -4132,7 +4415,8 @@ function createLiveCard(
 
     loadTwitchPlayer(
       card,
-      dare.streamer
+      dare.streamer ||
+      dare.platformUsername
     );
 
   }
@@ -4282,10 +4566,6 @@ function loadTwitchPlayer(
   from the actual website,
   so this works with your
   GitHub Pages domain.
-
-  Example:
-
-  yourname.github.io
   */
 
   const parent =
@@ -4436,7 +4716,8 @@ setInterval(
 
         /*
         If the timer reaches
-        zero, remove the card.
+        zero, don't immediately
+        remove the card.
 
         The backend should still
         send the official expired/
@@ -4446,14 +4727,6 @@ setInterval(
         if (
           remaining <= 0
         ) {
-
-          /*
-          Don't immediately remove
-          if the backend may still
-          report completion.
-
-          We simply display 00:00.
-          */
 
           if (
             timerElement
@@ -4774,4 +5047,3 @@ recoverState();
 </body>
 
 </html>
-
