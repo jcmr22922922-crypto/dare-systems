@@ -1,33 +1,68 @@
-const DARE_API_URL = "https://dare-backend-vx8w.onrender.com";
+/* =========================================================
+   NERVE AUTHENTICATION SYSTEM
+   Single source of truth for:
+   - Login
+   - Register
+   - Logout
+   - Current user
+   - Current streamer
+   - Protected pages
+   - Authenticated API requests
+   - WebSocket authentication
+========================================================= */
+
+const DARE_API_URL =
+    "https://dare-backend-vx8w.onrender.com";
+
+
+/* =========================================================
+   INTERNAL CACHE
+========================================================= */
 
 let currentUserCache = undefined;
 let currentStreamerCache = undefined;
 
 
-// ============================================================
-// API FETCH
-// ============================================================
+/* =========================================================
+   API FETCH
+========================================================= */
 
 async function apiFetch(path, options = {}) {
 
     const config = {
         credentials: "include",
         ...options,
+
         headers: {
             ...(options.headers || {})
         }
     };
 
-    // Use saved session token as Authorization header
-    const token = localStorage.getItem("token");
 
-    if (token && !config.headers.Authorization) {
-        config.headers.Authorization = `Bearer ${token}`;
+    /* -----------------------------------------
+       AUTH TOKEN
+    ----------------------------------------- */
+
+    const token =
+        localStorage.getItem("token");
+
+    if (
+        token &&
+        !config.headers.Authorization
+    ) {
+        config.headers.Authorization =
+            `Bearer ${token}`;
     }
 
-    // Automatically convert objects to JSON
-    if (config.body && typeof config.body !== "string") {
 
+    /* -----------------------------------------
+       JSON BODY
+    ----------------------------------------- */
+
+    if (
+        config.body &&
+        typeof config.body !== "string"
+    ) {
         config.headers["Content-Type"] =
             "application/json";
 
@@ -35,18 +70,35 @@ async function apiFetch(path, options = {}) {
             JSON.stringify(config.body);
     }
 
-    const response = await fetch(
-        DARE_API_URL + path,
-        config
-    );
+
+    /* -----------------------------------------
+       REQUEST
+    ----------------------------------------- */
+
+    const response =
+        await fetch(
+            DARE_API_URL + path,
+            config
+        );
+
+
+    /* -----------------------------------------
+       RESPONSE
+    ----------------------------------------- */
 
     let data = null;
 
     try {
-        data = await response.json();
+        data =
+            await response.json();
     } catch (_) {
         data = null;
     }
+
+
+    /* -----------------------------------------
+       ERROR
+    ----------------------------------------- */
 
     if (!response.ok) {
 
@@ -55,21 +107,29 @@ async function apiFetch(path, options = {}) {
             data?.error ||
             `Request failed (${response.status})`;
 
-        const error = new Error(message);
+        const error =
+            new Error(message);
 
-        error.status = response.status;
-        error.code = data?.error?.code;
+        error.status =
+            response.status;
+
+        error.code =
+            data?.error?.code;
+
+        error.data =
+            data;
 
         throw error;
     }
+
 
     return data;
 }
 
 
-// ============================================================
-// REGISTER
-// ============================================================
+/* =========================================================
+   REGISTER
+========================================================= */
 
 async function register(
     username,
@@ -77,31 +137,48 @@ async function register(
     password
 ) {
 
-    const result = await apiFetch(
-        "/api/auth/register",
-        {
-            method: "POST",
+    const result =
+        await apiFetch(
+            "/api/auth/register",
+            {
+                method: "POST",
 
-            body: {
-                username,
-                email,
-                password
+                body: {
+                    username,
+                    email,
+                    password
+                }
             }
-        }
-    );
+        );
 
-    if (result?.data?.user) {
+
+    /* -----------------------------------------
+       SAVE USER
+    ----------------------------------------- */
+
+    if (
+        result?.data?.user
+    ) {
 
         currentUserCache =
             result.data.user;
 
         localStorage.setItem(
             "user",
-            JSON.stringify(result.data.user)
+            JSON.stringify(
+                result.data.user
+            )
         );
     }
 
-    if (result?.data?.sessionToken) {
+
+    /* -----------------------------------------
+       SAVE TOKEN
+    ----------------------------------------- */
+
+    if (
+        result?.data?.sessionToken
+    ) {
 
         localStorage.setItem(
             "token",
@@ -109,48 +186,73 @@ async function register(
         );
     }
 
-    // New account means streamer profile
-    // may now exist on the backend.
-    currentStreamerCache = undefined;
+
+    /* -----------------------------------------
+       RESET STREAMER CACHE
+    ----------------------------------------- */
+
+    currentStreamerCache =
+        undefined;
+
+    localStorage.removeItem(
+        "streamer"
+    );
+
 
     return result;
 }
 
 
-// ============================================================
-// LOGIN
-// ============================================================
+/* =========================================================
+   LOGIN
+========================================================= */
 
 async function login(
     email,
     password
 ) {
 
-    const result = await apiFetch(
-        "/api/auth/login",
-        {
-            method: "POST",
+    const result =
+        await apiFetch(
+            "/api/auth/login",
+            {
+                method: "POST",
 
-            body: {
-                email,
-                password
+                body: {
+                    email,
+                    password
+                }
             }
-        }
-    );
+        );
 
-    if (result?.data?.user) {
+
+    /* -----------------------------------------
+       SAVE USER
+    ----------------------------------------- */
+
+    if (
+        result?.data?.user
+    ) {
 
         currentUserCache =
             result.data.user;
 
         localStorage.setItem(
             "user",
-            JSON.stringify(result.data.user)
+            JSON.stringify(
+                result.data.user
+            )
         );
     }
 
-    // Save session token
-    if (result?.data?.sessionToken) {
+
+    /* -----------------------------------------
+       SAVE TOKEN
+    ----------------------------------------- */
+
+    if (
+        result?.data?.sessionToken
+    ) {
 
         localStorage.setItem(
             "token",
@@ -158,16 +260,26 @@ async function login(
         );
     }
 
-    // Refresh streamer profile
-    currentStreamerCache = undefined;
+
+    /* -----------------------------------------
+       RESET STREAMER CACHE
+    ----------------------------------------- */
+
+    currentStreamerCache =
+        undefined;
+
+    localStorage.removeItem(
+        "streamer"
+    );
+
 
     return result;
 }
 
 
-// ============================================================
-// LOGOUT
-// ============================================================
+/* =========================================================
+   LOGOUT
+========================================================= */
 
 async function logout(
     redirect = true
@@ -184,36 +296,93 @@ async function logout(
 
     } catch (error) {
 
+        /*
+         Logout should still clear
+         the local session even if
+         the backend is temporarily
+         unavailable.
+        */
+
         console.warn(
             "Logout request failed:",
             error
         );
     }
 
-    currentUserCache = null;
-    currentStreamerCache = null;
 
-    localStorage.removeItem("token");
-    localStorage.removeItem("user");
-    localStorage.removeItem("streamer");
+    /* -----------------------------------------
+       CLEAR MEMORY
+    ----------------------------------------- */
+
+    currentUserCache =
+        null;
+
+    currentStreamerCache =
+        null;
+
+
+    /* -----------------------------------------
+       CLEAR LOCAL SESSION
+    ----------------------------------------- */
+
+    localStorage.removeItem(
+        "token"
+    );
+
+    localStorage.removeItem(
+        "user"
+    );
+
+    localStorage.removeItem(
+        "streamer"
+    );
+
+
+    /* -----------------------------------------
+       RETURN HOME AFTER LOGOUT
+    ----------------------------------------- */
 
     if (redirect) {
 
         window.location.href =
-            "login.html";
+            "index.html";
     }
 }
 
 
-// ============================================================
-// GET CURRENT USER FROM SERVER
-// ============================================================
+/* =========================================================
+   GET CURRENT USER
+   SERVER-AUTHORITATIVE VERSION
+========================================================= */
 
-async function getCurrentUserAsync() {
+async function getCurrentUserAsync(
+    forceRefresh = false
+) {
 
-    if (currentUserCache !== undefined) {
+    if (
+        !forceRefresh &&
+        currentUserCache !== undefined
+    ) {
         return currentUserCache;
     }
+
+
+    /*
+       If there is no local token,
+       don't waste a request.
+    */
+
+    const token =
+        localStorage.getItem("token");
+
+    if (!token) {
+
+        currentUserCache =
+            null;
+
+        return null;
+    }
+
 
     try {
 
@@ -222,44 +391,72 @@ async function getCurrentUserAsync() {
                 "/api/auth/me"
             );
 
-        currentUserCache =
-            result?.data?.user || null;
 
-        if (currentUserCache) {
+        const user =
+            result?.data?.user ||
+            null;
+
+
+        currentUserCache =
+            user;
+
+
+        if (user) {
 
             localStorage.setItem(
                 "user",
-                JSON.stringify(currentUserCache)
+                JSON.stringify(user)
+            );
+
+        } else {
+
+            localStorage.removeItem(
+                "user"
             );
         }
 
-        return currentUserCache;
+
+        return user;
 
     } catch (error) {
 
-        if (error.status === 401) {
+        /*
+           Invalid/expired authentication.
+        */
 
-            currentUserCache = null;
+        if (
+            error.status === 401
+        ) {
 
-            currentStreamerCache = null;
-
-            localStorage.removeItem("user");
-            localStorage.removeItem("token");
-            localStorage.removeItem("streamer");
+            clearAuthCache();
 
             return null;
         }
+
+
+        /*
+           Network/server problem.
+           Do NOT pretend the user is logged out.
+        */
 
         throw error;
     }
 }
 
 
-// ============================================================
-// GET CURRENT USER FROM LOCAL STORAGE
-// ============================================================
+/* =========================================================
+   GET CURRENT USER
+   LOCAL/CACHED VERSION
+========================================================= */
 
 function getCurrentUser() {
+
+    if (
+        currentUserCache !== undefined
+    ) {
+        return currentUserCache;
+    }
+
 
     const cached =
         localStorage.getItem("user");
@@ -268,9 +465,12 @@ function getCurrentUser() {
         return null;
     }
 
+
     try {
 
-        return JSON.parse(cached);
+        return JSON.parse(
+            cached
+        );
 
     } catch (_) {
 
@@ -279,35 +479,55 @@ function getCurrentUser() {
 }
 
 
-// ============================================================
-// GET CURRENT USER ID
-// ============================================================
+/* =========================================================
+   USER ID
+========================================================= */
 
 function getCurrentUserId() {
 
     const user =
         getCurrentUser();
 
-    return user?.id || null;
+    if (!user) {
+        return null;
+    }
+
+
+    return (
+        user.id ??
+        user.userId ??
+        user.user_id ??
+        null
+    );
 }
 
 
-// ============================================================
-// GET USERNAME
-// ============================================================
+/* =========================================================
+   USERNAME
+========================================================= */
 
 function getCurrentUsername() {
 
     const user =
         getCurrentUser();
 
-    return user?.username || null;
+    if (!user) {
+        return null;
+    }
+
+
+    return (
+        user.username ??
+        user.displayName ??
+        user.name ??
+        null
+    );
 }
 
 
-// ============================================================
-// LOGIN CHECK
-// ============================================================
+/* =========================================================
+   IS LOGGED IN
+========================================================= */
 
 async function isLoggedInAsync() {
 
@@ -324,9 +544,9 @@ function isLoggedIn() {
 }
 
 
-// ============================================================
-// REQUIRE LOGIN
-// ============================================================
+/* =========================================================
+   REQUIRE LOGIN
+========================================================= */
 
 async function requireLogin() {
 
@@ -335,6 +555,7 @@ async function requireLogin() {
         const user =
             await getCurrentUserAsync();
 
+
         if (!user) {
 
             window.location.href =
@@ -342,6 +563,7 @@ async function requireLogin() {
 
             return null;
         }
+
 
         return user;
 
@@ -352,17 +574,22 @@ async function requireLogin() {
             error
         );
 
-        window.location.href =
-            "login.html";
+
+        /*
+           Important:
+           Do not automatically destroy
+           a session just because the
+           server is temporarily unavailable.
+        */
 
         return null;
     }
 }
 
 
-// ============================================================
-// AUTHENTICATED FETCH
-// ============================================================
+/* =========================================================
+   AUTHENTICATED FETCH
+========================================================= */
 
 async function authenticatedFetch(
     path,
@@ -374,6 +601,7 @@ async function authenticatedFetch(
         const user =
             await getCurrentUserAsync();
 
+
         if (!user) {
 
             window.location.href =
@@ -382,6 +610,7 @@ async function authenticatedFetch(
             return null;
         }
 
+
         return await apiFetch(
             path,
             options
@@ -389,29 +618,29 @@ async function authenticatedFetch(
 
     } catch (error) {
 
-        if (error.status === 401) {
+        if (
+            error.status === 401
+        ) {
 
-            currentUserCache = null;
-            currentStreamerCache = null;
+            clearAuthCache();
 
-            localStorage.removeItem("user");
-            localStorage.removeItem("token");
-            localStorage.removeItem("streamer");
 
             window.location.href =
                 "login.html";
 
+
             return null;
         }
+
 
         throw error;
     }
 }
 
 
-// ============================================================
-// AUTHENTICATED JSON
-// ============================================================
+/* =========================================================
+   AUTHENTICATED JSON
+========================================================= */
 
 async function authenticatedJson(
     path,
@@ -425,23 +654,9 @@ async function authenticatedJson(
 }
 
 
-// ============================================================
-// GET MY STREAMER PROFILE
-// ============================================================
-//
-// This is the important new part.
-//
-// The streamer is NOT identified by Twitch username anymore.
-//
-// Instead:
-//
-// Nerve Account
-//      ↓
-// User ID
-//      ↓
-// Streamer Profile ID
-//
-// ============================================================
+/* =========================================================
+   STREAMER
+========================================================= */
 
 async function getMyStreamerAsync(
     forceRefresh = false
@@ -451,41 +666,78 @@ async function getMyStreamerAsync(
         !forceRefresh &&
         currentStreamerCache !== undefined
     ) {
+
         return currentStreamerCache;
     }
+
+
+    const user =
+        await getCurrentUserAsync();
+
+
+    if (!user) {
+
+        currentStreamerCache =
+            null;
+
+        return null;
+    }
+
 
     try {
 
         const result =
-            await authenticatedFetch(
+            await apiFetch(
                 "/api/my-streamers"
             );
 
-        if (!result) {
-            return null;
-        }
+
+        /*
+           The backend may return
+           either:
+
+           data.streamers
+
+           or
+
+           data directly.
+        */
 
         const streamers =
-            result?.data?.streamers ||
-            result?.streamers ||
+            result?.data?.streamers ??
+            result?.data ??
+            result?.streamers ??
             [];
 
-        // Our new system gives each Nerve account
-        // its own streamer profile.
+
+        const streamerList =
+            Array.isArray(streamers)
+                ? streamers
+                : [];
+
+
+        /*
+           For now Nerve uses the
+           first streamer belonging
+           to the logged-in account.
+        */
 
         const streamer =
-            streamers.length > 0
-                ? streamers[0]
-                : null;
+            streamerList[0] ||
+            null;
+
 
         currentStreamerCache =
             streamer;
+
 
         if (streamer) {
 
             localStorage.setItem(
                 "streamer",
-                JSON.stringify(streamer)
+                JSON.stringify(
+                    streamer
+                )
             );
 
         } else {
@@ -495,40 +747,56 @@ async function getMyStreamerAsync(
             );
         }
 
+
         return streamer;
 
     } catch (error) {
 
-        console.error(
-            "Failed to load streamer profile:",
-            error
-        );
+        if (
+            error.status === 401
+        ) {
+
+            clearAuthCache();
+
+            return null;
+        }
+
 
         throw error;
     }
 }
 
 
-// ============================================================
-// GET MY STREAMER PROFILE
-// ============================================================
+/* =========================================================
+   GET CACHED STREAMER
+========================================================= */
 
 function getMyStreamer() {
 
-    if (currentStreamerCache) {
+    if (
+        currentStreamerCache !== undefined
+    ) {
+
         return currentStreamerCache;
     }
 
+
     const cached =
-        localStorage.getItem("streamer");
+        localStorage.getItem(
+            "streamer"
+        );
+
 
     if (!cached) {
         return null;
     }
 
+
     try {
 
-        return JSON.parse(cached);
+        return JSON.parse(
+            cached
+        );
 
     } catch (_) {
 
@@ -537,50 +805,55 @@ function getMyStreamer() {
 }
 
 
-// ============================================================
-// GET MY STREAMER ID
-// ============================================================
+/* =========================================================
+   STREAMER ID
+========================================================= */
 
 function getMyStreamerId() {
 
     const streamer =
         getMyStreamer();
 
-    return streamer?.id || null;
+    if (!streamer) {
+        return null;
+    }
+
+
+    return (
+        streamer.id ??
+        streamer.streamerId ??
+        streamer.streamer_id ??
+        null
+    );
 }
 
 
-// ============================================================
-// GET STREAMER ID AS STRING
-// ============================================================
-//
-// Useful for WebSocket / URL parameters.
-//
+/* =========================================================
+   STREAMER ID AS STRING
+========================================================= */
 
 function getMyStreamerIdString() {
 
     const id =
         getMyStreamerId();
 
-    return id !== null &&
-           id !== undefined
-        ? String(id)
-        : null;
+    if (
+        id === null ||
+        id === undefined
+    ) {
+        return null;
+    }
+
+
+    return String(id);
 }
 
 
-// ============================================================
-// REFRESH STREAMER PROFILE
-// ============================================================
+/* =========================================================
+   REFRESH STREAMER
+========================================================= */
 
 async function refreshMyStreamer() {
-
-    currentStreamerCache =
-        undefined;
-
-    localStorage.removeItem(
-        "streamer"
-    );
 
     return await getMyStreamerAsync(
         true
@@ -588,20 +861,12 @@ async function refreshMyStreamer() {
 }
 
 
-// ============================================================
-// UPDATE MY STREAMER PROFILE
-// ============================================================
-//
-// This works with the backend endpoint:
-//
-// PATCH /api/my-streamer
-//
-// The controller/settings page can use this later
-// for Twitch / YouTube / Kick information.
-//
+/* =========================================================
+   UPDATE STREAMER
+========================================================= */
 
 async function updateMyStreamer(
-    updates = {}
+    updates
 ) {
 
     const result =
@@ -613,46 +878,31 @@ async function updateMyStreamer(
             }
         );
 
-    if (!result) {
-        return null;
-    }
 
-    const streamer =
-        result?.data?.streamer ||
-        result?.streamer ||
-        null;
-
-    if (streamer) {
+    if (
+        result?.data?.streamer
+    ) {
 
         currentStreamerCache =
-            streamer;
+            result.data.streamer;
+
 
         localStorage.setItem(
             "streamer",
-            JSON.stringify(streamer)
+            JSON.stringify(
+                result.data.streamer
+            )
         );
     }
+
 
     return result;
 }
 
 
-// ============================================================
-// WEBSOCKET TOKEN
-// ============================================================
-//
-// Browser WebSockets cannot send an Authorization header
-// during the initial connection.
-//
-// The controller will instead connect first and then send:
-//
-// {
-//     type: "AUTH",
-//     token: "...",
-//     role: "controller"
-// }
-//
-// ============================================================
+/* =========================================================
+   AUTH TOKEN
+========================================================= */
 
 function getAuthToken() {
 
@@ -662,28 +912,37 @@ function getAuthToken() {
 }
 
 
-// ============================================================
-// WEBSOCKET AUTH MESSAGE
-// ============================================================
+/* =========================================================
+   WEBSOCKET AUTH MESSAGE
+========================================================= */
 
 function createWebSocketAuthMessage(
     role = "controller"
 ) {
 
+    const token =
+        getAuthToken();
+
+    const streamerId =
+        getMyStreamerIdString();
+
+
     return {
+
         type: "AUTH",
 
-        token:
-            getAuthToken(),
+        token: token,
 
-        role
+        role: role,
+
+        streamerId: streamerId
     };
 }
 
 
-// ============================================================
-// AUTH CACHE CLEAR
-// ============================================================
+/* =========================================================
+   CLEAR AUTH CACHE
+========================================================= */
 
 function clearAuthCache() {
 
@@ -692,6 +951,7 @@ function clearAuthCache() {
 
     currentStreamerCache =
         undefined;
+
 
     localStorage.removeItem(
         "user"
@@ -704,4 +964,277 @@ function clearAuthCache() {
     localStorage.removeItem(
         "streamer"
     );
+}
+
+
+/* =========================================================
+   AUTH NAVIGATION
+========================================================= */
+
+async function updateAuthNavigation() {
+
+    const loginButtons =
+        document.querySelectorAll(
+            "[data-auth-login]"
+        );
+
+
+    const accountButtons =
+        document.querySelectorAll(
+            "[data-auth-account]"
+        );
+
+
+    const logoutButtons =
+        document.querySelectorAll(
+            "[data-auth-logout]"
+        );
+
+
+    try {
+
+        const user =
+            await getCurrentUserAsync();
+
+
+        /* -------------------------------------
+           LOGGED OUT
+        ------------------------------------- */
+
+        if (!user) {
+
+            loginButtons.forEach(
+                button => {
+
+                    button.style.display =
+                        "";
+
+                    button.textContent =
+                        button.dataset.authLoginText ||
+                        "Login";
+
+                    button.href =
+                        "login.html";
+                }
+            );
+
+
+            accountButtons.forEach(
+                button => {
+
+                    button.style.display =
+                        "none";
+                }
+            );
+
+
+            logoutButtons.forEach(
+                button => {
+
+                    button.style.display =
+                        "none";
+                }
+            );
+
+
+            return;
+        }
+
+
+        /* -------------------------------------
+           LOGGED IN
+        ------------------------------------- */
+
+        const username =
+            getCurrentUsername() ||
+            "Account";
+
+
+        loginButtons.forEach(
+            button => {
+
+                button.style.display =
+                    "";
+
+                button.textContent =
+                    "👤 " + username;
+
+                button.href =
+                    "controller.html";
+            }
+        );
+
+
+        accountButtons.forEach(
+            button => {
+
+                button.style.display =
+                    "";
+
+                button.textContent =
+                    button.dataset.authAccountText ||
+                    "👤 " + username;
+
+                button.href =
+                    "controller.html";
+            }
+        );
+
+
+        logoutButtons.forEach(
+            button => {
+
+                button.style.display =
+                    "";
+
+                button.textContent =
+                    button.dataset.authLogoutText ||
+                    "Logout";
+            }
+        );
+
+    } catch (error) {
+
+        console.warn(
+            "Could not update authentication navigation:",
+            error
+        );
+    }
+}
+
+
+/* =========================================================
+   LOGOUT BUTTON HANDLER
+========================================================= */
+
+function setupLogoutButtons() {
+
+    const buttons =
+        document.querySelectorAll(
+            "[data-auth-logout]"
+        );
+
+
+    buttons.forEach(
+        button => {
+
+            /*
+               Prevent duplicate listeners.
+            */
+
+            if (
+                button.dataset.authLogoutReady ===
+                "true"
+            ) {
+                return;
+            }
+
+
+            button.dataset.authLogoutReady =
+                "true";
+
+
+            button.addEventListener(
+                "click",
+                async event => {
+
+                    event.preventDefault();
+
+
+                    if (
+                        button.disabled
+                    ) {
+                        return;
+                    }
+
+
+                    button.disabled =
+                        true;
+
+
+                    button.dataset.originalText =
+                        button.textContent;
+
+
+                    button.textContent =
+                        "Logging out...";
+
+
+                    await logout(
+                        true
+                    );
+                }
+            );
+        }
+    );
+}
+
+
+/* =========================================================
+   INITIALIZE AUTH NAVIGATION
+========================================================= */
+
+function initializeAuthNavigation() {
+
+    updateAuthNavigation();
+
+    setupLogoutButtons();
+
+
+    /*
+       pageshow fires when returning
+       to a page through browser Back/Forward.
+
+       This is important for Nerve.
+    */
+
+    window.addEventListener(
+        "pageshow",
+        () => {
+
+            updateAuthNavigation();
+
+            setupLogoutButtons();
+        }
+    );
+
+
+    /*
+       Also refresh when the browser
+       tab becomes visible again.
+    */
+
+    document.addEventListener(
+        "visibilitychange",
+        () => {
+
+            if (
+                document.visibilityState ===
+                "visible"
+            ) {
+
+                updateAuthNavigation();
+            }
+        }
+    );
+}
+
+
+/* =========================================================
+   AUTO INITIALIZE
+========================================================= */
+
+if (
+    document.readyState ===
+    "loading"
+) {
+
+    document.addEventListener(
+        "DOMContentLoaded",
+        initializeAuthNavigation
+    );
+
+} else {
+
+    initializeAuthNavigation();
 }
