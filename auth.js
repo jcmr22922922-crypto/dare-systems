@@ -1,7 +1,10 @@
-const API_URL = "https://dare-backend-vx8w.onrender.com";
+```javascript
+const DARE_API_URL = "https://dare-backend-vx8w.onrender.com";
+
+let currentUserCache = undefined;
 
 /* =========================================================
-   API REQUEST
+   API HELPER
 ========================================================= */
 
 async function apiFetch(path, options = {}) {
@@ -13,22 +16,15 @@ async function apiFetch(path, options = {}) {
         }
     };
 
-    if (
-        config.body &&
-        typeof config.body !== "string"
-    ) {
-        config.headers["Content-Type"] =
-            "application/json";
-
-        config.body =
-            JSON.stringify(config.body);
+    if (config.body && typeof config.body !== "string") {
+        config.headers["Content-Type"] = "application/json";
+        config.body = JSON.stringify(config.body);
     }
 
-    const response =
-        await fetch(
-            `${API_URL}${path}`,
-            config
-        );
+    const response = await fetch(
+        `${DARE_API_URL}${path}`,
+        config
+    );
 
     let data = null;
 
@@ -44,14 +40,10 @@ async function apiFetch(path, options = {}) {
             data?.error ||
             `Request failed (${response.status})`;
 
-        const error =
-            new Error(message);
+        const error = new Error(message);
 
-        error.status =
-            response.status;
-
-        error.code =
-            data?.error?.code;
+        error.status = response.status;
+        error.code = data?.error?.code;
 
         throw error;
     }
@@ -64,11 +56,7 @@ async function apiFetch(path, options = {}) {
    REGISTER
 ========================================================= */
 
-async function register(
-    username,
-    email,
-    password
-) {
+async function register(username, email, password) {
     return await apiFetch(
         "/api/auth/register",
         {
@@ -87,11 +75,8 @@ async function register(
    LOGIN
 ========================================================= */
 
-async function login(
-    email,
-    password
-) {
-    return await apiFetch(
+async function login(email, password) {
+    const result = await apiFetch(
         "/api/auth/login",
         {
             method: "POST",
@@ -101,6 +86,18 @@ async function login(
             }
         }
     );
+
+    if (result?.data?.user) {
+        localStorage.setItem(
+            "user",
+            JSON.stringify(result.data.user)
+        );
+
+        currentUserCache =
+            result.data.user;
+    }
+
+    return result;
 }
 
 
@@ -108,9 +105,7 @@ async function login(
    LOGOUT
 ========================================================= */
 
-async function logout(
-    redirect = true
-) {
+async function logout(redirect = true) {
     try {
         await apiFetch(
             "/api/auth/logout",
@@ -125,16 +120,13 @@ async function logout(
         );
     }
 
-    /*
-     * Old localStorage authentication data
-     * from the previous system is no longer trusted.
-     */
-    localStorage.removeItem("token");
+    currentUserCache = null;
+
     localStorage.removeItem("user");
+    localStorage.removeItem("token");
 
     if (redirect) {
-        window.location.href =
-            "login.html";
+        window.location.href = "login.html";
     }
 }
 
@@ -143,46 +135,37 @@ async function logout(
    CURRENT USER
 ========================================================= */
 
-let currentUserCache =
-    undefined;
-
-
-/*
- * Returns the authenticated user.
- *
- * null = not authenticated
- * object = authenticated
- */
 async function getCurrentUserAsync() {
 
-    if (
-        currentUserCache !==
-        undefined
-    ) {
+    if (currentUserCache !== undefined) {
         return currentUserCache;
     }
 
     try {
-
         const result =
             await apiFetch(
                 "/api/auth/me"
             );
 
         currentUserCache =
-            result?.data?.user ||
-            null;
+            result?.data?.user || null;
+
+        if (currentUserCache) {
+            localStorage.setItem(
+                "user",
+                JSON.stringify(
+                    currentUserCache
+                )
+            );
+        }
 
         return currentUserCache;
 
     } catch (error) {
 
-        if (
-            error.status === 401
-        ) {
-            currentUserCache =
-                null;
-
+        if (error.status === 401) {
+            currentUserCache = null;
+            localStorage.removeItem("user");
             return null;
         }
 
@@ -191,18 +174,14 @@ async function getCurrentUserAsync() {
 }
 
 
-/*
- * Synchronous compatibility helper.
- *
- * New code should prefer
- * getCurrentUserAsync().
- */
+/* =========================================================
+   SYNC USER
+========================================================= */
+
 function getCurrentUser() {
 
     const cached =
-        localStorage.getItem(
-            "user"
-        );
+        localStorage.getItem("user");
 
     if (!cached) {
         return null;
@@ -229,20 +208,22 @@ async function isLoggedInAsync() {
 }
 
 
+/*
+ * Kept for compatibility with
+ * older frontend code.
+ *
+ * Use isLoggedInAsync() when possible.
+ */
+
 function isLoggedIn() {
 
-    /*
-     * Compatibility only.
-     *
-     * Cookie sessions cannot be checked
-     * synchronously from JavaScript.
-     */
-    return false;
+    return !!getCurrentUser();
+
 }
 
 
 /* =========================================================
-   PROTECT PAGE
+   REQUIRE LOGIN
 ========================================================= */
 
 async function requireLogin() {
@@ -306,12 +287,9 @@ async function authenticatedFetch(
 
     } catch (error) {
 
-        if (
-            error.status === 401
-        ) {
+        if (error.status === 401) {
 
-            currentUserCache =
-                null;
+            currentUserCache = null;
 
             localStorage.removeItem(
                 "user"
@@ -329,14 +307,13 @@ async function authenticatedFetch(
 
 
 /* =========================================================
-   AUTHENTICATED API RESPONSE
+   COMPATIBILITY
 ========================================================= */
 
 async function authenticatedJson(
     path,
     options = {}
 ) {
-
     return await authenticatedFetch(
         path,
         options
@@ -345,7 +322,7 @@ async function authenticatedJson(
 
 
 /* =========================================================
-   CACHE MANAGEMENT
+   CLEAR AUTH CACHE
 ========================================================= */
 
 function clearAuthCache() {
@@ -361,3 +338,4 @@ function clearAuthCache() {
         "token"
     );
 }
+```
