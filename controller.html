@@ -1208,16 +1208,11 @@ async function loadStreamers() {
 
         console.log("My streamers response:", result);
 
-        // Your server returns:
-        // { streamers: [...] }
-
         if (Array.isArray(result?.streamers)) {
             streamers = result.streamers;
         } else if (Array.isArray(result?.data?.streamers)) {
-            // Compatibility fallback
             streamers = result.data.streamers;
         } else if (Array.isArray(result?.data)) {
-            // Compatibility fallback
             streamers = result.data;
         } else {
             streamers = [];
@@ -1227,7 +1222,6 @@ async function loadStreamers() {
 
         renderStreamers();
 
-        // Automatically select the first streamer
         if (streamers.length > 0 && !selectedStreamer) {
             selectedStreamer =
                 streamers[0].username ||
@@ -1246,10 +1240,7 @@ async function loadStreamers() {
         }
 
     } catch (error) {
-        console.error(
-            "Failed to load streamers:",
-            error
-        );
+        console.error("Failed to load streamers:", error);
 
         streamers = [];
         renderStreamers();
@@ -1259,13 +1250,12 @@ async function loadStreamers() {
             return;
         }
 
-        showToast(
-            "❌ Could not load your streamers."
-        );
+        showToast("❌ Could not load your streamers.");
     }
 }
 
 
+    
 function renderStreamers() {
 
     streamerSelect.innerHTML = "";
