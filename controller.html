@@ -1,3 +1,4 @@
+```html
 <!DOCTYPE html>
 <html lang="en">
 
@@ -463,9 +464,11 @@ button:disabled {
         </div>
 
         <select id="streamerSelect">
+
             <option value="">
                 Loading streamers...
             </option>
+
         </select>
 
     </div>
@@ -593,7 +596,7 @@ button:disabled {
 ></div>
 
 
-<!-- AUTH FIRST -->
+<!-- AUTH -->
 
 <script src="auth.js?v=1000"></script>
 
@@ -704,20 +707,40 @@ function streamerKey(name) {
 }
 
 
+function getDareId(dare) {
+
+    if (!dare) {
+        return null;
+    }
+
+    return Number(
+        dare.id ??
+        dare.dare_id ??
+        dare.dareId
+    );
+
+}
+
+
 function dareText(dare) {
 
-    return dare?.dareText ||
-           dare?.dare_text ||
-           "";
+    return (
+        dare?.dareText ||
+        dare?.dare_text ||
+        dare?.text ||
+        ""
+    );
 
 }
 
 
 function createdAt(dare) {
 
-    return dare?.createdAt ||
-           dare?.created_at ||
-           0;
+    return (
+        dare?.createdAt ||
+        dare?.created_at ||
+        0
+    );
 
 }
 
@@ -736,13 +759,16 @@ function showToast(message) {
     );
 
     toastTimer =
-        setTimeout(() => {
+        setTimeout(
+            () => {
 
-            toast.classList.remove(
-                "show"
-            );
+                toast.classList.remove(
+                    "show"
+                );
 
-        }, 2800);
+            },
+            2800
+        );
 
 }
 
@@ -750,11 +776,26 @@ function showToast(message) {
 function escapeHtml(value) {
 
     return String(value ?? "")
-        .replace(/&/g, "&amp;")
-        .replace(/</g, "&lt;")
-        .replace(/>/g, "&gt;")
-        .replace(/"/g, "&quot;")
-        .replace(/'/g, "&#039;");
+        .replace(
+            /&/g,
+            "&amp;"
+        )
+        .replace(
+            /</g,
+            "&lt;"
+        )
+        .replace(
+            />/g,
+            "&gt;"
+        )
+        .replace(
+            /"/g,
+            "&quot;"
+        )
+        .replace(
+            /'/g,
+            "&#039;"
+        );
 
 }
 
@@ -772,7 +813,7 @@ function formatReward(value) {
 
 
 /* =========================================================
-   WEBSOCKET
+   WEBSOCKET CONNECTION
 ========================================================= */
 
 function connectWebSocket() {
@@ -780,12 +821,17 @@ function connectWebSocket() {
     if (
         ws &&
         (
-            ws.readyState === WebSocket.OPEN ||
-            ws.readyState === WebSocket.CONNECTING
+            ws.readyState ===
+                WebSocket.OPEN ||
+            ws.readyState ===
+                WebSocket.CONNECTING
         )
     ) {
+
         return;
+
     }
+
 
     connectionStatus.textContent =
         "🟡 Connecting...";
@@ -814,101 +860,108 @@ function connectWebSocket() {
         scheduleReconnect();
 
         return;
+
     }
 
 
-    ws.onopen = function() {
+    ws.onopen =
+        function() {
 
-        console.log(
-            "WebSocket connected."
-        );
-
-        connectionStatus.textContent =
-            "🟢 Connected";
-
-        connectionStatus.className =
-            "status connected";
-
-        clearTimeout(
-            reconnectTimer
-        );
-
-
-        try {
-
-            ws.send(
-                JSON.stringify({
-                    type: "GET_STATE"
-                })
+            console.log(
+                "✅ WebSocket connected"
             );
 
-        } catch (error) {
+            connectionStatus.textContent =
+                "🟢 Connected";
+
+            connectionStatus.className =
+                "status connected";
+
+            clearTimeout(
+                reconnectTimer
+            );
+
+
+            try {
+
+                ws.send(
+                    JSON.stringify({
+                        type:
+                            "GET_STATE"
+                    })
+                );
+
+            } catch (error) {
+
+                console.error(
+                    "GET_STATE send error:",
+                    error
+                );
+
+            }
+
+        };
+
+
+    ws.onclose =
+        function(event) {
+
+            console.warn(
+                "WebSocket closed:",
+                event.code,
+                event.reason
+            );
+
+            connectionStatus.textContent =
+                "🔴 Disconnected";
+
+            connectionStatus.className =
+                "status disconnected";
+
+            scheduleReconnect();
+
+        };
+
+
+    ws.onerror =
+        function(error) {
 
             console.error(
-                "GET_STATE error:",
+                "WebSocket error:",
                 error
             );
 
-        }
+            connectionStatus.textContent =
+                "🔴 Connection Error";
 
-    };
-
-
-    ws.onclose = function(event) {
-
-        console.warn(
-            "WebSocket closed:",
-            event.code,
-            event.reason
-        );
-
-        connectionStatus.textContent =
-            "🔴 Disconnected";
-
-        connectionStatus.className =
-            "status disconnected";
-
-        scheduleReconnect();
-
-    };
+        };
 
 
-    ws.onerror = function(error) {
+    ws.onmessage =
+        function(event) {
 
-        console.error(
-            "WebSocket error:",
-            error
-        );
+            try {
 
-        connectionStatus.textContent =
-            "🔴 Connection Error";
+                const message =
+                    JSON.parse(
+                        event.data
+                    );
 
-    };
+                handleWebSocketMessage(
+                    message
+                );
 
+            } catch (error) {
 
-    ws.onmessage = function(event) {
-
-        try {
-
-            const message =
-                JSON.parse(
+                console.error(
+                    "WebSocket message parse error:",
+                    error,
                     event.data
                 );
 
-            handleWebSocketMessage(
-                message
-            );
+            }
 
-        } catch (error) {
-
-            console.error(
-                "WebSocket message error:",
-                error
-            );
-
-        }
-
-    };
+        };
 
 }
 
@@ -935,18 +988,184 @@ function scheduleReconnect() {
 function handleWebSocketMessage(message) {
 
     console.log(
-        "WebSocket:",
+        "📨 WebSocket:",
         message
     );
 
 
-    if (message.type === "STATE") {
+    /* =====================================================
+       STATE
+    ===================================================== */
 
-        activeDares =
-            message.active || {};
+    if (
+        message.type ===
+        "STATE"
+    ) {
 
-        queues =
-            message.queues || {};
+        console.log(
+            "📦 STATE received"
+        );
+
+
+        activeDares = {};
+
+        queues = {};
+
+
+        /* ---------- ACTIVE ---------- */
+
+        const incomingActive =
+            message.active ??
+            message.activeDares ??
+            {};
+
+
+        if (
+            Array.isArray(
+                incomingActive
+            )
+        ) {
+
+            incomingActive.forEach(
+                dare => {
+
+                    if (
+                        !dare ||
+                        !dare.streamer
+                    ) {
+
+                        return;
+
+                    }
+
+                    const key =
+                        streamerKey(
+                            dare.streamer
+                        );
+
+                    activeDares[key] =
+                        dare;
+
+                }
+            );
+
+        } else if (
+            incomingActive &&
+            typeof incomingActive ===
+                "object"
+        ) {
+
+            Object.entries(
+                incomingActive
+            ).forEach(
+                ([key, dare]) => {
+
+                    if (!dare) {
+                        return;
+                    }
+
+                    const streamer =
+                        dare.streamer ||
+                        key;
+
+                    activeDares[
+                        streamerKey(
+                            streamer
+                        )
+                    ] = dare;
+
+                }
+            );
+
+        }
+
+
+        /* ---------- QUEUES ---------- */
+
+        const incomingQueues =
+            message.queues ||
+            {};
+
+
+        if (
+            Array.isArray(
+                incomingQueues
+            )
+        ) {
+
+            incomingQueues.forEach(
+                dare => {
+
+                    if (
+                        !dare ||
+                        !dare.streamer
+                    ) {
+
+                        return;
+
+                    }
+
+                    const key =
+                        streamerKey(
+                            dare.streamer
+                        );
+
+                    if (!queues[key]) {
+
+                        queues[key] = [];
+
+                    }
+
+                    queues[key].push(
+                        dare
+                    );
+
+                }
+            );
+
+        } else if (
+            incomingQueues &&
+            typeof incomingQueues ===
+                "object"
+        ) {
+
+            Object.entries(
+                incomingQueues
+            ).forEach(
+                ([key, queue]) => {
+
+                    if (
+                        !Array.isArray(
+                            queue
+                        )
+                    ) {
+
+                        return;
+
+                    }
+
+                    queues[
+                        streamerKey(key)
+                    ] = [
+                        ...queue
+                    ];
+
+                }
+            );
+
+        }
+
+
+        console.log(
+            "🔥 Active dares:",
+            activeDares
+        );
+
+        console.log(
+            "⏳ Queues:",
+            queues
+        );
+
 
         syncSelectedStreamer();
 
@@ -955,13 +1174,26 @@ function handleWebSocketMessage(message) {
         renderQueue();
 
         return;
+
     }
 
 
-    if (message.type === "DARE_CREATED") {
+    /* =====================================================
+       DARE CREATED
+    ===================================================== */
+
+    if (
+        message.type ===
+        "DARE_CREATED"
+    ) {
 
         const dare =
             message.dare;
+
+        console.log(
+            "🆕 New dare:",
+            dare
+        );
 
         if (!dare) {
             return;
@@ -978,29 +1210,46 @@ function handleWebSocketMessage(message) {
         renderQueue();
 
         return;
+
     }
 
 
-    if (message.type === "ACTIVE_DARE") {
+    /* =====================================================
+       ACTIVE DARE
+    ===================================================== */
+
+    if (
+        message.type ===
+        "ACTIVE_DARE"
+    ) {
 
         const dare =
             message.dare;
 
+        console.log(
+            "🔥 Active dare:",
+            dare
+        );
+
         if (!dare) {
             return;
         }
+
 
         const key =
             streamerKey(
                 dare.streamer
             );
 
+
         activeDares[key] =
             dare;
 
+
         removeFromQueue(
-            dare.id
+            getDareId(dare)
         );
+
 
         syncSelectedStreamer();
 
@@ -1013,35 +1262,68 @@ function handleWebSocketMessage(message) {
         );
 
         return;
+
     }
 
 
-    if (message.type === "QUEUE_UPDATED") {
+    /* =====================================================
+       QUEUE UPDATED
+    ===================================================== */
+
+    if (
+        message.type ===
+        "QUEUE_UPDATED"
+    ) {
+
+        console.log(
+            "⏳ Queue updated:",
+            message
+        );
+
 
         const key =
             streamerKey(
                 message.streamer
             );
 
+
         queues[key] =
             Array.isArray(
                 message.queue
             )
-                ? message.queue
+                ? [
+                    ...message.queue
+                ]
                 : [];
+
 
         renderQueue();
 
         return;
+
     }
 
 
-    if (message.type === "DARE_COMPLETED") {
+    /* =====================================================
+       COMPLETED
+    ===================================================== */
+
+    if (
+        message.type ===
+        "DARE_COMPLETED"
+    ) {
+
+        console.log(
+            "✅ Dare completed:",
+            message.dare
+        );
 
         if (message.dare) {
+
             removeActiveDare(
                 message.dare
             );
+
         }
 
         showToast(
@@ -1049,15 +1331,30 @@ function handleWebSocketMessage(message) {
         );
 
         return;
+
     }
 
 
-    if (message.type === "DARE_FAILED") {
+    /* =====================================================
+       FAILED
+    ===================================================== */
+
+    if (
+        message.type ===
+        "DARE_FAILED"
+    ) {
+
+        console.log(
+            "❌ Dare failed:",
+            message.dare
+        );
 
         if (message.dare) {
+
             removeActiveDare(
                 message.dare
             );
+
         }
 
         showToast(
@@ -1065,20 +1362,33 @@ function handleWebSocketMessage(message) {
         );
 
         return;
+
     }
 
+
+    /* =====================================================
+       ACTIVE CLEARED
+    ===================================================== */
 
     if (
         message.type ===
         "ACTIVE_DARE_CLEARED"
     ) {
 
+        console.log(
+            "🧹 Active dare cleared:",
+            message
+        );
+
+
         const key =
             streamerKey(
                 message.streamer
             );
 
+
         delete activeDares[key];
+
 
         syncSelectedStreamer();
 
@@ -1087,21 +1397,35 @@ function handleWebSocketMessage(message) {
         renderQueue();
 
         return;
+
     }
 
+
+    /* =====================================================
+       REJECTED
+    ===================================================== */
 
     if (
         message.type ===
         "DARE_REJECTED"
     ) {
 
+        console.log(
+            "🚫 Dare rejected:",
+            message.dare
+        );
+
+
         if (message.dare) {
 
             removeFromQueue(
-                message.dare.id
+                getDareId(
+                    message.dare
+                )
             );
 
         }
+
 
         renderQueue();
 
@@ -1110,10 +1434,23 @@ function handleWebSocketMessage(message) {
         );
 
         return;
+
     }
 
 
-    if (message.type === "RESET") {
+    /* =====================================================
+       RESET
+    ===================================================== */
+
+    if (
+        message.type ===
+        "RESET"
+    ) {
+
+        console.log(
+            "🔄 Reset received"
+        );
+
 
         activeDares = {};
 
@@ -1127,7 +1464,15 @@ function handleWebSocketMessage(message) {
 
         renderQueue();
 
+        return;
+
     }
+
+
+    console.log(
+        "⚠️ Unknown WebSocket message:",
+        message.type
+    );
 
 }
 
@@ -1142,8 +1487,11 @@ function updateLocalDare(dare) {
         !dare ||
         !dare.streamer
     ) {
+
         return;
+
     }
+
 
     const key =
         streamerKey(
@@ -1151,8 +1499,17 @@ function updateLocalDare(dare) {
         );
 
 
+    const status =
+        String(
+            dare.status ||
+            ""
+        ).toLowerCase();
+
+
+    /* ---------- ACTIVE ---------- */
+
     if (
-        dare.status ===
+        status ===
         "accepted"
     ) {
 
@@ -1160,34 +1517,50 @@ function updateLocalDare(dare) {
             dare;
 
         removeFromQueue(
-            dare.id
+            getDareId(dare)
         );
 
         return;
+
     }
 
 
+    /* ---------- QUEUED ---------- */
+
     if (
-        dare.status ===
+        status ===
         "pending"
     ) {
 
         if (!queues[key]) {
+
             queues[key] = [];
+
         }
 
-        if (
-            !queues[key].some(
+
+        const id =
+            getDareId(
+                dare
+            );
+
+
+        const exists =
+            queues[key].some(
                 item =>
-                    item.id === dare.id
-            )
-        ) {
+                    getDareId(item) ===
+                    id
+            );
+
+
+        if (!exists) {
 
             queues[key].push(
                 dare
             );
 
         }
+
 
         sortQueue(
             queues[key]
@@ -1203,62 +1576,141 @@ function updateLocalDare(dare) {
 ========================================================= */
 
 async function loadStreamers() {
+
     try {
-        const result = await authenticatedFetch("/api/my-streamers");
 
-        console.log("My streamers response:", result);
+        const result =
+            await authenticatedFetch(
+                "/api/my-streamers"
+            );
 
-        if (Array.isArray(result?.streamers)) {
-            streamers = result.streamers;
-        } else if (Array.isArray(result?.data?.streamers)) {
-            streamers = result.data.streamers;
-        } else if (Array.isArray(result?.data)) {
-            streamers = result.data;
+
+        console.log(
+            "📡 My streamers response:",
+            result
+        );
+
+
+        if (
+            Array.isArray(
+                result?.streamers
+            )
+        ) {
+
+            streamers =
+                result.streamers;
+
+        } else if (
+            Array.isArray(
+                result?.data?.streamers
+            )
+        ) {
+
+            streamers =
+                result.data.streamers;
+
+        } else if (
+            Array.isArray(
+                result?.data
+            )
+        ) {
+
+            streamers =
+                result.data;
+
         } else {
+
             streamers = [];
+
         }
 
-        console.log("Loaded streamers:", streamers);
+
+        console.log(
+            "🎥 Loaded streamers:",
+            streamers
+        );
+
 
         renderStreamers();
 
-        if (streamers.length > 0 && !selectedStreamer) {
+
+        if (
+            streamers.length > 0 &&
+            !selectedStreamer
+        ) {
+
             selectedStreamer =
                 streamers[0].username ||
                 streamers[0].twitchUsername ||
                 streamers[0].name ||
                 "";
 
+
             console.log(
-                "Automatically selected streamer:",
+                "🎯 Selected streamer:",
                 selectedStreamer
             );
 
+
+            streamerSelect.value =
+                selectedStreamer;
+
+            streamerName.textContent =
+                selectedStreamer ||
+                "None";
+
+
             syncSelectedStreamer();
+
             renderCurrentDare();
+
             renderQueue();
+
         }
 
     } catch (error) {
-        console.error("Failed to load streamers:", error);
+
+        console.error(
+            "❌ Failed to load streamers:",
+            error
+        );
+
 
         streamers = [];
+
         renderStreamers();
 
-        if (error.status === 401) {
-            window.location.href = "login.html";
+
+        if (
+            error.status ===
+            401
+        ) {
+
+            window.location.href =
+                "login.html";
+
             return;
+
         }
 
-        showToast("❌ Could not load your streamers.");
+
+        showToast(
+            "❌ Could not load your streamers."
+        );
+
     }
+
 }
 
 
-    
+/* =========================================================
+   RENDER STREAMERS
+========================================================= */
+
 function renderStreamers() {
 
-    streamerSelect.innerHTML = "";
+    streamerSelect.innerHTML =
+        "";
 
 
     if (!streamers.length) {
@@ -1272,9 +1724,11 @@ function renderStreamers() {
         streamerName.textContent =
             "None";
 
-        selectedStreamer = "";
+        selectedStreamer =
+            "";
 
         return;
+
     }
 
 
@@ -1290,9 +1744,11 @@ function renderStreamers() {
                 streamer.name ||
                 "";
 
+
             if (!username) {
                 return;
             }
+
 
             available.push(
                 username
@@ -1304,13 +1760,16 @@ function renderStreamers() {
                     "option"
                 );
 
+
             option.value =
                 username;
+
 
             option.textContent =
                 streamer.displayName ||
                 streamer.display_name ||
                 username;
+
 
             streamerSelect.appendChild(
                 option
@@ -1327,7 +1786,8 @@ function renderStreamers() {
     ) {
 
         selectedStreamer =
-            available[0] || "";
+            available[0] ||
+            "";
 
     }
 
@@ -1335,16 +1795,10 @@ function renderStreamers() {
     streamerSelect.value =
         selectedStreamer;
 
+
     streamerName.textContent =
         selectedStreamer ||
         "None";
-
-
-    syncSelectedStreamer();
-
-    renderCurrentDare();
-
-    renderQueue();
 
 }
 
@@ -1360,9 +1814,11 @@ streamerSelect.addEventListener(
         selectedStreamer =
             streamerSelect.value;
 
+
         streamerName.textContent =
             selectedStreamer ||
             "None";
+
 
         syncSelectedStreamer();
 
@@ -1375,7 +1831,7 @@ streamerSelect.addEventListener(
 
 
 /* =========================================================
-   SYNC
+   SYNC SELECTED STREAMER
 ========================================================= */
 
 function syncSelectedStreamer() {
@@ -1385,9 +1841,26 @@ function syncSelectedStreamer() {
             selectedStreamer
         );
 
+
     currentDare =
         activeDares[key] ||
         null;
+
+
+    console.log(
+        "🔄 Selected streamer:",
+        selectedStreamer
+    );
+
+    console.log(
+        "🔥 Current active dare:",
+        currentDare
+    );
+
+    console.log(
+        "⏳ Current queue:",
+        queues[key] || []
+    );
 
 }
 
@@ -1402,15 +1875,24 @@ function removeActiveDare(dare) {
         return;
     }
 
+
     const key =
         streamerKey(
             dare.streamer
         );
 
 
+    const id =
+        getDareId(
+            dare
+        );
+
+
     if (
         activeDares[key] &&
-        activeDares[key].id === dare.id
+        getDareId(
+            activeDares[key]
+        ) === id
     ) {
 
         delete activeDares[key];
@@ -1420,7 +1902,9 @@ function removeActiveDare(dare) {
 
     if (
         currentDare &&
-        currentDare.id === dare.id
+        getDareId(
+            currentDare
+        ) === id
     ) {
 
         currentDare =
@@ -1441,7 +1925,7 @@ function removeActiveDare(dare) {
 
 
 /* =========================================================
-   RENDER ACTIVE
+   RENDER ACTIVE DARE
 ========================================================= */
 
 function renderCurrentDare() {
@@ -1458,11 +1942,18 @@ function renderCurrentDare() {
         `;
 
         return;
+
     }
 
 
     const dare =
         currentDare;
+
+
+    const id =
+        getDareId(
+            dare
+        );
 
 
     currentDareElement.innerHTML = `
@@ -1498,7 +1989,8 @@ function renderCurrentDare() {
             Duration:
             ${Number(
                 dare.duration || 0
-            )} seconds
+            )}
+            seconds
         </div>
 
         <div
@@ -1518,7 +2010,7 @@ function renderCurrentDare() {
                 class="complete"
                 onclick="
                     setDareStatus(
-                        ${Number(dare.id)},
+                        ${id},
                         'completed'
                     )
                 "
@@ -1530,7 +2022,7 @@ function renderCurrentDare() {
                 class="fail"
                 onclick="
                     setDareStatus(
-                        ${Number(dare.id)},
+                        ${id},
                         'failed'
                     )
                 "
@@ -1581,8 +2073,9 @@ function startTimer(dare) {
 
                 remaining--;
 
+
                 if (
-                    remaining < 0
+                    remaining <= 0
                 ) {
 
                     stopTimer();
@@ -1593,6 +2086,7 @@ function startTimer(dare) {
                     return;
 
                 }
+
 
                 timerElement.textContent =
                     formatTime(
@@ -1614,7 +2108,8 @@ function stopTimer() {
             timerInterval
         );
 
-        timerInterval = null;
+        timerInterval =
+            null;
 
     }
 
@@ -1629,22 +2124,31 @@ function formatTime(seconds) {
             Number(seconds) || 0
         );
 
+
     const minutes =
         Math.floor(
             seconds / 60
         );
+
 
     const secs =
         Math.floor(
             seconds % 60
         );
 
+
     return (
         String(minutes)
-            .padStart(2, "0") +
+            .padStart(
+                2,
+                "0"
+            ) +
         ":" +
         String(secs)
-            .padStart(2, "0")
+            .padStart(
+                2,
+                "0"
+            )
     );
 
 }
@@ -1669,6 +2173,7 @@ function sortQueue(queue) {
                     createdAt(b)
                 );
 
+
             return aDate - bDate;
 
         }
@@ -1684,6 +2189,7 @@ function renderQueue() {
             selectedStreamer
         );
 
+
     const queue =
         queues[key] || [];
 
@@ -1697,12 +2203,14 @@ function renderQueue() {
         `;
 
         return;
+
     }
 
 
     sortQueue(
         queue
     );
+
 
     queueElement.innerHTML =
         "";
@@ -1716,8 +2224,16 @@ function renderQueue() {
                     "div"
                 );
 
+
             item.className =
                 "queue-item";
+
+
+            const id =
+                getDareId(
+                    dare
+                );
+
 
             item.innerHTML = `
 
@@ -1762,7 +2278,7 @@ function renderQueue() {
                         class="accept"
                         onclick="
                             acceptDare(
-                                ${Number(dare.id)}
+                                ${id}
                             )
                         "
                     >
@@ -1773,7 +2289,7 @@ function renderQueue() {
                         class="reject"
                         onclick="
                             rejectDare(
-                                ${Number(dare.id)}
+                                ${id}
                             )
                         "
                     >
@@ -1782,6 +2298,7 @@ function renderQueue() {
 
                 </div>
             `;
+
 
             queueElement.appendChild(
                 item
@@ -1799,6 +2316,16 @@ function renderQueue() {
 
 function removeFromQueue(id) {
 
+    if (
+        id === null ||
+        id === undefined
+    ) {
+
+        return;
+
+    }
+
+
     Object.keys(
         queues
     ).forEach(
@@ -1809,7 +2336,8 @@ function removeFromQueue(id) {
                     queues[key] || []
                 ).filter(
                     dare =>
-                        dare.id !== id
+                        getDareId(dare) !==
+                        Number(id)
                 );
 
         }
@@ -1819,6 +2347,10 @@ function removeFromQueue(id) {
 
 
 function findDareInQueue(id) {
+
+    const targetId =
+        Number(id);
+
 
     for (
         const key of
@@ -1830,14 +2362,17 @@ function findDareInQueue(id) {
                 queues[key] || []
             ).find(
                 dare =>
-                    dare.id === id
+                    getDareId(dare) ===
+                    targetId
             );
+
 
         if (found) {
             return found;
         }
 
     }
+
 
     return null;
 
@@ -1854,6 +2389,7 @@ async function acceptDare(id) {
         findDareInQueue(
             id
         );
+
 
     if (!dare) {
 
@@ -1922,14 +2458,17 @@ async function sendDare() {
     const dareTextValue =
         dareInput.value.trim();
 
+
     const viewer =
         viewerInput.value.trim() ||
         "TestViewer";
+
 
     const duration =
         Number(
             durationInput.value
         );
+
 
     const reward =
         Number(
@@ -1944,6 +2483,7 @@ async function sendDare() {
         );
 
         return;
+
     }
 
 
@@ -1956,6 +2496,7 @@ async function sendDare() {
         dareInput.focus();
 
         return;
+
     }
 
 
@@ -1970,6 +2511,7 @@ async function sendDare() {
         );
 
         return;
+
     }
 
 
@@ -1983,11 +2525,13 @@ async function sendDare() {
         );
 
         return;
+
     }
 
 
     sendButton.disabled =
         true;
+
 
     sendButton.textContent =
         "⏳ SENDING...";
@@ -1999,9 +2543,11 @@ async function sendDare() {
             await authenticatedFetch(
                 "/api/dare",
                 {
-                    method: "POST",
+                    method:
+                        "POST",
 
                     body: {
+
                         streamer:
                             selectedStreamer,
 
@@ -2019,7 +2565,9 @@ async function sendDare() {
 
                         reward:
                             reward
+
                     }
+
                 }
             );
 
@@ -2029,12 +2577,43 @@ async function sendDare() {
         }
 
 
+        console.log(
+            "📤 Dare API response:",
+            result
+        );
+
+
         dareInput.value =
             "";
+
 
         const dare =
             result?.dare ||
             result?.data?.dare;
+
+
+        /*
+         * The WebSocket normally updates
+         * the controller automatically.
+         *
+         * This fallback also updates the UI
+         * immediately if the API response
+         * contains the dare.
+         */
+
+        if (dare) {
+
+            updateLocalDare(
+                dare
+            );
+
+            syncSelectedStreamer();
+
+            renderCurrentDare();
+
+            renderQueue();
+
+        }
 
 
         if (
@@ -2057,9 +2636,10 @@ async function sendDare() {
     } catch (error) {
 
         console.error(
-            "Send dare error:",
+            "❌ Send dare error:",
             error
         );
+
 
         showToast(
             "❌ " +
@@ -2110,6 +2690,7 @@ async function setDareStatus(
         );
 
         return;
+
     }
 
 
@@ -2119,11 +2700,14 @@ async function setDareStatus(
             await authenticatedFetch(
                 `/api/dare/${encodeURIComponent(id)}/status`,
                 {
-                    method: "POST",
+                    method:
+                        "POST",
 
                     body: {
-                        status
+                        status:
+                            status
                     }
+
                 }
             );
 
@@ -2132,6 +2716,17 @@ async function setDareStatus(
             return;
         }
 
+
+        console.log(
+            "📡 Status response:",
+            result
+        );
+
+
+        /*
+         * The WebSocket will update
+         * the controller state.
+         */
 
         if (
             status ===
@@ -2171,7 +2766,7 @@ async function setDareStatus(
     } catch (error) {
 
         console.error(
-            "Status update error:",
+            "❌ Status update error:",
             error
         );
 
@@ -2186,6 +2781,7 @@ async function setDareStatus(
             );
 
             return;
+
         }
 
 
@@ -2199,6 +2795,7 @@ async function setDareStatus(
             );
 
             return;
+
         }
 
 
@@ -2212,6 +2809,7 @@ async function setDareStatus(
             );
 
             return;
+
         }
 
 
@@ -2246,22 +2844,33 @@ async function initialize() {
 
 
         console.log(
-            "Authenticated user:",
+            "👤 Authenticated user:",
             user
         );
 
 
+        /*
+         * Load the streamer first so the
+         * STATE data has a selected streamer
+         * to render against.
+         */
+
         await loadStreamers();
 
-        connectWebSocket();
 
+        /*
+         * Then connect to WebSocket.
+         */
+
+        connectWebSocket();
 
     } catch (error) {
 
         console.error(
-            "Controller initialization failed:",
+            "❌ Controller initialization failed:",
             error
         );
+
 
         showToast(
             "❌ Could not initialize controller."
@@ -2283,4 +2892,4 @@ initialize();
 </body>
 
 </html>
-
+```
