@@ -59,6 +59,7 @@ body {
     margin: 0 auto;
 }
 
+
 /* =========================
    HEADER
 ========================= */
@@ -119,6 +120,7 @@ body {
     font-size: 13px;
 }
 
+
 /* =========================
    CONNECTION STATUS
 ========================= */
@@ -160,6 +162,18 @@ body {
         rgba(255, 43, 43, 0.25);
 }
 
+.authenticating {
+    background:
+        rgba(245, 197, 66, 0.12);
+
+    color: #f5d56d;
+
+    border:
+        1px solid
+        rgba(245, 197, 66, 0.25);
+}
+
+
 /* =========================
    CARDS
 ========================= */
@@ -199,45 +213,80 @@ body {
     font-size: 17px;
 }
 
+
 /* =========================
    STREAMER
 ========================= */
 
-.streamer-info {
-    color: var(--muted);
+.streamer-profile {
+    display: flex;
 
-    margin-bottom: 12px;
+    align-items: center;
 
-    font-size: 14px;
-}
+    justify-content: space-between;
 
-.streamer-info strong {
-    color: white;
-}
+    gap: 20px;
 
-select {
-    width: 100%;
-
-    padding: 13px 14px;
-
-    border-radius: 10px;
-
-    border:
-        1px solid
-        #30333d;
+    padding: 18px;
 
     background: #0c0e12;
 
-    color: white;
+    border:
+        1px solid
+        var(--border);
 
-    font-size: 15px;
-
-    outline: none;
+    border-radius: 12px;
 }
 
-select:focus {
-    border-color: var(--red);
+.streamer-main {
+    min-width: 0;
 }
+
+.streamer-name {
+    font-size: 21px;
+
+    font-weight: 900;
+
+    word-break: break-word;
+}
+
+.streamer-platform {
+    color: var(--muted);
+
+    font-size: 13px;
+
+    margin-top: 6px;
+}
+
+.streamer-id {
+    color: #707582;
+
+    font-size: 11px;
+
+    margin-top: 5px;
+}
+
+.online-badge {
+    flex-shrink: 0;
+
+    padding: 7px 11px;
+
+    border-radius: 999px;
+
+    background:
+        rgba(32, 199, 106, 0.12);
+
+    border:
+        1px solid
+        rgba(32, 199, 106, 0.25);
+
+    color: #55e994;
+
+    font-size: 11px;
+
+    font-weight: 900;
+}
+
 
 /* =========================
    ACTIVE DARE
@@ -327,6 +376,7 @@ select:focus {
     flex: 1;
 }
 
+
 /* =========================
    BUTTONS
 ========================= */
@@ -372,6 +422,7 @@ button:disabled {
 
     color: white;
 }
+
 
 /* =========================
    QUEUE
@@ -435,6 +486,7 @@ button:disabled {
     border-radius: 10px;
 }
 
+
 /* =========================
    TOAST
 ========================= */
@@ -471,6 +523,7 @@ button:disabled {
     display: block;
 }
 
+
 /* =========================
    MOBILE
 ========================= */
@@ -482,6 +535,12 @@ button:disabled {
     }
 
     .header {
+        align-items: flex-start;
+
+        flex-direction: column;
+    }
+
+    .streamer-profile {
         align-items: flex-start;
 
         flex-direction: column;
@@ -506,9 +565,11 @@ button:disabled {
 
 </head>
 
+
 <body>
 
 <div class="container">
+
 
     <!-- =====================
          HEADER
@@ -548,7 +609,7 @@ button:disabled {
 
 
     <!-- =====================
-         CONTROLLING STREAMER
+         STREAMER PROFILE
     ====================== -->
 
     <div class="card">
@@ -556,30 +617,22 @@ button:disabled {
         <div class="card-title">
 
             <h2>
-                🎥 CONTROLLING STREAMER
+                🎥 YOUR STREAMER PROFILE
             </h2>
 
         </div>
 
 
-        <div class="streamer-info">
+        <div
+            id="streamerProfile"
+            class="streamer-profile"
+        >
 
-            Streamer:
-
-            <strong id="streamerName">
-                Loading...
-            </strong>
+            <div class="empty">
+                Loading streamer profile...
+            </div>
 
         </div>
-
-
-        <select id="streamerSelect">
-
-            <option value="">
-                Loading streamers...
-            </option>
-
-        </select>
 
     </div>
 
@@ -612,7 +665,7 @@ button:disabled {
 
     <!-- =====================
          WAITING QUEUE
-    ====================== -->
+    ===================== -->
 
     <div class="card">
 
@@ -652,28 +705,28 @@ button:disabled {
      AUTH
 ========================= -->
 
-<script src="auth.js?v=1002"></script>
+<script src="auth.js?v=1003"></script>
 
 
 <script>
 
-/* =========================
+/* ============================================================
    CONFIG
-========================= */
+============================================================ */
 
 const WS_URL =
     "wss://dare-backend-vx8w.onrender.com/ws";
 
 
-/* =========================
+/* ============================================================
    STATE
-========================= */
+============================================================ */
 
 let ws = null;
 
-let streamers = [];
+let myStreamer = null;
 
-let selectedStreamer = "";
+let selectedStreamerId = null;
 
 let activeDares = {};
 
@@ -687,24 +740,23 @@ let reconnectTimer = null;
 
 let toastTimer = null;
 
+let authenticatedSocket = false;
 
-/* =========================
+let reconnectAttempt = 0;
+
+
+/* ============================================================
    ELEMENTS
-========================= */
+============================================================ */
 
 const connectionStatus =
     document.getElementById(
         "connectionStatus"
     );
 
-const streamerSelect =
+const streamerProfileElement =
     document.getElementById(
-        "streamerSelect"
-    );
-
-const streamerName =
-    document.getElementById(
-        "streamerName"
+        "streamerProfile"
     );
 
 const currentDareElement =
@@ -723,15 +775,23 @@ const toast =
     );
 
 
-/* =========================
+/* ============================================================
    HELPERS
-========================= */
+============================================================ */
 
-function streamerKey(name) {
+function streamerKey(id) {
 
-    return String(name || "")
-        .trim()
-        .toLowerCase();
+    if (
+        id === null ||
+        id === undefined ||
+        id === ""
+    ) {
+
+        return "";
+
+    }
+
+    return String(id);
 
 }
 
@@ -742,10 +802,35 @@ function getDareId(dare) {
         return null;
     }
 
-    return Number(
+    const value =
         dare.id ??
         dare.dare_id ??
-        dare.dareId
+        dare.dareId;
+
+    if (
+        value === null ||
+        value === undefined
+    ) {
+
+        return null;
+
+    }
+
+    return Number(value);
+
+}
+
+
+function getDareStreamerId(dare) {
+
+    if (!dare) {
+        return null;
+    }
+
+    return (
+        dare.streamerId ??
+        dare.streamer_id ??
+        null
     );
 
 }
@@ -847,9 +932,222 @@ function formatReward(value) {
 }
 
 
-/* =========================
+function getStreamerDisplayName(streamer) {
+
+    if (!streamer) {
+        return "Unknown streamer";
+    }
+
+    return (
+        streamer.displayName ||
+        streamer.display_name ||
+        streamer.username ||
+        "Streamer"
+    );
+
+}
+
+
+function getStreamerPlatform(streamer) {
+
+    if (!streamer) {
+        return "";
+    }
+
+    const platform =
+        streamer.platform ||
+        "";
+
+    const platformUsername =
+        streamer.platformUsername ||
+        streamer.platform_username ||
+        "";
+
+    if (
+        platform &&
+        platformUsername
+    ) {
+
+        return (
+            platform.toUpperCase() +
+            " • " +
+            platformUsername
+        );
+
+    }
+
+    if (platform) {
+
+        return platform.toUpperCase();
+
+    }
+
+    return "Streaming platform not connected";
+
+}
+
+
+/* ============================================================
+   RENDER STREAMER PROFILE
+============================================================ */
+
+function renderStreamerProfile() {
+
+    if (!myStreamer) {
+
+        streamerProfileElement.innerHTML = `
+
+            <div class="empty">
+
+                No streamer profile was found
+                for this Nerve account.
+
+            </div>
+
+        `;
+
+        return;
+
+    }
+
+
+    const id =
+        myStreamer.id;
+
+    const displayName =
+        getStreamerDisplayName(
+            myStreamer
+        );
+
+    const platform =
+        getStreamerPlatform(
+            myStreamer
+        );
+
+
+    streamerProfileElement.innerHTML = `
+
+        <div class="streamer-main">
+
+            <div class="streamer-name">
+
+                ${escapeHtml(
+                    displayName
+                )}
+
+            </div>
+
+
+            <div class="streamer-platform">
+
+                ${escapeHtml(
+                    platform
+                )}
+
+            </div>
+
+
+            <div class="streamer-id">
+
+                Nerve Streamer ID:
+                ${escapeHtml(
+                    id
+                )}
+
+            </div>
+
+        </div>
+
+
+        <div class="online-badge">
+
+            ● CONTROLLER READY
+
+        </div>
+
+    `;
+
+}
+
+
+/* ============================================================
+   FIND DARE BY ID
+============================================================ */
+
+function findDareInQueue(id) {
+
+    const targetId =
+        Number(id);
+
+
+    const key =
+        streamerKey(
+            selectedStreamerId
+        );
+
+
+    const queue =
+        queues[key] ||
+        [];
+
+
+    return (
+        queue.find(
+            dare =>
+                getDareId(
+                    dare
+                ) === targetId
+        ) ||
+        null
+    );
+
+}
+
+
+/* ============================================================
+   SORT QUEUE
+============================================================ */
+
+function sortQueue(queue) {
+
+    if (
+        !Array.isArray(queue)
+    ) {
+
+        return;
+
+    }
+
+
+    queue.sort(
+        (a, b) => {
+
+            const aDate =
+                new Date(
+                    createdAt(a)
+                );
+
+
+            const bDate =
+                new Date(
+                    createdAt(b)
+                );
+
+
+            return (
+                aDate -
+                bDate
+            );
+
+        }
+    );
+
+}
+
+
+/* ============================================================
    WEBSOCKET CONNECTION
-========================= */
+============================================================ */
 
 function connectWebSocket() {
 
@@ -869,11 +1167,32 @@ function connectWebSocket() {
     }
 
 
+    const token =
+        getAuthToken();
+
+
+    if (!token) {
+
+        connectionStatus.textContent =
+            "🔴 Not authenticated";
+
+        connectionStatus.className =
+            "status disconnected";
+
+        return;
+
+    }
+
+
     connectionStatus.textContent =
         "🟡 Connecting...";
 
     connectionStatus.className =
-        "status disconnected";
+        "status authenticating";
+
+
+    authenticatedSocket =
+        false;
 
 
     try {
@@ -895,6 +1214,9 @@ function connectWebSocket() {
         connectionStatus.textContent =
             "🔴 Connection Error";
 
+        connectionStatus.className =
+            "status disconnected";
+
         scheduleReconnect();
 
         return;
@@ -911,25 +1233,33 @@ function connectWebSocket() {
 
 
             connectionStatus.textContent =
-                "🟢 Connected";
-
+                "🟡 Authenticating...";
 
             connectionStatus.className =
-                "status connected";
+                "status authenticating";
 
 
-            clearTimeout(
-                reconnectTimer
-            );
+            reconnectAttempt = 0;
 
+
+            /*
+             * IMPORTANT:
+             *
+             * Browser WebSockets cannot easily
+             * send an Authorization header.
+             *
+             * Therefore authentication happens
+             * as the first WebSocket message.
+             */
 
             try {
 
                 ws.send(
-                    JSON.stringify({
-                        type:
-                            "GET_STATE"
-                    })
+                    JSON.stringify(
+                        createWebSocketAuthMessage(
+                            "controller"
+                        )
+                    )
                 );
 
             }
@@ -937,7 +1267,7 @@ function connectWebSocket() {
             catch (error) {
 
                 console.error(
-                    "GET_STATE send error:",
+                    "WebSocket AUTH error:",
                     error
                 );
 
@@ -956,9 +1286,12 @@ function connectWebSocket() {
             );
 
 
+            authenticatedSocket =
+                false;
+
+
             connectionStatus.textContent =
                 "🔴 Disconnected";
-
 
             connectionStatus.className =
                 "status disconnected";
@@ -980,6 +1313,9 @@ function connectWebSocket() {
 
             connectionStatus.textContent =
                 "🔴 Connection Error";
+
+            connectionStatus.className =
+                "status disconnected";
 
         };
 
@@ -1016,6 +1352,10 @@ function connectWebSocket() {
 }
 
 
+/* ============================================================
+   RECONNECT
+============================================================ */
+
 function scheduleReconnect() {
 
     clearTimeout(
@@ -1023,18 +1363,32 @@ function scheduleReconnect() {
     );
 
 
+    reconnectAttempt++;
+
+
+    const delay =
+        Math.min(
+            10000,
+            2000 +
+            (
+                reconnectAttempt *
+                500
+            )
+        );
+
+
     reconnectTimer =
         setTimeout(
             connectWebSocket,
-            3000
+            delay
         );
 
 }
 
 
-/* =========================
+/* ============================================================
    WEBSOCKET MESSAGE HANDLER
-========================= */
+============================================================ */
 
 function handleWebSocketMessage(
     message
@@ -1046,19 +1400,115 @@ function handleWebSocketMessage(
     );
 
 
-    /* =====================
+    /* ========================================================
+       AUTH SUCCESS
+    ======================================================== */
+
+    if (
+        message.type ===
+        "AUTH_OK"
+    ) {
+
+        authenticatedSocket =
+            true;
+
+
+        connectionStatus.textContent =
+            "🟢 Connected";
+
+        connectionStatus.className =
+            "status connected";
+
+
+        console.log(
+            "🔐 WebSocket authenticated"
+        );
+
+
+        /*
+         * Ask for latest state after authentication.
+         */
+
+        try {
+
+            ws.send(
+                JSON.stringify({
+                    type:
+                        "GET_STATE"
+                })
+            );
+
+        }
+
+        catch (error) {
+
+            console.error(
+                "GET_STATE error:",
+                error
+            );
+
+        }
+
+
+        return;
+
+    }
+
+
+    /* ========================================================
+       AUTH FAILURE
+    ======================================================== */
+
+    if (
+        message.type ===
+            "AUTH_ERROR" ||
+
+        message.type ===
+            "AUTH_FAILED"
+    ) {
+
+        authenticatedSocket =
+            false;
+
+
+        connectionStatus.textContent =
+            "🔴 Authentication Failed";
+
+        connectionStatus.className =
+            "status disconnected";
+
+
+        showToast(
+            "🔐 Session expired. Please log in again."
+        );
+
+
+        setTimeout(
+            () => {
+
+                clearAuthCache();
+
+                window.location.href =
+                    "login.html";
+
+            },
+            1200
+        );
+
+
+        return;
+
+    }
+
+
+    /* ========================================================
        STATE
-    ===================== */
+    ======================================================== */
 
     if (
         message.type ===
         "STATE"
     ) {
-
-        console.log(
-            "📦 STATE received"
-        );
-
 
         activeDares = {};
 
@@ -1067,13 +1517,6 @@ function handleWebSocketMessage(
 
         /*
          * ACTIVE DARES
-         *
-         * Supports:
-         *
-         * message.active
-         * message.activeDares
-         * message.data.active
-         * message.data.activeDares
          */
 
         const incomingActive =
@@ -1093,9 +1536,15 @@ function handleWebSocketMessage(
             incomingActive.forEach(
                 dare => {
 
+                    const streamerId =
+                        getDareStreamerId(
+                            dare
+                        );
+
+
                     if (
-                        !dare ||
-                        !dare.streamer
+                        streamerId ===
+                        null
                     ) {
 
                         return;
@@ -1103,14 +1552,11 @@ function handleWebSocketMessage(
                     }
 
 
-                    const key =
+                    activeDares[
                         streamerKey(
-                            dare.streamer
-                        );
-
-
-                    activeDares[key] =
-                        dare;
+                            streamerId
+                        )
+                    ] = dare;
 
                 }
             );
@@ -1133,14 +1579,16 @@ function handleWebSocketMessage(
                     }
 
 
-                    const streamer =
-                        dare.streamer ||
+                    const streamerId =
+                        getDareStreamerId(
+                            dare
+                        ) ??
                         key;
 
 
                     activeDares[
                         streamerKey(
-                            streamer
+                            streamerId
                         )
                     ] = dare;
 
@@ -1152,22 +1600,6 @@ function handleWebSocketMessage(
 
         /*
          * QUEUES
-         *
-         * The backend may send:
-         *
-         * message.queue
-         *
-         * or:
-         *
-         * message.queues
-         *
-         * or:
-         *
-         * message.data.queue
-         *
-         * or:
-         *
-         * message.data.queues
          */
 
         const incomingQueues =
@@ -1180,14 +1612,6 @@ function handleWebSocketMessage(
 
         /*
          * FLAT ARRAY
-         *
-         * Example:
-         *
-         * queue: [
-         *     dare,
-         *     dare,
-         *     dare
-         * ]
          */
 
         if (
@@ -1199,9 +1623,15 @@ function handleWebSocketMessage(
             incomingQueues.forEach(
                 dare => {
 
+                    const streamerId =
+                        getDareStreamerId(
+                            dare
+                        );
+
+
                     if (
-                        !dare ||
-                        !dare.streamer
+                        streamerId ===
+                        null
                     ) {
 
                         return;
@@ -1211,7 +1641,7 @@ function handleWebSocketMessage(
 
                     const key =
                         streamerKey(
-                            dare.streamer
+                            streamerId
                         );
 
 
@@ -1236,16 +1666,7 @@ function handleWebSocketMessage(
 
 
         /*
-         * OBJECT QUEUES
-         *
-         * Example:
-         *
-         * queues: {
-         *     ishowsloow_: [
-         *         dare,
-         *         dare
-         *     ]
-         * }
+         * OBJECT
          */
 
         else if (
@@ -1270,14 +1691,10 @@ function handleWebSocketMessage(
                     }
 
 
-                    const normalizedKey =
+                    queues[
                         streamerKey(
                             key
-                        );
-
-
-                    queues[
-                        normalizedKey
+                        )
                     ] = [
                         ...queue
                     ];
@@ -1287,10 +1704,6 @@ function handleWebSocketMessage(
 
         }
 
-
-        /*
-         * Sort queues
-         */
 
         Object.keys(
             queues
@@ -1302,18 +1715,6 @@ function handleWebSocketMessage(
                 );
 
             }
-        );
-
-
-        console.log(
-            "🔥 Active dares:",
-            activeDares
-        );
-
-
-        console.log(
-            "⏳ Queues:",
-            queues
         );
 
 
@@ -1329,9 +1730,9 @@ function handleWebSocketMessage(
     }
 
 
-    /* =====================
+    /* ========================================================
        DARE CREATED
-    ===================== */
+    ======================================================== */
 
     if (
         message.type ===
@@ -1340,12 +1741,6 @@ function handleWebSocketMessage(
 
         const dare =
             message.dare;
-
-
-        console.log(
-            "🆕 New dare:",
-            dare
-        );
 
 
         if (!dare) {
@@ -1370,9 +1765,9 @@ function handleWebSocketMessage(
     }
 
 
-    /* =====================
+    /* ========================================================
        ACTIVE DARE
-    ===================== */
+    ======================================================== */
 
     if (
         message.type ===
@@ -1383,25 +1778,32 @@ function handleWebSocketMessage(
             message.dare;
 
 
-        console.log(
-            "🔥 Active dare:",
-            dare
-        );
-
-
         if (!dare) {
             return;
         }
 
 
-        const key =
-            streamerKey(
-                dare.streamer
+        const streamerId =
+            getDareStreamerId(
+                dare
             );
 
 
-        activeDares[key] =
-            dare;
+        if (
+            streamerId ===
+            null
+        ) {
+
+            return;
+
+        }
+
+
+        activeDares[
+            streamerKey(
+                streamerId
+            )
+        ] = dare;
 
 
         removeFromQueue(
@@ -1418,9 +1820,20 @@ function handleWebSocketMessage(
         renderQueue();
 
 
-        showToast(
-            "🔥 Dare is now LIVE!"
-        );
+        if (
+            streamerKey(
+                streamerId
+            ) ===
+            streamerKey(
+                selectedStreamerId
+            )
+        ) {
+
+            showToast(
+                "🔥 Dare is now LIVE!"
+            );
+
+        }
 
 
         return;
@@ -1428,24 +1841,35 @@ function handleWebSocketMessage(
     }
 
 
-    /* =====================
+    /* ========================================================
        QUEUE UPDATED
-    ===================== */
+    ======================================================== */
 
     if (
         message.type ===
         "QUEUE_UPDATED"
     ) {
 
-        console.log(
-            "⏳ Queue updated:",
-            message
-        );
+        const streamerId =
+            message.streamerId ??
+            message.streamer_id ??
+            message.streamer ??
+            null;
+
+
+        if (
+            streamerId ===
+            null
+        ) {
+
+            return;
+
+        }
 
 
         const key =
             streamerKey(
-                message.streamer
+                streamerId
             );
 
 
@@ -1472,20 +1896,14 @@ function handleWebSocketMessage(
     }
 
 
-    /* =====================
+    /* ========================================================
        DARE COMPLETED
-    ===================== */
+    ======================================================== */
 
     if (
         message.type ===
         "DARE_COMPLETED"
     ) {
-
-        console.log(
-            "✅ Dare completed:",
-            message.dare
-        );
-
 
         if (
             message.dare
@@ -1508,20 +1926,14 @@ function handleWebSocketMessage(
     }
 
 
-    /* =====================
+    /* ========================================================
        DARE FAILED
-    ===================== */
+    ======================================================== */
 
     if (
         message.type ===
         "DARE_FAILED"
     ) {
-
-        console.log(
-            "❌ Dare failed:",
-            message.dare
-        );
-
 
         if (
             message.dare
@@ -1544,30 +1956,35 @@ function handleWebSocketMessage(
     }
 
 
-    /* =====================
+    /* ========================================================
        ACTIVE DARE CLEARED
-    ===================== */
+    ======================================================== */
 
     if (
         message.type ===
         "ACTIVE_DARE_CLEARED"
     ) {
 
-        console.log(
-            "🧹 Active dare cleared:",
-            message
-        );
+        const streamerId =
+            message.streamerId ??
+            message.streamer_id ??
+            message.streamer;
 
 
-        const key =
-            streamerKey(
-                message.streamer
-            );
+        if (
+            streamerId !==
+            null &&
+            streamerId !==
+            undefined
+        ) {
 
+            delete activeDares[
+                streamerKey(
+                    streamerId
+                )
+            ];
 
-        delete activeDares[
-            key
-        ];
+        }
 
 
         syncSelectedStreamer();
@@ -1582,20 +1999,14 @@ function handleWebSocketMessage(
     }
 
 
-    /* =====================
+    /* ========================================================
        DARE REJECTED
-    ===================== */
+    ======================================================== */
 
     if (
         message.type ===
         "DARE_REJECTED"
     ) {
-
-        console.log(
-            "🚫 Dare rejected:",
-            message.dare
-        );
-
 
         if (
             message.dare
@@ -1625,19 +2036,14 @@ function handleWebSocketMessage(
     }
 
 
-    /* =====================
+    /* ========================================================
        RESET
-    ===================== */
+    ======================================================== */
 
     if (
         message.type ===
         "RESET"
     ) {
-
-        console.log(
-            "🔄 Reset received"
-        );
-
 
         activeDares = {};
 
@@ -1667,17 +2073,28 @@ function handleWebSocketMessage(
 }
 
 
-/* =========================
+/* ============================================================
    UPDATE LOCAL DARE
-========================= */
+============================================================ */
 
 function updateLocalDare(
     dare
 ) {
 
+    if (!dare) {
+        return;
+    }
+
+
+    const streamerId =
+        getDareStreamerId(
+            dare
+        );
+
+
     if (
-        !dare ||
-        !dare.streamer
+        streamerId ===
+        null
     ) {
 
         return;
@@ -1687,7 +2104,7 @@ function updateLocalDare(
 
     const key =
         streamerKey(
-            dare.streamer
+            streamerId
         );
 
 
@@ -1752,7 +2169,8 @@ function updateLocalDare(
                 item =>
                     getDareId(
                         item
-                    ) === id
+                    ) ===
+                    id
             );
 
 
@@ -1774,11 +2192,11 @@ function updateLocalDare(
 }
 
 
-/* =========================
-   LOAD STREAMERS
-========================= */
+/* ============================================================
+   LOAD MY STREAMER
+============================================================ */
 
-async function loadStreamers() {
+async function loadMyStreamer() {
 
     try {
 
@@ -1792,6 +2210,9 @@ async function loadStreamers() {
             "📡 My streamers response:",
             result
         );
+
+
+        let streamers = [];
 
 
         if (
@@ -1827,77 +2248,83 @@ async function loadStreamers() {
 
         }
 
-        else {
 
-            streamers = [];
-
-        }
-
-
-        console.log(
-            "🎥 Loaded streamers:",
-            streamers
-        );
-
-
-        renderStreamers();
-
+        /*
+         * Every Nerve account should have
+         * one streamer profile.
+         */
 
         if (
-            streamers.length > 0 &&
-            !selectedStreamer
+            !streamers.length
         ) {
 
-            selectedStreamer =
-                streamers[0].username ||
-                streamers[0].twitchUsername ||
-                streamers[0].name ||
-                "";
+            myStreamer =
+                null;
 
+            selectedStreamerId =
+                null;
 
-            console.log(
-                "🎯 Selected streamer:",
-                selectedStreamer
-            );
-
-
-            streamerSelect.value =
-                selectedStreamer;
-
-
-            streamerName.textContent =
-                selectedStreamer ||
-                "None";
-
-
-            syncSelectedStreamer();
+            renderStreamerProfile();
 
             renderCurrentDare();
 
             renderQueue();
 
+
+            showToast(
+                "⚠️ No streamer profile found."
+            );
+
+
+            return;
+
         }
+
+
+        myStreamer =
+            streamers[0];
+
+
+        selectedStreamerId =
+            myStreamer.id;
+
+
+        console.log(
+            "🎥 My streamer:",
+            myStreamer
+        );
+
+
+        console.log(
+            "🆔 Streamer ID:",
+            selectedStreamerId
+        );
+
+
+        renderStreamerProfile();
+
+        syncSelectedStreamer();
+
+        renderCurrentDare();
+
+        renderQueue();
 
     }
 
     catch (error) {
 
         console.error(
-            "❌ Failed to load streamers:",
+            "❌ Failed to load streamer:",
             error
         );
-
-
-        streamers = [];
-
-
-        renderStreamers();
 
 
         if (
             error.status ===
             401
         ) {
+
+            clearAuthCache();
 
             window.location.href =
                 "login.html";
@@ -1908,7 +2335,7 @@ async function loadStreamers() {
 
 
         showToast(
-            "❌ Could not load your streamers."
+            "❌ Could not load your streamer profile."
         );
 
     }
@@ -1916,172 +2343,30 @@ async function loadStreamers() {
 }
 
 
-/* =========================
-   RENDER STREAMERS
-========================= */
+/* ============================================================
+   SYNC SELECTED STREAMER
+============================================================ */
 
-function renderStreamers() {
-
-    streamerSelect.innerHTML =
-        "";
-
+function syncSelectedStreamer() {
 
     if (
-        !streamers.length
+        selectedStreamerId ===
+        null ||
+        selectedStreamerId ===
+        undefined
     ) {
 
-        streamerSelect.innerHTML = `
-            <option value="">
-                No connected streamers
-            </option>
-        `;
-
-
-        streamerName.textContent =
-            "None";
-
-
-        selectedStreamer =
-            "";
-
+        currentDare =
+            null;
 
         return;
 
     }
 
 
-    const available = [];
-
-
-    streamers.forEach(
-        streamer => {
-
-            const username =
-                streamer.username ||
-                streamer.twitchUsername ||
-                streamer.name ||
-                "";
-
-
-            if (!username) {
-                return;
-            }
-
-
-            available.push(
-                username
-            );
-
-
-            const option =
-                document.createElement(
-                    "option"
-                );
-
-
-            option.value =
-                username;
-
-
-            option.textContent =
-                streamer.displayName ||
-                streamer.display_name ||
-                username;
-
-
-            streamerSelect.appendChild(
-                option
-            );
-
-        }
-    );
-
-
-    /*
-     * Preserve selected streamer
-     * regardless of capitalization.
-     */
-
-    const selectedKey =
-        streamerKey(
-            selectedStreamer
-        );
-
-
-    const matchingStreamer =
-        available.find(
-            username =>
-                streamerKey(
-                    username
-                ) === selectedKey
-        );
-
-
-    if (
-        matchingStreamer
-    ) {
-
-        selectedStreamer =
-            matchingStreamer;
-
-    }
-
-    else {
-
-        selectedStreamer =
-            available[0] ||
-            "";
-
-    }
-
-
-    streamerSelect.value =
-        selectedStreamer;
-
-
-    streamerName.textContent =
-        selectedStreamer ||
-        "None";
-
-}
-
-
-/* =========================
-   STREAMER SELECT CHANGE
-========================= */
-
-streamerSelect.addEventListener(
-    "change",
-    function() {
-
-        selectedStreamer =
-            streamerSelect.value;
-
-
-        streamerName.textContent =
-            selectedStreamer ||
-            "None";
-
-
-        syncSelectedStreamer();
-
-        renderCurrentDare();
-
-        renderQueue();
-
-    }
-);
-
-
-/* =========================
-   SYNC SELECTED STREAMER
-========================= */
-
-function syncSelectedStreamer() {
-
     const key =
         streamerKey(
-            selectedStreamer
+            selectedStreamerId
         );
 
 
@@ -2091,28 +2376,29 @@ function syncSelectedStreamer() {
 
 
     console.log(
-        "🔄 Selected streamer:",
-        selectedStreamer
+        "🔄 Streamer ID:",
+        selectedStreamerId
     );
 
 
     console.log(
-        "🔥 Current active dare:",
+        "🔥 Active dare:",
         currentDare
     );
 
 
     console.log(
-        "⏳ Current queue:",
-        queues[key] || []
+        "⏳ Queue:",
+        queues[key] ||
+        []
     );
 
 }
 
 
-/* =========================
+/* ============================================================
    REMOVE ACTIVE DARE
-========================= */
+============================================================ */
 
 function removeActiveDare(
     dare
@@ -2123,9 +2409,9 @@ function removeActiveDare(
     }
 
 
-    const key =
-        streamerKey(
-            dare.streamer
+    const streamerId =
+        getDareStreamerId(
+            dare
         );
 
 
@@ -2136,13 +2422,26 @@ function removeActiveDare(
 
 
     if (
-        activeDares[key] &&
-        getDareId(
-            activeDares[key]
-        ) === id
+        streamerId !==
+        null
     ) {
 
-        delete activeDares[key];
+        const key =
+            streamerKey(
+                streamerId
+            );
+
+
+        if (
+            activeDares[key] &&
+            getDareId(
+                activeDares[key]
+            ) === id
+        ) {
+
+            delete activeDares[key];
+
+        }
 
     }
 
@@ -2172,9 +2471,9 @@ function removeActiveDare(
 }
 
 
-/* =========================
+/* ============================================================
    RENDER ACTIVE DARE
-========================= */
+============================================================ */
 
 function renderCurrentDare() {
 
@@ -2186,9 +2485,13 @@ function renderCurrentDare() {
     ) {
 
         currentDareElement.innerHTML = `
+
             <div class="empty">
+
                 No active dare
+
             </div>
+
         `;
 
 
@@ -2210,7 +2513,9 @@ function renderCurrentDare() {
     currentDareElement.innerHTML = `
 
         <div class="live-label">
+
             🔴 LIVE
+
         </div>
 
 
@@ -2322,9 +2627,9 @@ function renderCurrentDare() {
 }
 
 
-/* =========================
+/* ============================================================
    TIMER
-========================= */
+============================================================ */
 
 function startTimer(
     dare
@@ -2457,64 +2762,15 @@ function formatTime(
 }
 
 
-/* =========================
-   SORT QUEUE
-========================= */
-
-function sortQueue(
-    queue
-) {
-
-    if (
-        !Array.isArray(
-            queue
-        )
-    ) {
-
-        return;
-
-    }
-
-
-    queue.sort(
-        (a, b) => {
-
-            const aDate =
-                new Date(
-                    createdAt(
-                        a
-                    )
-                );
-
-
-            const bDate =
-                new Date(
-                    createdAt(
-                        b
-                    )
-                );
-
-
-            return (
-                aDate -
-                bDate
-            );
-
-        }
-    );
-
-}
-
-
-/* =========================
+/* ============================================================
    RENDER QUEUE
-========================= */
+============================================================ */
 
 function renderQueue() {
 
     const key =
         streamerKey(
-            selectedStreamer
+            selectedStreamerId
         );
 
 
@@ -2528,9 +2784,13 @@ function renderQueue() {
     ) {
 
         queueElement.innerHTML = `
+
             <div class="empty">
+
                 No waiting dares
+
             </div>
+
         `;
 
 
@@ -2672,9 +2932,9 @@ function renderQueue() {
 }
 
 
-/* =========================
+/* ============================================================
    REMOVE FROM QUEUE
-========================= */
+============================================================ */
 
 function removeFromQueue(
     id
@@ -2688,6 +2948,10 @@ function removeFromQueue(
         return;
 
     }
+
+
+    const targetId =
+        Number(id);
 
 
     Object.keys(
@@ -2704,9 +2968,7 @@ function removeFromQueue(
                         getDareId(
                             dare
                         ) !==
-                        Number(
-                            id
-                        )
+                        targetId
                 );
 
         }
@@ -2715,57 +2977,9 @@ function removeFromQueue(
 }
 
 
-/* =========================
-   FIND DARE IN QUEUE
-========================= */
-
-function findDareInQueue(
-    id
-) {
-
-    const targetId =
-        Number(
-            id
-        );
-
-
-    for (
-        const key of
-        Object.keys(
-            queues
-        )
-    ) {
-
-        const found =
-            (
-                queues[key] ||
-                []
-            ).find(
-                dare =>
-                    getDareId(
-                        dare
-                    ) ===
-                    targetId
-            );
-
-
-        if (found) {
-
-            return found;
-
-        }
-
-    }
-
-
-    return null;
-
-}
-
-
-/* =========================
+/* ============================================================
    ACCEPT DARE
-========================= */
+============================================================ */
 
 async function acceptDare(
     id
@@ -2789,15 +3003,9 @@ async function acceptDare(
     }
 
 
-    const active =
-        activeDares[
-            streamerKey(
-                dare.streamer
-            )
-        ];
-
-
-    if (active) {
+    if (
+        currentDare
+    ) {
 
         showToast(
             "⚠️ Finish the active dare first."
@@ -2817,9 +3025,9 @@ async function acceptDare(
 }
 
 
-/* =========================
+/* ============================================================
    REJECT DARE
-========================= */
+============================================================ */
 
 async function rejectDare(
     id
@@ -2833,9 +3041,9 @@ async function rejectDare(
 }
 
 
-/* =========================
+/* ============================================================
    STATUS UPDATE
-========================= */
+============================================================ */
 
 async function setDareStatus(
     id,
@@ -2866,6 +3074,23 @@ async function setDareStatus(
     }
 
 
+    if (
+        selectedStreamerId ===
+        null ||
+        selectedStreamerId ===
+        undefined
+    ) {
+
+        showToast(
+            "❌ No streamer profile loaded."
+        );
+
+
+        return;
+
+    }
+
+
     try {
 
         const result =
@@ -2879,8 +3104,10 @@ async function setDareStatus(
                         "POST",
 
                     body: {
+
                         status:
                             status
+
                     }
 
                 }
@@ -2959,6 +3186,20 @@ async function setDareStatus(
             );
 
 
+            clearAuthCache();
+
+
+            setTimeout(
+                () => {
+
+                    window.location.href =
+                        "login.html";
+
+                },
+                800
+            );
+
+
             return;
 
         }
@@ -2971,6 +3212,21 @@ async function setDareStatus(
 
             showToast(
                 "❌ You do not control this streamer."
+            );
+
+
+            return;
+
+        }
+
+
+        if (
+            error.status ===
+            404
+        ) {
+
+            showToast(
+                "❌ Dare not found."
             );
 
 
@@ -3007,9 +3263,9 @@ async function setDareStatus(
 }
 
 
-/* =========================
+/* ============================================================
    INITIALIZE
-========================= */
+============================================================ */
 
 async function initialize() {
 
@@ -3025,13 +3281,32 @@ async function initialize() {
 
 
         console.log(
-            "👤 Authenticated user:",
+            "👤 Nerve account:",
             user
         );
 
 
-        await loadStreamers();
+        /*
+         * Load the streamer profile belonging
+         * to this Nerve account.
+         */
 
+        await loadMyStreamer();
+
+
+        if (
+            !myStreamer
+        ) {
+
+            return;
+
+        }
+
+
+        /*
+         * Now connect and authenticate
+         * the WebSocket.
+         */
 
         connectWebSocket();
 
