@@ -1203,65 +1203,67 @@ function updateLocalDare(dare) {
 ========================================================= */
 
 async function loadStreamers() {
-
     try {
+        const result = await authenticatedFetch("/api/my-streamers");
 
-        const result =
-            await authenticatedFetch(
-                "/api/my-streamers"
-            );
+        console.log("My streamers response:", result);
 
-        if (!result) {
-            return;
-        }
+        // Your server returns:
+        // { streamers: [...] }
 
-
-        let data =
-            result?.data ||
-            result;
-
-
-        if (
-            Array.isArray(data)
-        ) {
-
-            streamers =
-                data;
-
-        } else if (
-            Array.isArray(
-                data?.streamers
-            )
-        ) {
-
-            streamers =
-                data.streamers;
-
+        if (Array.isArray(result?.streamers)) {
+            streamers = result.streamers;
+        } else if (Array.isArray(result?.data?.streamers)) {
+            // Compatibility fallback
+            streamers = result.data.streamers;
+        } else if (Array.isArray(result?.data)) {
+            // Compatibility fallback
+            streamers = result.data;
         } else {
-
             streamers = [];
-
         }
 
+        console.log("Loaded streamers:", streamers);
 
         renderStreamers();
 
-    } catch (error) {
+        // Automatically select the first streamer
+        if (streamers.length > 0 && !selectedStreamer) {
+            selectedStreamer =
+                streamers[0].username ||
+                streamers[0].twitchUsername ||
+                streamers[0].name ||
+                "";
 
+            console.log(
+                "Automatically selected streamer:",
+                selectedStreamer
+            );
+
+            syncSelectedStreamer();
+            renderCurrentDare();
+            renderQueue();
+        }
+
+    } catch (error) {
         console.error(
-            "Load streamers error:",
+            "Failed to load streamers:",
             error
         );
 
         streamers = [];
-
         renderStreamers();
 
-        showToast(
-            "⚠️ Could not load your streamers."
-        );
+        if (error.status === 401) {
+            window.location.href = "login.html";
+            return;
+        }
 
+        showToast(
+            "❌ Could not load your streamers."
+        );
     }
+}
 
 }
 
