@@ -1,10 +1,7 @@
+```js
 const DARE_API_URL = "https://dare-backend-vx8w.onrender.com";
 
 let currentUserCache = undefined;
-
-/* =========================================================
-   API HELPER
-========================================================= */
 
 async function apiFetch(path, options = {}) {
     const config = {
@@ -20,10 +17,7 @@ async function apiFetch(path, options = {}) {
         config.body = JSON.stringify(config.body);
     }
 
-    const response = await fetch(
-        `${DARE_API_URL}${path}`,
-        config
-    );
+    const response = await fetch(DARE_API_URL + path, config);
 
     let data = null;
 
@@ -40,7 +34,6 @@ async function apiFetch(path, options = {}) {
             `Request failed (${response.status})`;
 
         const error = new Error(message);
-
         error.status = response.status;
         error.code = data?.error?.code;
 
@@ -51,78 +44,74 @@ async function apiFetch(path, options = {}) {
 }
 
 
-/* =========================================================
-   REGISTER
-========================================================= */
+// =========================
+// REGISTER
+// =========================
 
 async function register(username, email, password) {
-    return await apiFetch(
-        "/api/auth/register",
-        {
-            method: "POST",
-            body: {
-                username,
-                email,
-                password
-            }
+    const result = await apiFetch("/api/auth/register", {
+        method: "POST",
+        body: {
+            username,
+            email,
+            password
         }
-    );
-}
-
-
-/* =========================================================
-   LOGIN
-========================================================= */
-
-async function login(email, password) {
-    const result = await apiFetch(
-        "/api/auth/login",
-        {
-            method: "POST",
-            body: {
-                email,
-                password
-            }
-        }
-    );
+    });
 
     if (result?.data?.user) {
+        currentUserCache = result.data.user;
         localStorage.setItem(
             "user",
             JSON.stringify(result.data.user)
         );
-
-        currentUserCache =
-            result.data.user;
     }
 
     return result;
 }
 
 
-/* =========================================================
-   LOGOUT
-========================================================= */
+// =========================
+// LOGIN
+// =========================
+
+async function login(email, password) {
+    const result = await apiFetch("/api/auth/login", {
+        method: "POST",
+        body: {
+            email,
+            password
+        }
+    });
+
+    if (result?.data?.user) {
+        currentUserCache = result.data.user;
+        localStorage.setItem(
+            "user",
+            JSON.stringify(result.data.user)
+        );
+    }
+
+    return result;
+}
+
+
+// =========================
+// LOGOUT
+// =========================
 
 async function logout(redirect = true) {
     try {
-        await apiFetch(
-            "/api/auth/logout",
-            {
-                method: "POST"
-            }
-        );
+        await apiFetch("/api/auth/logout", {
+            method: "POST"
+        });
     } catch (error) {
-        console.warn(
-            "Logout request failed:",
-            error
-        );
+        console.warn("Logout request failed:", error);
     }
 
     currentUserCache = null;
 
-    localStorage.removeItem("user");
     localStorage.removeItem("token");
+    localStorage.removeItem("user");
 
     if (redirect) {
         window.location.href = "login.html";
@@ -130,33 +119,20 @@ async function logout(redirect = true) {
 }
 
 
-/* =========================================================
-   CURRENT USER
-========================================================= */
+// =========================
+// GET CURRENT USER
+// =========================
 
 async function getCurrentUserAsync() {
-
     if (currentUserCache !== undefined) {
         return currentUserCache;
     }
 
     try {
-        const result =
-            await apiFetch(
-                "/api/auth/me"
-            );
+        const result = await apiFetch("/api/auth/me");
 
         currentUserCache =
             result?.data?.user || null;
-
-        if (currentUserCache) {
-            localStorage.setItem(
-                "user",
-                JSON.stringify(
-                    currentUserCache
-                )
-            );
-        }
 
         return currentUserCache;
 
@@ -164,7 +140,6 @@ async function getCurrentUserAsync() {
 
         if (error.status === 401) {
             currentUserCache = null;
-            localStorage.removeItem("user");
             return null;
         }
 
@@ -173,12 +148,11 @@ async function getCurrentUserAsync() {
 }
 
 
-/* =========================================================
-   SYNC USER
-========================================================= */
+// =========================
+// LOCAL USER
+// =========================
 
 function getCurrentUser() {
-
     const cached =
         localStorage.getItem("user");
 
@@ -194,12 +168,11 @@ function getCurrentUser() {
 }
 
 
-/* =========================================================
-   LOGIN CHECK
-========================================================= */
+// =========================
+// LOGIN CHECK
+// =========================
 
 async function isLoggedInAsync() {
-
     const user =
         await getCurrentUserAsync();
 
@@ -207,36 +180,22 @@ async function isLoggedInAsync() {
 }
 
 
-/*
- * Kept for compatibility with
- * older frontend code.
- *
- * Use isLoggedInAsync() when possible.
- */
-
 function isLoggedIn() {
-
     return !!getCurrentUser();
-
 }
 
 
-/* =========================================================
-   REQUIRE LOGIN
-========================================================= */
+// =========================
+// REQUIRE LOGIN
+// =========================
 
 async function requireLogin() {
-
     try {
-
         const user =
             await getCurrentUserAsync();
 
         if (!user) {
-
-            window.location.href =
-                "login.html";
-
+            window.location.href = "login.html";
             return null;
         }
 
@@ -249,22 +208,18 @@ async function requireLogin() {
             error
         );
 
-        window.location.href =
-            "login.html";
+        window.location.href = "login.html";
 
         return null;
     }
 }
 
 
-/* =========================================================
-   AUTHENTICATED FETCH
-========================================================= */
+// =========================
+// AUTHENTICATED FETCH
+// =========================
 
-async function authenticatedFetch(
-    path,
-    options = {}
-) {
+async function authenticatedFetch(path, options = {}) {
 
     try {
 
@@ -272,17 +227,11 @@ async function authenticatedFetch(
             await getCurrentUserAsync();
 
         if (!user) {
-
-            window.location.href =
-                "login.html";
-
+            window.location.href = "login.html";
             return null;
         }
 
-        return await apiFetch(
-            path,
-            options
-        );
+        return await apiFetch(path, options);
 
     } catch (error) {
 
@@ -290,12 +239,10 @@ async function authenticatedFetch(
 
             currentUserCache = null;
 
-            localStorage.removeItem(
-                "user"
-            );
+            localStorage.removeItem("user");
+            localStorage.removeItem("token");
 
-            window.location.href =
-                "login.html";
+            window.location.href = "login.html";
 
             return null;
         }
@@ -305,9 +252,9 @@ async function authenticatedFetch(
 }
 
 
-/* =========================================================
-   COMPATIBILITY
-========================================================= */
+// =========================
+// AUTHENTICATED JSON
+// =========================
 
 async function authenticatedJson(
     path,
@@ -320,21 +267,15 @@ async function authenticatedJson(
 }
 
 
-/* =========================================================
-   CLEAR AUTH CACHE
-========================================================= */
+// =========================
+// CLEAR AUTH CACHE
+// =========================
 
 function clearAuthCache() {
 
-    currentUserCache =
-        undefined;
+    currentUserCache = undefined;
 
-    localStorage.removeItem(
-        "user"
-    );
-
-    localStorage.removeItem(
-        "token"
-    );
+    localStorage.removeItem("user");
+    localStorage.removeItem("token");
 }
-
+```
