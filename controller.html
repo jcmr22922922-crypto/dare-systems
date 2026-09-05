@@ -59,7 +59,9 @@ body {
     margin: 0 auto;
 }
 
-/* HEADER */
+/* =========================
+   HEADER
+========================= */
 
 .header {
     display: flex;
@@ -105,6 +107,7 @@ body {
 
 .brand h1 {
     margin: 0;
+
     font-size: 25px;
 }
 
@@ -116,7 +119,9 @@ body {
     font-size: 13px;
 }
 
-/* STATUS */
+/* =========================
+   CONNECTION STATUS
+========================= */
 
 .status {
     display: inline-flex;
@@ -129,6 +134,7 @@ body {
     border-radius: 999px;
 
     font-size: 13px;
+
     font-weight: 700;
 }
 
@@ -154,7 +160,9 @@ body {
         rgba(255, 43, 43, 0.25);
 }
 
-/* CARDS */
+/* =========================
+   CARDS
+========================= */
 
 .card {
     background:
@@ -191,7 +199,9 @@ body {
     font-size: 17px;
 }
 
-/* STREAMER */
+/* =========================
+   STREAMER
+========================= */
 
 .streamer-info {
     color: var(--muted);
@@ -229,51 +239,9 @@ select:focus {
     border-color: var(--red);
 }
 
-/* BUTTONS */
-
-button {
-    border: none;
-
-    border-radius: 10px;
-
-    padding: 12px 17px;
-
-    font-size: 14px;
-
-    font-weight: 800;
-
-    cursor: pointer;
-
-    transition: 0.15s;
-}
-
-button:hover {
-    transform: translateY(-1px);
-}
-
-button:disabled {
-    opacity: 0.5;
-
-    cursor: not-allowed;
-
-    transform: none;
-}
-
-.accept,
-.complete {
-    background: #178d4c;
-
-    color: white;
-}
-
-.reject,
-.fail {
-    background: #a91f25;
-
-    color: white;
-}
-
-/* ACTIVE */
+/* =========================
+   ACTIVE DARE
+========================= */
 
 .active-dare {
     border-color:
@@ -359,7 +327,55 @@ button:disabled {
     flex: 1;
 }
 
-/* QUEUE */
+/* =========================
+   BUTTONS
+========================= */
+
+button {
+    border: none;
+
+    border-radius: 10px;
+
+    padding: 12px 17px;
+
+    font-size: 14px;
+
+    font-weight: 800;
+
+    cursor: pointer;
+
+    transition: 0.15s;
+}
+
+button:hover {
+    transform: translateY(-1px);
+}
+
+button:disabled {
+    opacity: 0.5;
+
+    cursor: not-allowed;
+
+    transform: none;
+}
+
+.accept,
+.complete {
+    background: #178d4c;
+
+    color: white;
+}
+
+.reject,
+.fail {
+    background: #a91f25;
+
+    color: white;
+}
+
+/* =========================
+   QUEUE
+========================= */
 
 .queue-item {
     background: #0c0e12;
@@ -419,12 +435,15 @@ button:disabled {
     border-radius: 10px;
 }
 
-/* TOAST */
+/* =========================
+   TOAST
+========================= */
 
 .toast {
     position: fixed;
 
     bottom: 24px;
+
     left: 50%;
 
     transform:
@@ -452,7 +471,9 @@ button:disabled {
     display: block;
 }
 
-/* MOBILE */
+/* =========================
+   MOBILE
+========================= */
 
 @media (max-width: 700px) {
 
@@ -489,7 +510,9 @@ button:disabled {
 
 <div class="container">
 
-    <!-- HEADER -->
+    <!-- =====================
+         HEADER
+    ====================== -->
 
     <div class="header">
 
@@ -513,6 +536,7 @@ button:disabled {
 
         </div>
 
+
         <div
             id="connectionStatus"
             class="status disconnected"
@@ -523,7 +547,9 @@ button:disabled {
     </div>
 
 
-    <!-- STREAMER -->
+    <!-- =====================
+         CONTROLLING STREAMER
+    ====================== -->
 
     <div class="card">
 
@@ -535,6 +561,7 @@ button:disabled {
 
         </div>
 
+
         <div class="streamer-info">
 
             Streamer:
@@ -544,6 +571,7 @@ button:disabled {
             </strong>
 
         </div>
+
 
         <select id="streamerSelect">
 
@@ -556,7 +584,9 @@ button:disabled {
     </div>
 
 
-    <!-- ACTIVE DARE -->
+    <!-- =====================
+         ACTIVE DARE
+    ====================== -->
 
     <div class="card active-dare">
 
@@ -567,6 +597,7 @@ button:disabled {
             </h2>
 
         </div>
+
 
         <div id="currentDare">
 
@@ -579,7 +610,9 @@ button:disabled {
     </div>
 
 
-    <!-- WAITING QUEUE -->
+    <!-- =====================
+         WAITING QUEUE
+    ====================== -->
 
     <div class="card">
 
@@ -590,6 +623,7 @@ button:disabled {
             </h2>
 
         </div>
+
 
         <div id="queue">
 
@@ -604,7 +638,9 @@ button:disabled {
 </div>
 
 
-<!-- TOAST -->
+<!-- =========================
+     TOAST
+========================= -->
 
 <div
     id="toast"
@@ -612,16 +648,26 @@ button:disabled {
 ></div>
 
 
-<!-- AUTH -->
+<!-- =========================
+     AUTH
+========================= -->
 
-<script src="auth.js?v=1001"></script>
+<script src="auth.js?v=1002"></script>
 
 
 <script>
 
+/* =========================
+   CONFIG
+========================= */
+
 const WS_URL =
     "wss://dare-backend-vx8w.onrender.com/ws";
 
+
+/* =========================
+   STATE
+========================= */
 
 let ws = null;
 
@@ -641,6 +687,10 @@ let reconnectTimer = null;
 
 let toastTimer = null;
 
+
+/* =========================
+   ELEMENTS
+========================= */
 
 const connectionStatus =
     document.getElementById(
@@ -726,18 +776,25 @@ function createdAt(dare) {
 
 function showToast(message) {
 
-    toast.textContent = message;
+    toast.textContent =
+        message;
 
-    toast.classList.add("show");
+    toast.classList.add(
+        "show"
+    );
 
-    clearTimeout(toastTimer);
+    clearTimeout(
+        toastTimer
+    );
 
     toastTimer =
         setTimeout(
             () => {
+
                 toast.classList.remove(
                     "show"
                 );
+
             },
             2800
         );
@@ -747,27 +804,29 @@ function showToast(message) {
 
 function escapeHtml(value) {
 
-    return String(value ?? "")
-        .replace(
-            /&/g,
-            "&amp;"
-        )
-        .replace(
-            /</g,
-            "&lt;"
-        )
-        .replace(
-            />/g,
-            "&gt;"
-        )
-        .replace(
-            /"/g,
-            "&quot;"
-        )
-        .replace(
-            /'/g,
-            "&#039;"
-        );
+    return String(
+        value ?? ""
+    )
+    .replace(
+        /&/g,
+        "&amp;"
+    )
+    .replace(
+        /</g,
+        "&lt;"
+    )
+    .replace(
+        />/g,
+        "&gt;"
+    )
+    .replace(
+        /"/g,
+        "&quot;"
+    )
+    .replace(
+        /'/g,
+        "&#039;"
+    );
 
 }
 
@@ -775,9 +834,13 @@ function escapeHtml(value) {
 function formatReward(value) {
 
     const amount =
-        Number(value || 0);
+        Number(
+            value || 0
+        );
 
-    return Number.isFinite(amount)
+    return Number.isFinite(
+        amount
+    )
         ? amount.toFixed(2)
         : "0.00";
 
@@ -785,7 +848,7 @@ function formatReward(value) {
 
 
 /* =========================
-   WEBSOCKET
+   WEBSOCKET CONNECTION
 ========================= */
 
 function connectWebSocket() {
@@ -800,7 +863,9 @@ function connectWebSocket() {
                 WebSocket.CONNECTING
         )
     ) {
+
         return;
+
     }
 
 
@@ -818,7 +883,9 @@ function connectWebSocket() {
                 WS_URL
             );
 
-    } catch (error) {
+    }
+
+    catch (error) {
 
         console.error(
             "WebSocket creation error:",
@@ -831,6 +898,7 @@ function connectWebSocket() {
         scheduleReconnect();
 
         return;
+
     }
 
 
@@ -841,11 +909,14 @@ function connectWebSocket() {
                 "✅ WebSocket connected"
             );
 
+
             connectionStatus.textContent =
                 "🟢 Connected";
 
+
             connectionStatus.className =
                 "status connected";
+
 
             clearTimeout(
                 reconnectTimer
@@ -861,7 +932,9 @@ function connectWebSocket() {
                     })
                 );
 
-            } catch (error) {
+            }
+
+            catch (error) {
 
                 console.error(
                     "GET_STATE send error:",
@@ -882,11 +955,14 @@ function connectWebSocket() {
                 event.reason
             );
 
+
             connectionStatus.textContent =
                 "🔴 Disconnected";
 
+
             connectionStatus.className =
                 "status disconnected";
+
 
             scheduleReconnect();
 
@@ -900,6 +976,7 @@ function connectWebSocket() {
                 "WebSocket error:",
                 error
             );
+
 
             connectionStatus.textContent =
                 "🔴 Connection Error";
@@ -917,11 +994,14 @@ function connectWebSocket() {
                         event.data
                     );
 
+
                 handleWebSocketMessage(
                     message
                 );
 
-            } catch (error) {
+            }
+
+            catch (error) {
 
                 console.error(
                     "WebSocket message parse error:",
@@ -941,6 +1021,7 @@ function scheduleReconnect() {
     clearTimeout(
         reconnectTimer
     );
+
 
     reconnectTimer =
         setTimeout(
@@ -988,6 +1069,7 @@ function handleWebSocketMessage(
          * ACTIVE DARES
          *
          * Supports:
+         *
          * message.active
          * message.activeDares
          * message.data.active
@@ -1015,7 +1097,9 @@ function handleWebSocketMessage(
                         !dare ||
                         !dare.streamer
                     ) {
+
                         return;
+
                     }
 
 
@@ -1031,7 +1115,9 @@ function handleWebSocketMessage(
                 }
             );
 
-        } else if (
+        }
+
+        else if (
             incomingActive &&
             typeof incomingActive ===
                 "object"
@@ -1067,18 +1153,21 @@ function handleWebSocketMessage(
         /*
          * QUEUES
          *
-         * Supports:
+         * The backend may send:
+         *
+         * message.queue
+         *
+         * or:
          *
          * message.queues
-         * message.queue
-         * message.data.queues
+         *
+         * or:
+         *
          * message.data.queue
          *
-         * This is important because
-         * the deployed backend currently
-         * sends:
+         * or:
          *
-         * queue: [...]
+         * message.data.queues
          */
 
         const incomingQueues =
@@ -1090,15 +1179,14 @@ function handleWebSocketMessage(
 
 
         /*
-         * FLAT QUEUE ARRAY
+         * FLAT ARRAY
          *
          * Example:
          *
-         * [
-         *   {
-         *      streamer: "ishowsloow_",
-         *      ...
-         *   }
+         * queue: [
+         *     dare,
+         *     dare,
+         *     dare
          * ]
          */
 
@@ -1115,7 +1203,9 @@ function handleWebSocketMessage(
                         !dare ||
                         !dare.streamer
                     ) {
+
                         return;
+
                     }
 
 
@@ -1144,16 +1234,17 @@ function handleWebSocketMessage(
 
         }
 
+
         /*
          * OBJECT QUEUES
          *
          * Example:
          *
-         * {
-         *   ishowsloow_: [
-         *      dare,
-         *      dare
-         *   ]
+         * queues: {
+         *     ishowsloow_: [
+         *         dare,
+         *         dare
+         *     ]
          * }
          */
 
@@ -1173,7 +1264,9 @@ function handleWebSocketMessage(
                             queue
                         )
                     ) {
+
                         return;
+
                     }
 
 
@@ -1196,7 +1289,7 @@ function handleWebSocketMessage(
 
 
         /*
-         * Sort every queue
+         * Sort queues
          */
 
         Object.keys(
@@ -1217,6 +1310,7 @@ function handleWebSocketMessage(
             activeDares
         );
 
+
         console.log(
             "⏳ Queues:",
             queues
@@ -1231,6 +1325,7 @@ function handleWebSocketMessage(
 
 
         return;
+
     }
 
 
@@ -1271,6 +1366,7 @@ function handleWebSocketMessage(
 
 
         return;
+
     }
 
 
@@ -1328,6 +1424,7 @@ function handleWebSocketMessage(
 
 
         return;
+
     }
 
 
@@ -1371,6 +1468,7 @@ function handleWebSocketMessage(
 
 
         return;
+
     }
 
 
@@ -1406,6 +1504,7 @@ function handleWebSocketMessage(
 
 
         return;
+
     }
 
 
@@ -1441,6 +1540,7 @@ function handleWebSocketMessage(
 
 
         return;
+
     }
 
 
@@ -1478,6 +1578,7 @@ function handleWebSocketMessage(
 
 
         return;
+
     }
 
 
@@ -1520,6 +1621,7 @@ function handleWebSocketMessage(
 
 
         return;
+
     }
 
 
@@ -1553,6 +1655,7 @@ function handleWebSocketMessage(
 
 
         return;
+
     }
 
 
@@ -1565,7 +1668,7 @@ function handleWebSocketMessage(
 
 
 /* =========================
-   LOCAL DARE UPDATE
+   UPDATE LOCAL DARE
 ========================= */
 
 function updateLocalDare(
@@ -1576,7 +1679,9 @@ function updateLocalDare(
         !dare ||
         !dare.streamer
     ) {
+
         return;
+
     }
 
 
@@ -1613,6 +1718,7 @@ function updateLocalDare(
 
 
         return;
+
     }
 
 
@@ -1797,6 +1903,7 @@ async function loadStreamers() {
                 "login.html";
 
             return;
+
         }
 
 
@@ -1839,6 +1946,7 @@ function renderStreamers() {
 
 
         return;
+
     }
 
 
@@ -1890,8 +1998,8 @@ function renderStreamers() {
 
 
     /*
-     * Compare streamers
-     * case-insensitively.
+     * Preserve selected streamer
+     * regardless of capitalization.
      */
 
     const selectedKey =
@@ -1939,7 +2047,7 @@ function renderStreamers() {
 
 
 /* =========================
-   STREAMER CHANGE
+   STREAMER SELECT CHANGE
 ========================= */
 
 streamerSelect.addEventListener(
@@ -2049,6 +2157,7 @@ function removeActiveDare(
         currentDare =
             null;
 
+
         stopTimer();
 
     }
@@ -2084,6 +2193,7 @@ function renderCurrentDare() {
 
 
         return;
+
     }
 
 
@@ -2121,7 +2231,9 @@ function renderCurrentDare() {
         <div class="dare-text">
 
             ${escapeHtml(
-                dareText(dare)
+                dareText(
+                    dare
+                )
             )}
 
         </div>
@@ -2143,7 +2255,8 @@ function renderCurrentDare() {
             Duration:
 
             ${Number(
-                dare.duration || 0
+                dare.duration ||
+                0
             )}
 
             seconds
@@ -2158,7 +2271,8 @@ function renderCurrentDare() {
 
             ${formatTime(
                 Number(
-                    dare.duration || 0
+                    dare.duration ||
+                    0
                 )
             )}
 
@@ -2221,7 +2335,8 @@ function startTimer(
 
     let remaining =
         Number(
-            dare.duration || 0
+            dare.duration ||
+            0
         );
 
 
@@ -2255,6 +2370,7 @@ function startTimer(
 
 
                     return;
+
                 }
 
 
@@ -2342,7 +2458,7 @@ function formatTime(
 
 
 /* =========================
-   QUEUE SORTING
+   SORT QUEUE
 ========================= */
 
 function sortQueue(
@@ -2354,7 +2470,9 @@ function sortQueue(
             queue
         )
     ) {
+
         return;
+
     }
 
 
@@ -2363,13 +2481,17 @@ function sortQueue(
 
             const aDate =
                 new Date(
-                    createdAt(a)
+                    createdAt(
+                        a
+                    )
                 );
 
 
             const bDate =
                 new Date(
-                    createdAt(b)
+                    createdAt(
+                        b
+                    )
                 );
 
 
@@ -2397,7 +2519,8 @@ function renderQueue() {
 
 
     const queue =
-        queues[key] || [];
+        queues[key] ||
+        [];
 
 
     if (
@@ -2412,6 +2535,7 @@ function renderQueue() {
 
 
         return;
+
     }
 
 
@@ -2457,7 +2581,9 @@ function renderQueue() {
                     <span
                         class="queue-number"
                     >
+
                         #${index + 1}
+
                     </span>
 
 
@@ -2558,7 +2684,9 @@ function removeFromQueue(
         id === null ||
         id === undefined
     ) {
+
         return;
+
     }
 
 
@@ -2576,7 +2704,9 @@ function removeFromQueue(
                         getDareId(
                             dare
                         ) !==
-                        Number(id)
+                        Number(
+                            id
+                        )
                 );
 
         }
@@ -2586,7 +2716,7 @@ function removeFromQueue(
 
 
 /* =========================
-   FIND QUEUED DARE
+   FIND DARE IN QUEUE
 ========================= */
 
 function findDareInQueue(
@@ -2594,7 +2724,9 @@ function findDareInQueue(
 ) {
 
     const targetId =
-        Number(id);
+        Number(
+            id
+        );
 
 
     for (
@@ -2618,7 +2750,9 @@ function findDareInQueue(
 
 
         if (found) {
+
             return found;
+
         }
 
     }
@@ -2630,7 +2764,7 @@ function findDareInQueue(
 
 
 /* =========================
-   ACCEPT
+   ACCEPT DARE
 ========================= */
 
 async function acceptDare(
@@ -2649,7 +2783,9 @@ async function acceptDare(
             "❌ Dare is no longer pending."
         );
 
+
         return;
+
     }
 
 
@@ -2667,7 +2803,9 @@ async function acceptDare(
             "⚠️ Finish the active dare first."
         );
 
+
         return;
+
     }
 
 
@@ -2680,7 +2818,7 @@ async function acceptDare(
 
 
 /* =========================
-   REJECT
+   REJECT DARE
 ========================= */
 
 async function rejectDare(
@@ -2722,7 +2860,9 @@ async function setDareStatus(
             "❌ Invalid dare status."
         );
 
+
         return;
+
     }
 
 
@@ -2734,6 +2874,7 @@ async function setDareStatus(
                     id
                 )}/status`,
                 {
+
                     method:
                         "POST",
 
@@ -2741,6 +2882,7 @@ async function setDareStatus(
                         status:
                             status
                     }
+
                 }
             );
 
@@ -2816,7 +2958,9 @@ async function setDareStatus(
                 "🔐 Please log in again."
             );
 
+
             return;
+
         }
 
 
@@ -2829,7 +2973,9 @@ async function setDareStatus(
                 "❌ You do not control this streamer."
             );
 
+
             return;
+
         }
 
 
@@ -2842,7 +2988,9 @@ async function setDareStatus(
                 "⚠️ That dare can no longer be changed."
             );
 
+
             return;
+
         }
 
 
