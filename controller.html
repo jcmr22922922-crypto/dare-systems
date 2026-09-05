@@ -712,11 +712,17 @@ function getDareId(dare) {
         return null;
     }
 
-    return Number(
+    const id =
         dare.id ??
         dare.dare_id ??
-        dare.dareId
-    );
+        dare.dareId;
+
+    const numberId =
+        Number(id);
+
+    return Number.isFinite(numberId)
+        ? numberId
+        : null;
 
 }
 
@@ -1079,12 +1085,29 @@ function handleWebSocketMessage(message) {
         }
 
 
-        /* ---------- QUEUES ---------- */
+        /* =================================================
+           QUEUES
+
+           IMPORTANT FIX:
+
+           Backend currently sends:
+
+               queue: Array(5)
+
+           Older backend versions may send:
+
+               queues: {...}
+
+           This code supports BOTH.
+        ================================================= */
 
         const incomingQueues =
-            message.queues ||
+            message.queue ??
+            message.queues ??
             {};
 
+
+        /* ---------- FLAT QUEUE ARRAY ---------- */
 
         if (
             Array.isArray(
@@ -1095,19 +1118,34 @@ function handleWebSocketMessage(message) {
             incomingQueues.forEach(
                 dare => {
 
-                    if (
-                        !dare ||
-                        !dare.streamer
-                    ) {
-
+                    if (!dare) {
                         return;
-
                     }
+
+
+                    /*
+                     * Use the dare's streamer.
+                     *
+                     * If the backend ever sends a queue
+                     * item without a streamer, fall back
+                     * to the currently selected streamer.
+                     */
+
+                    const streamer =
+                        dare.streamer ||
+                        selectedStreamer;
+
+
+                    if (!streamer) {
+                        return;
+                    }
+
 
                     const key =
                         streamerKey(
-                            dare.streamer
+                            streamer
                         );
+
 
                     if (!queues[key]) {
 
@@ -1115,14 +1153,59 @@ function handleWebSocketMessage(message) {
 
                     }
 
-                    queues[key].push(
-                        dare
+
+                    const id =
+                        getDareId(
+                            dare
+                        );
+
+
+                    /*
+                     * Avoid duplicate queue items.
+                     */
+
+                    const exists =
+                        queues[key].some(
+                            item =>
+                                getDareId(item) ===
+                                id
+                        );
+
+
+                    if (!exists) {
+
+                        queues[key].push(
+                            dare
+                        );
+
+                    }
+
+                }
+            );
+
+
+            /*
+             * Sort every streamer queue.
+             */
+
+            Object.keys(
+                queues
+            ).forEach(
+                key => {
+
+                    sortQueue(
+                        queues[key]
                     );
 
                 }
             );
 
-        } else if (
+        }
+
+
+        /* ---------- GROUPED QUEUES OBJECT ---------- */
+
+        else if (
             incomingQueues &&
             typeof incomingQueues ===
                 "object"
@@ -1143,11 +1226,25 @@ function handleWebSocketMessage(message) {
 
                     }
 
+
+                    const normalizedKey =
+                        streamerKey(
+                            key
+                        );
+
+
                     queues[
-                        streamerKey(key)
+                        normalizedKey
                     ] = [
                         ...queue
                     ];
+
+
+                    sortQueue(
+                        queues[
+                            normalizedKey
+                        ]
+                    );
 
                 }
             );
@@ -1198,9 +1295,40 @@ function handleWebSocketMessage(message) {
             return;
         }
 
+
         updateLocalDare(
             dare
         );
+
+
+        /*
+         * Some backend versions include the queue
+         * directly inside DARE_CREATED.
+         */
+
+        if (
+            Array.isArray(
+                message.queue
+            ) &&
+            dare.streamer
+        ) {
+
+            const key =
+                streamerKey(
+                    dare.streamer
+                );
+
+            queues[key] =
+                [
+                    ...message.queue
+                ];
+
+            sortQueue(
+                queues[key]
+            );
+
+        }
+
 
         syncSelectedStreamer();
 
@@ -1286,6 +1414,11 @@ function handleWebSocketMessage(message) {
             );
 
 
+        if (!key) {
+            return;
+        }
+
+
         queues[key] =
             Array.isArray(
                 message.queue
@@ -1295,6 +1428,13 @@ function handleWebSocketMessage(message) {
                 ]
                 : [];
 
+
+        sortQueue(
+            queues[key]
+        );
+
+
+        syncSelectedStreamer();
 
         renderQueue();
 
@@ -1317,6 +1457,7 @@ function handleWebSocketMessage(message) {
             message.dare
         );
 
+
         if (message.dare) {
 
             removeActiveDare(
@@ -1324,6 +1465,7 @@ function handleWebSocketMessage(message) {
             );
 
         }
+
 
         showToast(
             "✅ Dare completed!"
@@ -1348,6 +1490,7 @@ function handleWebSocketMessage(message) {
             message.dare
         );
 
+
         if (message.dare) {
 
             removeActiveDare(
@@ -1355,6 +1498,7 @@ function handleWebSocketMessage(message) {
             );
 
         }
+
 
         showToast(
             "❌ Dare failed."
@@ -2159,6 +2303,11 @@ function formatTime(seconds) {
 
 function sortQueue(queue) {
 
+    if (!Array.isArray(queue)) {
+        return;
+    }
+
+
     queue.sort(
         (a, b) => {
 
@@ -2592,12 +2741,7 @@ async function sendDare() {
 
 
         /*
-         * The WebSocket normally updates
-         * the controller automatically.
-         *
-         * This fallback also updates the UI
-         * immediately if the API response
-         * contains the dare.
+         * Update immediately from API response.
          */
 
         if (dare) {
@@ -2609,6 +2753,44 @@ async function sendDare() {
             syncSelectedStreamer();
 
             renderCurrentDare();
+
+            renderQueue();
+
+        }
+
+
+        /*
+         * If API gives us a queue,
+         * use it immediately.
+         */
+
+        const returnedQueue =
+            result?.queue ||
+            result?.data?.queue;
+
+
+        if (
+            Array.isArray(
+                returnedQueue
+            )
+        ) {
+
+            const key =
+                streamerKey(
+                    selectedStreamer
+                );
+
+
+            queues[key] =
+                [
+                    ...returnedQueue
+                ];
+
+
+            sortQueue(
+                queues[key]
+            );
+
 
             renderQueue();
 
@@ -2723,14 +2905,49 @@ async function setDareStatus(
 
 
         /*
-         * The WebSocket will update
-         * the controller state.
+         * Immediately update local UI
+         * for a faster response.
          */
 
         if (
             status ===
             "accepted"
         ) {
+
+            const dare =
+                findDareInQueue(
+                    id
+                );
+
+
+            if (dare) {
+
+                const key =
+                    streamerKey(
+                        dare.streamer
+                    );
+
+
+                activeDares[key] = {
+                    ...dare,
+                    status:
+                        "accepted"
+                };
+
+            }
+
+
+            removeFromQueue(
+                id
+            );
+
+
+            syncSelectedStreamer();
+
+            renderCurrentDare();
+
+            renderQueue();
+
 
             showToast(
                 "🔥 Dare accepted!"
@@ -2740,6 +2957,14 @@ async function setDareStatus(
             status ===
             "rejected"
         ) {
+
+            removeFromQueue(
+                id
+            );
+
+
+            renderQueue();
+
 
             showToast(
                 "❌ Dare rejected."
@@ -2849,9 +3074,7 @@ async function initialize() {
 
 
         /*
-         * Load the streamer first so the
-         * STATE data has a selected streamer
-         * to render against.
+         * Load streamer first.
          */
 
         await loadStreamers();
@@ -2891,4 +3114,3 @@ initialize();
 </body>
 
 </html>
-
